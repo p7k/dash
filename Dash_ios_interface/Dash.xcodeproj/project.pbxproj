@@ -1,0 +1,385 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DCABBE8614DD784A0007409B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8514DD784A0007409B /* UIKit.framework */; };
+		DCABBE8814DD784A0007409B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8714DD784A0007409B /* Foundation.framework */; };
+		DCABBE8A14DD784A0007409B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8914DD784A0007409B /* CoreGraphics.framework */; };
+		DCABBE9014DD784A0007409B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DCABBE8E14DD784A0007409B /* InfoPlist.strings */; };
+		DCABBE9214DD784A0007409B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBE9114DD784A0007409B /* main.m */; };
+		DCABBE9614DD784A0007409B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBE9514DD784A0007409B /* AppDelegate.m */; };
+		DCABBE9914DD784A0007409B /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBE9814DD784A0007409B /* FirstViewController.m */; };
+		DCABBE9B14DD784A0007409B /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = DCABBE9A14DD784A0007409B /* first.png */; };
+		DCABBE9D14DD784A0007409B /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCABBE9C14DD784A0007409B /* first@2x.png */; };
+		DCABBEA014DD784A0007409B /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBE9F14DD784A0007409B /* SecondViewController.m */; };
+		DCABBEA214DD784A0007409B /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = DCABBEA114DD784A0007409B /* second.png */; };
+		DCABBEA414DD784A0007409B /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCABBEA314DD784A0007409B /* second@2x.png */; };
+		DCABBEA714DD784A0007409B /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCABBEA514DD784A0007409B /* FirstViewController.xib */; };
+		DCABBEAA14DD784A0007409B /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCABBEA814DD784A0007409B /* SecondViewController.xib */; };
+		DCABBEB214DD7B640007409B /* ClassroomTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEB114DD7B640007409B /* ClassroomTableCell.m */; };
+		DCABBEB514DD7B770007409B /* CallTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEB414DD7B760007409B /* CallTableCell.m */; };
+		DCABBEB814DD7B8F0007409B /* StudentInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEB714DD7B8F0007409B /* StudentInfo.m */; };
+		DCABBEBB14DD7BC30007409B /* PostCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEBA14DD7BC30007409B /* PostCallView.m */; };
+		DCABBECE14DD7E780007409B /* DashConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBECD14DD7E770007409B /* DashConstants.m */; };
+		DCABBED914DD83540007409B /* ContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBED814DD83530007409B /* ContactInfo.m */; };
+		DCABBEE314DD9E0C0007409B /* CallIntent.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEE214DD9E0C0007409B /* CallIntent.m */; };
+		DCABBEF214DDB4BA0007409B /* StudentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEF114DDB4B90007409B /* StudentInfoViewController.m */; };
+		DCABBEF414DDBA600007409B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBEF314DDBA600007409B /* QuartzCore.framework */; };
+		DCABBEFA14DDC6310007409B /* ContactInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEF914DDC6300007409B /* ContactInfoCell.m */; };
+		DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEFC14DDCD7A0007409B /* PhoneCall.m */; };
+		DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBF0F14DDD4180007409B /* PostCallViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DCABBE8114DD784A0007409B /* Dash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCABBE8514DD784A0007409B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		DCABBE8714DD784A0007409B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DCABBE8914DD784A0007409B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DCABBE8D14DD784A0007409B /* Dash-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Dash-Info.plist"; sourceTree = "<group>"; };
+		DCABBE8F14DD784A0007409B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DCABBE9114DD784A0007409B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DCABBE9314DD784A0007409B /* Dash-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dash-Prefix.pch"; sourceTree = "<group>"; };
+		DCABBE9414DD784A0007409B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		DCABBE9514DD784A0007409B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		DCABBE9714DD784A0007409B /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
+		DCABBE9814DD784A0007409B /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		DCABBE9A14DD784A0007409B /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
+		DCABBE9C14DD784A0007409B /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
+		DCABBE9E14DD784A0007409B /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		DCABBE9F14DD784A0007409B /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		DCABBEA114DD784A0007409B /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
+		DCABBEA314DD784A0007409B /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		DCABBEA614DD784A0007409B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FirstViewController.xib; sourceTree = "<group>"; };
+		DCABBEA914DD784A0007409B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SecondViewController.xib; sourceTree = "<group>"; };
+		DCABBEB014DD7B640007409B /* ClassroomTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassroomTableCell.h; sourceTree = "<group>"; };
+		DCABBEB114DD7B640007409B /* ClassroomTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassroomTableCell.m; sourceTree = "<group>"; };
+		DCABBEB314DD7B760007409B /* CallTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallTableCell.h; sourceTree = "<group>"; };
+		DCABBEB414DD7B760007409B /* CallTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallTableCell.m; sourceTree = "<group>"; };
+		DCABBEB614DD7B8F0007409B /* StudentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentInfo.h; sourceTree = "<group>"; };
+		DCABBEB714DD7B8F0007409B /* StudentInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentInfo.m; sourceTree = "<group>"; };
+		DCABBEB914DD7BC30007409B /* PostCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCallView.h; sourceTree = "<group>"; };
+		DCABBEBA14DD7BC30007409B /* PostCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCallView.m; sourceTree = "<group>"; };
+		DCABBECC14DD7E770007409B /* DashConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashConstants.h; sourceTree = "<group>"; };
+		DCABBECD14DD7E770007409B /* DashConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashConstants.m; sourceTree = "<group>"; };
+		DCABBED714DD83530007409B /* ContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfo.h; sourceTree = "<group>"; };
+		DCABBED814DD83530007409B /* ContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfo.m; sourceTree = "<group>"; };
+		DCABBEE114DD9E0B0007409B /* CallIntent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallIntent.h; sourceTree = "<group>"; };
+		DCABBEE214DD9E0C0007409B /* CallIntent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallIntent.m; sourceTree = "<group>"; };
+		DCABBEF014DDB4B90007409B /* StudentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentInfoViewController.h; sourceTree = "<group>"; };
+		DCABBEF114DDB4B90007409B /* StudentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentInfoViewController.m; sourceTree = "<group>"; };
+		DCABBEF314DDBA600007409B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DCABBEF814DDC62F0007409B /* ContactInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoCell.h; sourceTree = "<group>"; };
+		DCABBEF914DDC6300007409B /* ContactInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoCell.m; sourceTree = "<group>"; };
+		DCABBEFB14DDCD790007409B /* PhoneCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneCall.h; sourceTree = "<group>"; };
+		DCABBEFC14DDCD7A0007409B /* PhoneCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneCall.m; sourceTree = "<group>"; };
+		DCABBF0E14DDD4170007409B /* PostCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCallViewController.h; sourceTree = "<group>"; };
+		DCABBF0F14DDD4180007409B /* PostCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCallViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCABBE7E14DD784A0007409B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCABBEF414DDBA600007409B /* QuartzCore.framework in Frameworks */,
+				DCABBE8614DD784A0007409B /* UIKit.framework in Frameworks */,
+				DCABBE8814DD784A0007409B /* Foundation.framework in Frameworks */,
+				DCABBE8A14DD784A0007409B /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DCABBE7614DD78490007409B = {
+			isa = PBXGroup;
+			children = (
+				DCABBEF314DDBA600007409B /* QuartzCore.framework */,
+				DCABBE8B14DD784A0007409B /* Dash */,
+				DCABBE8414DD784A0007409B /* Frameworks */,
+				DCABBE8214DD784A0007409B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DCABBE8214DD784A0007409B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCABBE8114DD784A0007409B /* Dash.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCABBE8414DD784A0007409B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCABBE8514DD784A0007409B /* UIKit.framework */,
+				DCABBE8714DD784A0007409B /* Foundation.framework */,
+				DCABBE8914DD784A0007409B /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCABBE8B14DD784A0007409B /* Dash */ = {
+			isa = PBXGroup;
+			children = (
+				DCABBF0E14DDD4170007409B /* PostCallViewController.h */,
+				DCABBF0F14DDD4180007409B /* PostCallViewController.m */,
+				DCABBEFB14DDCD790007409B /* PhoneCall.h */,
+				DCABBEFC14DDCD7A0007409B /* PhoneCall.m */,
+				DCABBEF814DDC62F0007409B /* ContactInfoCell.h */,
+				DCABBEF914DDC6300007409B /* ContactInfoCell.m */,
+				DCABBEE114DD9E0B0007409B /* CallIntent.h */,
+				DCABBEE214DD9E0C0007409B /* CallIntent.m */,
+				DCABBECC14DD7E770007409B /* DashConstants.h */,
+				DCABBECD14DD7E770007409B /* DashConstants.m */,
+				DCABBEB014DD7B640007409B /* ClassroomTableCell.h */,
+				DCABBEB114DD7B640007409B /* ClassroomTableCell.m */,
+				DCABBEB314DD7B760007409B /* CallTableCell.h */,
+				DCABBEB414DD7B760007409B /* CallTableCell.m */,
+				DCABBEF014DDB4B90007409B /* StudentInfoViewController.h */,
+				DCABBEF114DDB4B90007409B /* StudentInfoViewController.m */,
+				DCABBEB614DD7B8F0007409B /* StudentInfo.h */,
+				DCABBEB714DD7B8F0007409B /* StudentInfo.m */,
+				DCABBED714DD83530007409B /* ContactInfo.h */,
+				DCABBED814DD83530007409B /* ContactInfo.m */,
+				DCABBEB914DD7BC30007409B /* PostCallView.h */,
+				DCABBEBA14DD7BC30007409B /* PostCallView.m */,
+				DCABBE9414DD784A0007409B /* AppDelegate.h */,
+				DCABBE9514DD784A0007409B /* AppDelegate.m */,
+				DCABBE9714DD784A0007409B /* FirstViewController.h */,
+				DCABBE9814DD784A0007409B /* FirstViewController.m */,
+				DCABBE9A14DD784A0007409B /* first.png */,
+				DCABBE9C14DD784A0007409B /* first@2x.png */,
+				DCABBE9E14DD784A0007409B /* SecondViewController.h */,
+				DCABBE9F14DD784A0007409B /* SecondViewController.m */,
+				DCABBEA114DD784A0007409B /* second.png */,
+				DCABBEA314DD784A0007409B /* second@2x.png */,
+				DCABBEA514DD784A0007409B /* FirstViewController.xib */,
+				DCABBEA814DD784A0007409B /* SecondViewController.xib */,
+				DCABBE8C14DD784A0007409B /* Supporting Files */,
+			);
+			path = Dash;
+			sourceTree = "<group>";
+		};
+		DCABBE8C14DD784A0007409B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DCABBE8D14DD784A0007409B /* Dash-Info.plist */,
+				DCABBE8E14DD784A0007409B /* InfoPlist.strings */,
+				DCABBE9114DD784A0007409B /* main.m */,
+				DCABBE9314DD784A0007409B /* Dash-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCABBE8014DD784A0007409B /* Dash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCABBEAD14DD784A0007409B /* Build configuration list for PBXNativeTarget "Dash" */;
+			buildPhases = (
+				DCABBE7D14DD784A0007409B /* Sources */,
+				DCABBE7E14DD784A0007409B /* Frameworks */,
+				DCABBE7F14DD784A0007409B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dash;
+			productName = Dash;
+			productReference = DCABBE8114DD784A0007409B /* Dash.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCABBE7814DD78490007409B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = DCABBE7B14DD78490007409B /* Build configuration list for PBXProject "Dash" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DCABBE7614DD78490007409B;
+			productRefGroup = DCABBE8214DD784A0007409B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCABBE8014DD784A0007409B /* Dash */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DCABBE7F14DD784A0007409B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCABBE9014DD784A0007409B /* InfoPlist.strings in Resources */,
+				DCABBE9B14DD784A0007409B /* first.png in Resources */,
+				DCABBE9D14DD784A0007409B /* first@2x.png in Resources */,
+				DCABBEA214DD784A0007409B /* second.png in Resources */,
+				DCABBEA414DD784A0007409B /* second@2x.png in Resources */,
+				DCABBEA714DD784A0007409B /* FirstViewController.xib in Resources */,
+				DCABBEAA14DD784A0007409B /* SecondViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCABBE7D14DD784A0007409B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCABBE9214DD784A0007409B /* main.m in Sources */,
+				DCABBE9614DD784A0007409B /* AppDelegate.m in Sources */,
+				DCABBE9914DD784A0007409B /* FirstViewController.m in Sources */,
+				DCABBEA014DD784A0007409B /* SecondViewController.m in Sources */,
+				DCABBEB214DD7B640007409B /* ClassroomTableCell.m in Sources */,
+				DCABBEB514DD7B770007409B /* CallTableCell.m in Sources */,
+				DCABBEB814DD7B8F0007409B /* StudentInfo.m in Sources */,
+				DCABBEBB14DD7BC30007409B /* PostCallView.m in Sources */,
+				DCABBECE14DD7E780007409B /* DashConstants.m in Sources */,
+				DCABBED914DD83540007409B /* ContactInfo.m in Sources */,
+				DCABBEE314DD9E0C0007409B /* CallIntent.m in Sources */,
+				DCABBEF214DDB4BA0007409B /* StudentInfoViewController.m in Sources */,
+				DCABBEFA14DDC6310007409B /* ContactInfoCell.m in Sources */,
+				DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */,
+				DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DCABBE8E14DD784A0007409B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCABBE8F14DD784A0007409B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DCABBEA514DD784A0007409B /* FirstViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCABBEA614DD784A0007409B /* en */,
+			);
+			name = FirstViewController.xib;
+			sourceTree = "<group>";
+		};
+		DCABBEA814DD784A0007409B /* SecondViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCABBEA914DD784A0007409B /* en */,
+			);
+			name = SecondViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DCABBEAB14DD784A0007409B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: daniel Iglesia (6Y3ENEJPL8)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F326ED5-0443-4AC9-A25E-9941AB243B48";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		DCABBEAC14DD784A0007409B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: daniel Iglesia (6Y3ENEJPL8)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F326ED5-0443-4AC9-A25E-9941AB243B48";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DCABBEAE14DD784A0007409B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dash/Dash-Prefix.pch";
+				INFOPLIST_FILE = "Dash/Dash-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DCABBEAF14DD784A0007409B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dash/Dash-Prefix.pch";
+				INFOPLIST_FILE = "Dash/Dash-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCABBE7B14DD78490007409B /* Build configuration list for PBXProject "Dash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCABBEAB14DD784A0007409B /* Debug */,
+				DCABBEAC14DD784A0007409B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCABBEAD14DD784A0007409B /* Build configuration list for PBXNativeTarget "Dash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCABBEAE14DD784A0007409B /* Debug */,
+				DCABBEAF14DD784A0007409B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCABBE7814DD78490007409B /* Project object */;
+}
