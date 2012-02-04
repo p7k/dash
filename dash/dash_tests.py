@@ -1,31 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-    Flaskr Tests
+    Dash Tests
     ~~~~~~~~~~~~
 
-    Tests the Flaskr application.
-
-    :copyright: (c) 2010 by Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
+    Tests the Dash application.
 """
 import os
-import flaskr
+import dash
 import unittest
 import tempfile
 
 
-class FlaskrTestCase(unittest.TestCase):
+class DashTestCase(unittest.TestCase):
 
     def setUp(self):
         """Before each test, set up a blank database"""
-        self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
-        self.app = flaskr.app.test_client()
-        flaskr.init_db()
+        self.db_fd, dash.app.config['DATABASE'] = tempfile.mkstemp()
+        self.app = dash.app.test_client()
+        dash.init_db()
 
     def tearDown(self):
         """Get rid of the database again after each test."""
         os.close(self.db_fd)
-        os.unlink(flaskr.app.config['DATABASE'])
+        os.unlink(dash.app.config['DATABASE'])
 
     def login(self, username, password):
         return self.app.post('/login', data=dict(
@@ -45,22 +42,22 @@ class FlaskrTestCase(unittest.TestCase):
 
     def test_login_logout(self):
         """Make sure login and logout works"""
-        rv = self.login(flaskr.app.config['USERNAME'],
-                        flaskr.app.config['PASSWORD'])
+        rv = self.login(dash.app.config['USERNAME'],
+                        dash.app.config['PASSWORD'])
         assert 'You were logged in' in rv.data
         rv = self.logout()
         assert 'You were logged out' in rv.data
-        rv = self.login(flaskr.app.config['USERNAME'] + 'x',
-                        flaskr.app.config['PASSWORD'])
+        rv = self.login(dash.app.config['USERNAME'] + 'x',
+                        dash.app.config['PASSWORD'])
         assert 'Invalid username' in rv.data
-        rv = self.login(flaskr.app.config['USERNAME'],
-                        flaskr.app.config['PASSWORD'] + 'x')
+        rv = self.login(dash.app.config['USERNAME'],
+                        dash.app.config['PASSWORD'] + 'x')
         assert 'Invalid password' in rv.data
 
     def test_messages(self):
         """Test that messages work"""
-        self.login(flaskr.app.config['USERNAME'],
-                   flaskr.app.config['PASSWORD'])
+        self.login(dash.app.config['USERNAME'],
+                   dash.app.config['PASSWORD'])
         rv = self.app.post('/add', data=dict(
             title='<Hello>',
             text='<strong>HTML</strong> allowed here'

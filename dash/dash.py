@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    Flaskr
+    Dash
     ~~~~~~
-
-    A microblog example application written as Flask tutorial with
-    Flask using flask-sqlalchemy and flask-wtf extensions.
-    
-    Adapted from original (c) Armin Ronacher.
-
-    :copyright: (c) 2010 by Dan Jacob.
-    :license: BSD, see LICENSE for more details.
 """
 from __future__ import with_statement
 import sqlite3
@@ -22,7 +14,7 @@ from flaskext.sqlalchemy import SQLAlchemy
 
 # configuration
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'sqlite:///flaskr.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -31,7 +23,6 @@ PASSWORD = 'default'
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 db = SQLAlchemy(app)
 
