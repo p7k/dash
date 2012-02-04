@@ -120,6 +120,7 @@ def student_resource():
     return jsonify(results=[student.to_dict() for student in students])
 
 
+@app.route('/login', methods=['POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
