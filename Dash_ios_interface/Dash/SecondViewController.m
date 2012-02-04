@@ -27,7 +27,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Second", @"Second");
         self.tabBarItem.image = [UIImage imageNamed:@"second"];
-        
+         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
         printf("\nview did load");
         
         //data
@@ -50,22 +50,27 @@
         
         
         //interface
-       UIView* headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
-        headerView.backgroundColor = [UIColor grayColor];
-        [self.view addSubview:headerView];
-        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:headerView.frame];
+        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
         dashTitleLabel.textAlignment = UITextAlignmentCenter;
         dashTitleLabel.text = @"dash";
-        dashTitleLabel.backgroundColor = [UIColor clearColor];
+        dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+
+        //[UIColor grayColor];
+        
+        [self.view addSubview:dashTitleLabel];
         dashTitleLabel.textColor = [UIColor whiteColor];
-        [headerView addSubview:dashTitleLabel];
         
       
         
         
-        tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 40, 320, 350)];
+        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 350)];
         tableView.dataSource = self;
         tableView.delegate = self;
+        tableView.layer.shadowColor = [UIColor blackColor].CGColor;
+        tableView.layer.shadowOpacity = 1.0;
+        tableView.layer.shadowRadius = 5.0;
+        tableView.layer.shadowOffset = CGSizeMake(5, 5);
+        tableView.clipsToBounds = NO;  
         [self.view addSubview:tableView];
         
         

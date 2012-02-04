@@ -28,7 +28,7 @@
     if (self) {
         self.title = NSLocalizedString(@"First", @"First");
         self.tabBarItem.image = [UIImage imageNamed:@"first.png"];
-        
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     }
     return self;
 }
@@ -83,28 +83,39 @@
         [classInfoArray addObject:currInfo];
     }
     
-    
-    //interface
-    headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
-    headerView.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:headerView];
-    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:headerView.frame];
-    dashTitleLabel.textAlignment = UITextAlignmentCenter;
-    dashTitleLabel.text = @"dash";
-    dashTitleLabel.backgroundColor = [UIColor clearColor];
-    dashTitleLabel.textColor = [UIColor whiteColor];
-    [headerView addSubview:dashTitleLabel];
-    
     //search bar
-    searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,40,320, 40)];
+    searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];
     searchBar.showsCancelButton = YES;
     searchBar.delegate = self;
+   // searchBar.tintColor = [UIColor grayColor];
+    searchBar.barStyle = UIBarStyleBlack;
+    searchBar.translucent = YES;
     [self.view addSubview:searchBar];
     
+    //interface
+   // headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+    //headerView.backgroundColor = [UIColor grayColor];
+    //[self.view addSubview:headerView];
+    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+    dashTitleLabel.textAlignment = UITextAlignmentCenter;
+    dashTitleLabel.text = @"dash";
+    dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+    //[UIColor grayColor];
+    [self.view addSubview:dashTitleLabel];
+    dashTitleLabel.textColor = [UIColor whiteColor];
+    //[headerView addSubview:dashTitleLabel];
     
-    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 80, 320, 340)];
+   
+    
+    
+    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 100, 280, 300)];
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
+    classroomTableView.layer.shadowColor = [UIColor blackColor].CGColor;
+    classroomTableView.layer.shadowOpacity = 1.0;
+    classroomTableView.layer.shadowRadius = 5.0;
+    classroomTableView.layer.shadowOffset = CGSizeMake(5, 5);
+    classroomTableView.clipsToBounds = NO;    
     [self.view addSubview:classroomTableView];
     
     
@@ -192,8 +203,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	//if(isPad) return 96;
-	return 100;
+	return 80;
 	
 	
 }

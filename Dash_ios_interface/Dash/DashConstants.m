@@ -52,19 +52,54 @@
 
 +(UIImage*)happyImage{
     if(!happyImage){
-		happyImage=[UIImage imageNamed:@"happyIcon.png"];
+		happyImage=[UIImage imageNamed:@"Happy_Face_icon.png"];
 		[happyImage retain];
 	}
 	return happyImage;
 }
 
++(UIImage*)happyHighlightImage{
+    if(!happyHighlightImage){
+		happyHighlightImage=[UIImage imageNamed:@"Happy_Face_Activated_Icon.png"];
+		[happyHighlightImage retain];
+	}
+	return happyHighlightImage;
+}
+
 +(UIImage*)sadImage{
     if(!sadImage){
-		sadImage=[UIImage imageNamed:@"happyIcon.png"];
+		sadImage=[UIImage imageNamed:@"Sad_Face_icon.png"];
 		[sadImage retain];
 	}
 	return sadImage;
 }
+
++(UIImage*)sadHighlightImage{
+    if(!sadHighlightImage){
+		sadHighlightImage=[UIImage imageNamed:@"Sad_Face_Icon_Activated.png"];
+		[sadHighlightImage retain];
+	}
+	return sadHighlightImage;
+}
+
++(UIImage*)phoneImage{
+    if(!phoneImage){
+		phoneImage=[UIImage imageNamed:@"Call_Button.png"];
+		[phoneImage retain];
+	}
+	return phoneImage;
+}
+
+
++(UIImage*)cellBackgroundImage{
+    if(!cellBackgroundImage){
+		cellBackgroundImage=[UIImage imageNamed:@"cellBackground.png"];
+		[cellBackgroundImage retain];
+	}
+	return cellBackgroundImage;
+}
+
+
 
 
 
