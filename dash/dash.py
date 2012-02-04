@@ -37,7 +37,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Unicode(20))
     last_name = db.Column(db.Unicode(20))
-    email = db.Column(db.Unicode(40))
+    email = db.Column(db.Unicode(200))
     phone = db.Column(db.Unicode(20))
     relationship = db.Column(db.Unicode(20))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
@@ -61,6 +61,7 @@ class ContactForm(Form):
     last_name = TextField("Last name", validators=[Required(), Length(min=2, max=20)])
     email = TextField('Email', validators=[Email()])
     phone = TextField('Phone', validators=[Required()])
+    relationship = TextField('Relationship', validators=[Required()])
     submit = SubmitField("Save")
 
 
@@ -120,7 +121,7 @@ def student_resource():
     return jsonify(results=[student.to_dict() for student in students])
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
