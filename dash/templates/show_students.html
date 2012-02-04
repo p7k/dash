@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_student') }}" method=post class=add-entry>
+        {{ form.hidden_tag() }}
+      <dl>
+          <dt>{{ form.first_name.label }}:
+          <dd>{{ form.first_name }}
+          <dt>{{ form.last_name.label }}:
+          <dd>{{ form.last_name }}
+          <dd>{{ form.submit }}
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=entries>
+  {% for student in students %}
+    <li><h2>{{ student.first_name }}</h2>{{ student.last_name }}
+  {% else %}
+    <li><em>Unbelievable.  No students here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}

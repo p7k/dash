@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>{{ student.first_name }} {{ student.last_name}}</h2>
+<form action="{{ url_for('student_details', student_id=1) }}" method=post class=add-entry>
+  {{ form.hidden_tag() }}
+  <dl>
+    <dt>{{ form.first_name.label }}:
+    <dd>{{ form.first_name }}
+    <dt>{{ form.last_name.label }}:
+    <dd>{{ form.last_name }}
+    <dt>{{ form.phone.label }}:
+    <dd>{{ form.phone }}
+    <dd>{{ form.submit }}
+  </dl>
+</form>
+<ul class=entries>
+  {% for contact in student.contacts %}
+    <li><h2>{{ contact.first_name }}</h2>{{ contact.last_name }}
+  {% else %}
+    <li><em>Unbelievable.  No contacts here so far</em>
+  {% endfor %}
+</ul>
+{% endblock %}
