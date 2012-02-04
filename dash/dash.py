@@ -3,16 +3,12 @@
     Dash
     ~~~~~~
 """
-from __future__ import with_statement
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
-from flaskext.wtf import Form, TextField, TextAreaField, \
-    PasswordField, SubmitField, Required, ValidationError
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flaskext.wtf import Form, TextField, PasswordField, SubmitField, Email, Required, Length, ValidationError
 from flaskext.sqlalchemy import SQLAlchemy
-
-# configuration
 from flask.helpers import jsonify
 
+# configuration
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
@@ -25,11 +21,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 db = SQLAlchemy(app)
 
-class Entry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Unicode(200))
-    text = db.Column(db.UnicodeText)
-
+# models
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Unicode(20))
@@ -40,10 +32,12 @@ class Student(db.Model):
         return dict(id=self.id, first_name=self.first_name, last_name=self.last_name,
             contacts=[contact.to_dict() for contact in self.contacts])
 
+
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Unicode(20))
     last_name = db.Column(db.Unicode(20))
+    email = db.Column(db.Unicode(40))
     phone = db.Column(db.Unicode(20))
     relationship = db.Column(db.Unicode(20))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
@@ -54,24 +48,21 @@ class Contact(db.Model):
 
 db.create_all()
 
+
+# forms
 class StudentForm(Form):
-    first_name = TextField("First name", validators=[Required()])
-    last_name = TextField("Last name", validators=[Required()])
+    first_name = TextField("First name", validators=[Required(), Length(min=2, max=20)])
+    last_name = TextField("Last name", validators=[Required(), Length(min=2, max=20)])
     submit = SubmitField("Save")
 
+
 class ContactForm(Form):
-    first_name = TextField("First name", validators=[Required()])
-    last_name = TextField("Last name", validators=[Required()])
+    first_name = TextField("First name", validators=[Required(), Length(min=2, max=20)])
+    last_name = TextField("Last name", validators=[Required(), Length(min=2, max=20)])
+    email = TextField('Email', validators=[Email()])
     phone = TextField('Phone', validators=[Required()])
     submit = SubmitField("Save")
 
-#pasha = Student(first_name='Pavel', last_name='Katsev')
-#dad = Contact(first_name='Gregory', last_name='Katsev', phone='415-734-1193')
-
-class EntryForm(Form):
-    title = TextField("Title", validators=[Required()])
-    text = TextAreaField("Text")
-    submit = SubmitField("Share")
 
 class LoginForm(Form):
     username = TextField("Username")
@@ -87,54 +78,51 @@ class LoginForm(Form):
             raise ValidationError, "Invalid password"
 
 
+# views
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
-def student_details(student_id):
+def show_student(student_id):
     if not session.get('logged_in'):
         abort(401)
 
     form = ContactForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         contact = Contact()
         form.populate_obj(contact)
         contact.student_id = student_id
         db.session.add(contact)
         db.session.commit()
         flash('New contact added')
+        return redirect(url_for('show_student', student_id=student_id))
+    else:
+        flash('Form errors')
 
     student = Student.query.filter_by(id=student_id).first_or_404()
-    return render_template('student_details.html', student=student, form=form)
+    return render_template('show_student.html', student=student, form=form)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def show_class():
+    form = StudentForm()
+    if form.validate_on_submit():
+        student = Student()
+        form.populate_obj(student)
+        db.session.add(student)
+        db.session.commit()
+        flash('New student added')
+        return redirect(url_for('show_class'))
+    else:
+        flash('Form errors')
+
+    students = Student.query.all()
+    return render_template('show_class.html', students=students, form=form)
+
 
 @app.route('/api/v1/student')
 def student_resource():
     students = Student.query.all()
     return jsonify(results=[student.to_dict() for student in students])
 
-@app.route('/')
-def show_students():
-    students = Student.query.all()
-    form = StudentForm()
-    return render_template('show_students.html', students=students, form=form)
 
-
-@app.route('/add', methods=['POST'])
-def add_student():
-    if not session.get('logged_in'):
-        abort(401)
-
-    form = StudentForm()
-    if form.validate():
-        student = Student()
-        form.populate_obj(student)
-        db.session.add(student)
-        db.session.commit()
-        flash('Student added')
-    else:
-        flash("Your form contained errors")
-
-    return redirect(url_for('show_students'))
-
-
-@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -154,5 +142,3 @@ def logout():
 if __name__ == '__main__':
     db.create_all()
     app.run(host='0.0.0.0')
-
-	
