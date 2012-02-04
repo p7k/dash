@@ -48,40 +48,21 @@
 	// Do any additional setup after loading the view, typically from a nib.
     printf("\nview did load");
     
-    //data
-    classInfoArray = [[NSMutableArray alloc]init ];
+    // request data from the api
+    NSError * error = nil;
+    NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
+    NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
     
-    
-    
-    //dummy
-    NSString* dummyNames[] = {@"dan", @"dhrev", @"pavel"};
-    NSString* dummyContactNames[] = {@"mrs. bla", @"mr bloo", @"baby daddy"};
-    
-    
-    for( int i=0;i<3;i++){
-        NSString* currName = dummyNames[i];
-        StudentInfo* currInfo = [[StudentInfo alloc]init ];
-        [currInfo setName:currName];
-        
-        for(int j=0;j<3;j++){
-            ContactInfo* contactInfo = [[ContactInfo alloc]init];
-            [contactInfo setName:dummyContactNames[j] ];
-            [contactInfo setPhoneNumber:@"555-555-5555"];
-            [[currInfo contactsArray] addObject:contactInfo];
+    classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
+            
+            /*  still need to figure out how to do calls
             
             PhoneCall* phoneCall = [[PhoneCall alloc]init];
             [phoneCall setContactInfo:contactInfo];
             [phoneCall setCallDate:[NSDate date]];
             [[currInfo phoneCallArray] addObject:phoneCall];
-            
-        }
-
-        
-        currInfo.firstContactInfo = [[currInfo contactsArray] objectAtIndex:0 ];
-        printf("\nsetfirstcontact:%s", [[[[currInfo contactsArray] objectAtIndex:0 ] name ]cString] );
-        
-        [classInfoArray addObject:currInfo];
-    }
+             
+             */
     
     //search bar
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];

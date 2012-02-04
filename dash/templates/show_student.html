@@ -10,12 +10,16 @@
     <dd>{{ form.last_name }}
     <dt>{{ form.phone.label }}:
     <dd>{{ form.phone }}
+    <dt>{{ form.email.label }}:
+    <dd>{{ form.email }}
+    <dt>{{ form.relationship.label }}:
+    <dd>{{ form.relationship }}
     <dd>{{ form.submit }}
   </dl>
 </form>
 <ul class=entries>
   {% for contact in student.contacts %}
-    <li><h2>{{ contact.first_name }}</h2>{{ contact.last_name }}
+    <li><h2>{{ contact.first_name }} {{ contact.last_name }}</h2>{{ contact.phone }} {{ contact.email }} {{ contact.relationship }}
   {% else %}
     <li><em>Unbelievable.  No contacts here so far</em>
   {% endfor %}
