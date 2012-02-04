@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <h2>{{ student.first_name }} {{ student.last_name}}</h2>
-<form action="{{ url_for('student_details', student_id=1) }}" method=post class=add-entry>
+<form action="{{ url_for('show_student', student_id=student.id) }}" method=post class=add-entry>
   {{ form.hidden_tag() }}
   <dl>
     <dt>{{ form.first_name.label }}:
