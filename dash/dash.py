@@ -3,6 +3,7 @@
     Dash
     ~~~~~~
 """
+import datetime
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.wtf import Form, TextField, PasswordField, SubmitField, Email, Required, Length, ValidationError
 from flaskext.sqlalchemy import SQLAlchemy
@@ -24,8 +25,8 @@ db = SQLAlchemy(app)
 # models
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.Unicode(20))
-    last_name = db.Column(db.Unicode(20))
+    first_name = db.Column(db.Unicode(20), nullable=False)
+    last_name = db.Column(db.Unicode(20), nullable=False)
     contacts = db.relationship('Contact', backref='student')
 
     def to_dict(self):
@@ -35,19 +36,29 @@ class Student(db.Model):
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.Unicode(20))
-    last_name = db.Column(db.Unicode(20))
+    first_name = db.Column(db.Unicode(20), nullable=False)
+    last_name = db.Column(db.Unicode(20), nullable=False)
     email = db.Column(db.Unicode(200))
-    phone = db.Column(db.Unicode(20))
-    relationship = db.Column(db.Unicode(20))
+    phone = db.Column(db.Unicode(20), nullable=False)
+    relationship = db.Column(db.Unicode(20), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    call_reports = db.relationship('CallLogEntry', backref='call_log_entries')
 
     def to_dict(self):
         return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
             relationship=self.relationship, email=self.email)
 
-db.create_all()
 
+class CallLogEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'))
+    intent = db.Column(db.Integer(3), nullable=False)
+    created_on = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
+    attempted_on = db.Column(db.DateTime(), nullable=False)
+    completed_on = db.Column(db.DateTime(), nullable=False)
+    status = db.Column(db.Integer(3), nullable=False)
+
+db.create_all()
 
 # forms
 class StudentForm(Form):
@@ -141,6 +152,21 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('show_class'))
 
+
+
+
+def gen_fixtures():
+    student1 = Student(first_name='John', last_name='Doe', contacts=[
+        Contact(first_name='Foo', last_name='Doe', phone='555-123-4567', email='foo.doe@example.com', relationship='dad'),
+        Contact(first_name='Bar', last_name='Doe', phone='555-321-7654', email='bar.doe@example.com', relationship='mom'),
+        ])
+    student2 = Student(first_name='Jane', last_name='Smith', contacts=[
+        Contact(first_name='Dash', last_name='Smith', phone='555-123-4567', email='dash.smith@example.com', relationship='dad'),
+        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com', relationship='mom'),
+        ])
+    db.session.add(student1)
+    db.session.add(student2)
+    db.session.commit()
 
 if __name__ == '__main__':
     db.create_all()
