@@ -81,9 +81,6 @@ class LoginForm(Form):
 # views
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
-    if not session.get('logged_in'):
-        abort(401)
-
     form = ContactForm()
     if form.validate_on_submit():
         contact = Contact()
@@ -136,7 +133,7 @@ def login():
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('show_class'))
 
 
 if __name__ == '__main__':
