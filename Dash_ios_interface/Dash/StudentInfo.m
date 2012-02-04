@@ -12,7 +12,7 @@
 @implementation StudentInfo
 
 @synthesize name;
-@synthesize studentId
+@synthesize studentId;
 @synthesize contactsArray, phoneCallArray;
 @synthesize firstContactInfo;
 
@@ -41,7 +41,7 @@ NSString * const CONTACTS_KEY = @"contacts";
     NSString* last_name = (NSString *)[input objectForKey:LAST_NAME_KEY];
     [retVal setName:[NSString stringWithFormat:@"%@ %@", first_name, last_name]];
      
-    retVal.contacts = [ContactInfo createContactListFromArray:[input objectForKey:CONTACTS_KEY]];
+    [retVal setContactsArray:[ContactInfo createContactListFromArray:[input objectForKey:CONTACTS_KEY]]];
     return retVal;
 }
 
