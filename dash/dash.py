@@ -83,16 +83,18 @@ class LoginForm(Form):
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
     form = ContactForm()
-    if form.validate_on_submit():
-        contact = Contact()
-        form.populate_obj(contact)
-        contact.student_id = student_id
-        db.session.add(contact)
-        db.session.commit()
-        flash('New contact added')
-        return redirect(url_for('show_student', student_id=student_id))
-    else:
-        flash('Form errors')
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            contact = Contact()
+            form.populate_obj(contact)
+            contact.student_id = student_id
+            db.session.add(contact)
+            db.session.commit()
+            flash('New contact added')
+            return redirect(url_for('show_student', student_id=student_id))
+        else:
+            flash('Form errors')
 
     student = Student.query.filter_by(id=student_id).first_or_404()
     return render_template('show_student.html', student=student, form=form)
@@ -101,15 +103,17 @@ def show_student(student_id):
 @app.route('/', methods=['GET', 'POST'])
 def show_class():
     form = StudentForm()
-    if form.validate_on_submit():
-        student = Student()
-        form.populate_obj(student)
-        db.session.add(student)
-        db.session.commit()
-        flash('New student added')
-        return redirect(url_for('show_class'))
-    else:
-        flash('Form errors')
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            student = Student()
+            form.populate_obj(student)
+            db.session.add(student)
+            db.session.commit()
+            flash('New student added')
+            return redirect(url_for('show_class'))
+        else:
+            flash('Form errors')
 
     students = Student.query.all()
     return render_template('show_class.html', students=students, form=form)
