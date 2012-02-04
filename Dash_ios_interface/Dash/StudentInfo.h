@@ -13,7 +13,10 @@
 @interface StudentInfo : NSObject
 
 @property (retain) NSString* name;
+@property (retain) NSNumber *studentId;
 @property (retain) NSMutableArray* contactsArray;
 @property (retain) NSMutableArray* phoneCallArray;
 @property (assign) ContactInfo* firstContactInfo;
+
++ (NSArray *) createStudentListWithJsonString:(NSString *) input;
 @end

@@ -33,6 +33,7 @@
 		DCABBEFA14DDC6310007409B /* ContactInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEF914DDC6300007409B /* ContactInfoCell.m */; };
 		DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEFC14DDCD7A0007409B /* PhoneCall.m */; };
 		DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBF0F14DDD4180007409B /* PostCallViewController.m */; };
+		FCB0097114DDE49500442A78 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB0097014DDE49500442A78 /* JSONKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,8 @@
 		DCABBEFC14DDCD7A0007409B /* PhoneCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneCall.m; sourceTree = "<group>"; };
 		DCABBF0E14DDD4170007409B /* PostCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCallViewController.h; sourceTree = "<group>"; };
 		DCABBF0F14DDD4180007409B /* PostCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCallViewController.m; sourceTree = "<group>"; };
+		FCB0096F14DDE49500442A78 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		FCB0097014DDE49500442A78 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +148,8 @@
 				DCABBEF114DDB4B90007409B /* StudentInfoViewController.m */,
 				DCABBEB614DD7B8F0007409B /* StudentInfo.h */,
 				DCABBEB714DD7B8F0007409B /* StudentInfo.m */,
+				FCB0096F14DDE49500442A78 /* JSONKit.h */,
+				FCB0097014DDE49500442A78 /* JSONKit.m */,
 				DCABBED714DD83530007409B /* ContactInfo.h */,
 				DCABBED814DD83530007409B /* ContactInfo.m */,
 				DCABBEB914DD7BC30007409B /* PostCallView.h */,
@@ -259,6 +264,7 @@
 				DCABBEFA14DDC6310007409B /* ContactInfoCell.m in Sources */,
 				DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */,
 				DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */,
+				FCB0097114DDE49500442A78 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +384,7 @@
 				DCABBEAF14DD784A0007409B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

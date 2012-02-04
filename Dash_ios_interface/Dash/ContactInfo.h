@@ -12,5 +12,7 @@
 
 @property (retain) NSString* name;
 @property (retain) NSString* phoneNumber;
+@property (retain) NSNumber *contactId;
 
++ (NSArray *) createContactListFromArray:(NSArray *) input;
 @end
