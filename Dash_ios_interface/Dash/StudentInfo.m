@@ -42,6 +42,10 @@ NSString * const CONTACTS_KEY = @"contacts";
     [retVal setName:[NSString stringWithFormat:@"%@ %@", first_name, last_name]];
      
     [retVal setContactsArray:[ContactInfo createContactListFromArray:[input objectForKey:CONTACTS_KEY]]];
+    
+    if([[retVal contactsArray] count] > 0){
+        [retVal setFirstContactInfo:[retVal.contactsArray objectAtIndex:0]];
+    }
     return retVal;
 }
 
