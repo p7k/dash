@@ -125,7 +125,7 @@ def login():
     if form.validate_on_submit():
         session['logged_in'] = True
         flash('You were logged in')
-        return redirect(url_for('show_entries'))
+        return redirect(url_for('show_class'))
     return render_template('login.html', form=form)
 
 
