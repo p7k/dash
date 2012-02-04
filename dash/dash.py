@@ -44,7 +44,7 @@ class Contact(db.Model):
 
     def to_dict(self):
         return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
-            relationship=self.relationship)
+            relationship=self.relationship, email=self.email)
 
 db.create_all()
 
