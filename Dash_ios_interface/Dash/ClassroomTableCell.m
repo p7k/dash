@@ -128,7 +128,14 @@
     printf("\nhappybutton down");
     happyButton.selected = !happyButton.selected;
     if(happyButton.selected==YES){//to list
-        [[parentVC otherController] addHappy:myStudentInfo];
+        if(sadButton.selected){
+            [[parentVC otherController] removeInfo:myStudentInfo];
+            [sadButton setSelected:NO];
+            [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
+        }
+        
+         myStudentInfo.isHappy=YES;
+        [[parentVC otherController] addInfo:myStudentInfo];
         //happyButton.layer.borderWidth = 3;
        [happyButton setImage:[DashConstants happyHighlightImage] forState:UIControlStateNormal];
         
@@ -148,7 +155,15 @@
    
     printf("\nsadbutton state is selected:%d", [sadButton state]==UIControlStateSelected );
     if(sadButton.selected==YES){//to list
-        [[parentVC otherController] addSad:myStudentInfo];
+        if(happyButton.selected){
+             [[parentVC otherController] removeInfo:myStudentInfo];
+            [happyButton setSelected:NO];
+            [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
+
+        }
+        
+        myStudentInfo.isHappy=NO;
+        [[parentVC otherController] addInfo:myStudentInfo];
         //sadButton.layer.borderWidth = 3;
         [sadButton setImage:[DashConstants sadHighlightImage] forState:UIControlStateNormal];
         
