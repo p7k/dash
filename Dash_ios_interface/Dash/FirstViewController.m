@@ -71,9 +71,9 @@ NSString* _archiveLocation;
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
     
     if (studentJson!=nil && [studentJson length]>0) {//check for sucess
-    
         classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
-    
+        printf("\ninternet success, class info array with %d records", [classInfoArray count]);
+
         //on successful pull, save to local
         [self saveClassArrayLocal];
     }
@@ -270,6 +270,7 @@ NSString* _archiveLocation;
     else{ 
         tempArray=[[NSMutableArray alloc]init ];
     }
+    [tempArray retain];
     return tempArray;
 }
 
