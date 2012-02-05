@@ -10,6 +10,7 @@ from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextFie
 from flaskext.wtf import Email, Required, Length, ValidationError
 from flask.helpers import jsonify
 from flask.wrappers import Response
+from werkzeug.datastructures import MultiDict
 
 # configuration
 DEBUG = True
@@ -83,7 +84,6 @@ class ContactForm(Form):
     relationship = TextField(u'Relationship', validators=[Required()])
     submit = SubmitField(u'Save')
 
-
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
     intent = SelectField(u'Intent', choices=[(u'0', 0), (u'1', 1)], validators=[Required()])
@@ -156,9 +156,10 @@ def add_clog_entry():
     form = CallLogEntryForm()
     return render_template('post_log.html', form=form)
 
-@app.route('/api/v1/clog_entry', methods=['POST'])
+@app.route('/api/v1/clog_entry', methods=['POST', 'GET'])
 def call_log_entry_resource():
-    form = CallLogEntryForm(csrf_enabled=False)
+    params = request.json
+    form = CallLogEntryForm(csrf_enabled=False, formdata=MultiDict(params))
     if form.validate():
         call_log_entry = CallLogEntry()
         form.populate_obj(call_log_entry)
