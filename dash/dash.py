@@ -14,6 +14,8 @@ from flask.helpers import jsonify
 
 # configuration
 from flask.wrappers import Response
+from sqlalchemy.orm.session import Session
+from sqlalchemy.sql.operators import exists
 
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
@@ -73,7 +75,6 @@ class CallLogEntry(db.Model):
 db.create_all()
 
 # forms
-
 class StudentForm(Form):
     first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
     last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
@@ -116,7 +117,6 @@ class LoginForm(Form):
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
     form = ContactForm()
-
     if request.method == 'POST':
         if form.validate_on_submit():
             contact = Contact()
@@ -128,14 +128,12 @@ def show_student(student_id):
             return redirect(url_for('show_student', student_id=student_id))
         else:
             flash('Form errors')
-
     student = Student.query.filter_by(id=student_id).first_or_404()
     return render_template('show_student.html', student=student, form=form)
 
 @app.route('/', methods=['GET', 'POST'])
 def show_class():
     form = StudentForm()
-
     if request.method == 'POST':
         if form.validate_on_submit():
             student = Student()
@@ -146,7 +144,6 @@ def show_class():
             return redirect(url_for('show_class'))
         else:
             flash('Form errors')
-
     students = Student.query.all()
     return render_template('show_class.html', students=students, form=form)
 
@@ -177,8 +174,11 @@ def call_log_resource():
     student_id = request.args.get('student_id')
     if not student_id:
         abort(400)
-    student = Student.query.filter_by(id=student_id).first_or_404()
-    call_log_entries = chain(*(contact.call_log_entries for contact in student.contacts))
+    student = Student.query.filter_by(id=student_id).first()
+    if not student:
+        abort(400)
+    call_log_entries = db.session.query(CallLogEntry).select_from(Contact).join(Contact.call_log_entries)\
+        .filter(Contact.id.in_([c.id for c in student.contacts]))
     return jsonify(results=[call_log_entry.to_dict() for call_log_entry in call_log_entries])
 
 def login():
