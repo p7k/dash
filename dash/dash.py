@@ -156,7 +156,7 @@ def add_clog_entry():
     form = CallLogEntryForm()
     return render_template('post_log.html', form=form)
 
-@app.route('/api/v1/clog_entry', methods=['POST', 'GET'])
+@app.route('/api/v1/clog_entry', methods=['POST'])
 def call_log_entry_resource():
     params = request.json
     form = CallLogEntryForm(csrf_enabled=False, formdata=MultiDict(params))
