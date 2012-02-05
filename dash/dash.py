@@ -242,21 +242,25 @@ def xlsx_import():
         mother_cell = dict(phone=record['Mothercellphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
         mother_day = dict(phone=record['Motherdayphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
 
+        class RelaxedContactForm(ContactForm):
+            email = TextField(u'Email')
+
         with app.test_request_context():
             sf = StudentForm(formdata=MultiDict(student), csrf_enabled=False)
             if sf.validate():
                 s = Student()
                 sf.populate_obj(s)
-                db.session.add(s)
-
                 for contact in [father_home, father_cell, father_day, mother_home, mother_cell, mother_day]:
-                    cf = ContactForm(formdata=MultiDict(contact), csrf_enabled=False)
+                    cf = RelaxedContactForm(formdata=MultiDict(contact), csrf_enabled=False)
                     if cf.validate():
                         c = Contact()
                         cf.populate_obj(c)
-                        db.session.add(c)
-
-                db.session.commit()
+                        s.contacts.append(c)
+                    else:
+                        app.logger.debug(cf.errors)
+                if len(s.contacts) > 0:
+                    db.session.add(s)
+                    db.session.commit()
 
 if __name__ == '__main__':
     db.create_all()
