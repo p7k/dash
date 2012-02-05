@@ -1,25 +1,31 @@
 {% extends "layout.html" %}
 {% block body %}
-<h2>{{ student.first_name }} {{ student.last_name}}</h2>
+<h2> <span style="color:black;"> Add Contacts For: </span> {{ student.first_name }} {{ student.last_name}}</h2>
 <form action="{{ url_for('show_student', student_id=student.id) }}" method=post class=add-entry>
   {{ form.hidden_tag() }}
+
+
   <dl>
     <dt>{{ form.first_name.label }}:
-    <dd>{{ form.first_name }}
+    {{ form.first_name }} </dt>
     <dt>{{ form.last_name.label }}:
-    <dd>{{ form.last_name }}
+    {{ form.last_name }}</dt>
     <dt>{{ form.phone.label }}:
-    <dd>{{ form.phone }}
+    {{ form.phone }}</dt>
     <dt>{{ form.email.label }}:
-    <dd>{{ form.email }}
+    {{ form.email }}</dt>
     <dt>{{ form.relationship.label }}:
-    <dd>{{ form.relationship }}
+    {{ form.relationship }}</dt>
     <dd>{{ form.submit }}
   </dl>
+
+
 </form>
+
+
 <ul class=entries>
   {% for contact in student.contacts %}
-    <li><h2>{{ contact.first_name }} {{ contact.last_name }}</h2>{{ contact.phone }} {{ contact.email }} {{ contact.relationship }}
+    <li><h2 style="color:white;">{{ contact.first_name }} {{ contact.last_name }}</h2>{{ contact.phone }} | <span style="color:navy;"> {{ contact.email }} </span> | {{ contact.relationship }}
   {% else %}
     <li><em>Unbelievable.  No contacts here so far</em>
   {% endfor %}

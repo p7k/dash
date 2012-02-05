@@ -3,12 +3,12 @@ h1	       { color: black; }
 a		       { color: lightgray; text-decoration: none }
 h2		       { color: darkslategray; }
 h1, h2          { font-family: 'Georgia', serif; margin: 0; }
-h1              { border-bottom: 2px solid #eee; }
-h2              { font-size: 1.2em; }
+h1              { border-bott om: 2px solid #eee; }
+h2              { font-size: 30px; }
 
 .page           { margin: 200px auto; width: 35em; border: 2px solid black;
                   padding: 0.8em; background: rgba(250, 250, 250, 0.2);
- 				  box-shadow: 0 0 20px 5px black}
+ 				  box-shadow: 0 0 20px 5px black; border-radius:20px}
 .entries        { list-style: none; margin: 0; padding: 0; }
 .entries li     { margin: 0.8em 1em; display:block; background:yellow;
 	
@@ -18,8 +18,8 @@ h2              { font-size: 1.2em; }
 			       padding: 10px 20px;
 			       background: -moz-linear-gradient(
 			               top,
-			               #6d84a2 0%,
-			               #b0bccd);
+			               gray 0%,
+			               darkslategray);
 			       background: -webkit-gradient(
 			               linear, left top, left bottom,
 			               from(#6d84a2),
@@ -39,15 +39,33 @@ h2              { font-size: 1.2em; }
 			               0px 1px 0px rgba(255,255,255,0.3);
 					
 	 			}
-.entries li h2  { margin-left: -1em; }
-.add-entry      { font-size: 1.3em; border-bottom: 1px solid #ccc; }
+.entries li:hover     {		background: -moz-linear-gradient(
+					             top,
+					             black 0%,
+					             darkslategray);
+						}	
+.entries li h2  { margin-left: 1em; }
+.add-entry      { font-size: 1.3em; border-bottom: 3px solid black; }
 .add-entry dl   { font-weight: bold; }
-.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
-                  margin-bottom: 1em; background: black; }
+.metanav        { text-align: left; font-size: 1.1em; padding: 0.5em;
+                  margin: 10px 0 10px; background: black; border-bottom:thin solid white; 
+				box-shadow:0px 3px 10px 1px black; border-radius:10px 10px 0 0;}
 .flash          { background: #CEE5F5; padding: 0.5em;
                   border: 1px solid #AACBE2; }
 .error          { background: #F0D6D6; padding: 0.5em; display:none }
 
+.login			{  margin: 10px 0 15px; }
+
+dt	{ margin: 30px 0 10px 0; font-size:1.3em}
+
+input			{
+				background: rgba(0,0,0,.5);
+				font-size:1.3em;
+				color:white;
+				}
+input:hover		{box-shadow: 0 0 5px 5px white;}
+
+label			{ margin:0 10px 0 0;}
 
 #nav {
 	background:black;
@@ -84,3 +102,5 @@ h2              { font-size: 1.2em; }
 //	border:solid thin white; 
 	font-size:24px;
 }
+
+
