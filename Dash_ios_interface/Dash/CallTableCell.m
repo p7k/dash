@@ -7,6 +7,7 @@
 //
 
 #import "CallTableCell.h"
+#import "PostCallViewController.h"
 
 @implementation CallTableCell
 @synthesize callIntent;
@@ -58,9 +59,18 @@
     
     
     NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[[callIntent studentInfo] firstContactInfo] phoneNumber]];
-    printf("\n call %s", [phoneLinkString cString]);
+    printf("\n call test %s", [phoneLinkString cString]);
     NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
-    [[UIApplication sharedApplication] openURL:phoneLinkURL];
+    
+    // a somewhat hack to let us regain control of the app after a phonecall
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    NSURL *telURL = [NSURL URLWithString:phoneLinkString];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
+    
+    //PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
+    //[pcvc setStudentInfo:myStudentInfo];
+    //[parentVC presentModalViewController:pcvc animated:YES];
+    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
     
 }
 
