@@ -75,6 +75,7 @@
     
     PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
     [pcvc setStudentInfo:studentInfo];
+    [pcvc setParentVC:parentVC];
     [parentVC presentModalViewController:pcvc animated:YES];
     
     
