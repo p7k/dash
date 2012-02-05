@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC07E67E14DEDB81007942ED /* Light_Logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E67D14DEDB81007942ED /* Light_Logo_small.png */; };
+		DC07E69114DEDD15007942ED /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E68F14DEDD15007942ED /* Icon-72.png */; };
+		DC07E69214DEDD15007942ED /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E69014DEDD15007942ED /* Icon.png */; };
+		DC07E69414DEDD35007942ED /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E69314DEDD35007942ED /* Icon.png */; };
+		DC07E6A714DEDFC8007942ED /* CellBGHappy.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E6A514DEDFC8007942ED /* CellBGHappy.png */; };
+		DC07E6A814DEDFC8007942ED /* CellBGSad.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E6A614DEDFC8007942ED /* CellBGSad.png */; };
 		DC16526F14DDE2CE0063934A /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526214DDE2CE0063934A /* Background.png */; };
 		DC16527014DDE2CE0063934A /* Call_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526314DDE2CE0063934A /* Call_Button.png */; };
 		DC16527114DDE2CE0063934A /* Dash_Main_GUI_sliced.psd in Resources */ = {isa = PBXBuildFile; fileRef = DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */; };
@@ -51,6 +57,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC07E67D14DEDB81007942ED /* Light_Logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Light_Logo_small.png; path = graphics/Light_Logo_small.png; sourceTree = "<group>"; };
+		DC07E68F14DEDD15007942ED /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "graphics/Icon-72.png"; sourceTree = "<group>"; };
+		DC07E69014DEDD15007942ED /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = graphics/Icon.png; sourceTree = "<group>"; };
+		DC07E69314DEDD35007942ED /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		DC07E6A514DEDFC8007942ED /* CellBGHappy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CellBGHappy.png; path = graphics/CellBGHappy.png; sourceTree = "<group>"; };
+		DC07E6A614DEDFC8007942ED /* CellBGSad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CellBGSad.png; path = graphics/CellBGSad.png; sourceTree = "<group>"; };
 		DC16526214DDE2CE0063934A /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = graphics/Background.png; sourceTree = "<group>"; };
 		DC16526314DDE2CE0063934A /* Call_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Call_Button.png; path = graphics/Call_Button.png; sourceTree = "<group>"; };
 		DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */ = {isa = PBXFileReference; lastKnownFileType = file; name = Dash_Main_GUI_sliced.psd; path = graphics/Dash_Main_GUI_sliced.psd; sourceTree = "<group>"; };
@@ -129,6 +141,11 @@
 		DC16526014DDE2AA0063934A /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				DC07E6A514DEDFC8007942ED /* CellBGHappy.png */,
+				DC07E6A614DEDFC8007942ED /* CellBGSad.png */,
+				DC07E68F14DEDD15007942ED /* Icon-72.png */,
+				DC07E69014DEDD15007942ED /* Icon.png */,
+				DC07E67D14DEDB81007942ED /* Light_Logo_small.png */,
 				DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */,
 				DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */,
 				DC16526214DDE2CE0063934A /* Background.png */,
@@ -151,6 +168,7 @@
 		DCABBE7614DD78490007409B = {
 			isa = PBXGroup;
 			children = (
+				DC07E69314DEDD35007942ED /* Icon.png */,
 				DC16526014DDE2AA0063934A /* graphics */,
 				DCABBEF314DDBA600007409B /* QuartzCore.framework */,
 				DCABBE8B14DD784A0007409B /* Dash */,
@@ -302,6 +320,12 @@
 				DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */,
 				DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */,
 				DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */,
+				DC07E67E14DEDB81007942ED /* Light_Logo_small.png in Resources */,
+				DC07E69114DEDD15007942ED /* Icon-72.png in Resources */,
+				DC07E69214DEDD15007942ED /* Icon.png in Resources */,
+				DC07E69414DEDD35007942ED /* Icon.png in Resources */,
+				DC07E6A714DEDFC8007942ED /* CellBGHappy.png in Resources */,
+				DC07E6A814DEDFC8007942ED /* CellBGSad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +389,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: daniel Iglesia";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -381,7 +405,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				PROVISIONING_PROFILE = "E50B706E-79DE-49CB-8452-5FB3D677BED8";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -392,8 +416,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: daniel Iglesia";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: daniel Iglesia";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -402,8 +426,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "E50B706E-79DE-49CB-8452-5FB3D677BED8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E50B706E-79DE-49CB-8452-5FB3D677BED8";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -412,8 +436,8 @@
 		DCABBEAE14DD784A0007409B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dash/Dash-Prefix.pch";
 				INFOPLIST_FILE = "Dash/Dash-Info.plist";

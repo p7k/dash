@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 static UIColor *theHappyHighlightColor, *theHappyColor, *theSadHighlightColor, *theSadColor, *theCallNowColor;
-static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, *cellBackgroundImage, *phoneImage;
+static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, *cellBackgroundImage, *phoneImage, *titleImage, *cellGradientImage, *cellGradientHappyImage, *cellGradientSadImage;
 
 @interface DashConstants : NSObject{
     
@@ -24,5 +24,11 @@ static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, 
 +(UIImage*) happyHighlightImage;
 +(UIImage*) sadHighlightImage;
 +(UIImage*) cellBackgroundImage;
++(UIImage*) titleImage;
+
++(UIImage*) cellGradientImage;
++(UIImage*) cellGradientHappyImage;
++(UIImage*) cellGradientSadImage;
+
 
 @end
