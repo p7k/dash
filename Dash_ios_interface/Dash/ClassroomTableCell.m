@@ -78,7 +78,11 @@
     NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[myStudentInfo firstContactInfo] phoneNumber]];
     printf("\n call %s", [phoneLinkString cString]);
     NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
-    [[UIApplication sharedApplication] openURL:phoneLinkURL];
+    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
+    
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    NSURL *telURL = [NSURL URLWithString:phoneLinkString];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
     
     PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
     [pcvc setStudentInfo:myStudentInfo];
