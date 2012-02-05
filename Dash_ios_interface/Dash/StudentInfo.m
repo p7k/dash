@@ -74,4 +74,12 @@ NSString * const CONTACTS_KEY = @"contacts";
     }
     return retVal;
 }
+
+- (ContactInfo *) findContactById:(NSNumber *) contactId{
+    for(ContactInfo * curr in contactsArray){
+        if(curr.contactId == contactId)
+            return curr;
+    }
+    return nil;
+}
 @end

@@ -76,6 +76,8 @@
     PhoneCall *newCall = [[PhoneCall alloc] init];
     [newCall setCallDate:[NSDate date]];
     [newCall setCallReport:clickedButton.currentTitle];
+    [newCall setStudentInfo:studentInfo];
+    
     
     // send the just created call to the server
     

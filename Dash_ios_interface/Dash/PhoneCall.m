@@ -9,7 +9,7 @@
 #import "PhoneCall.h"
 
 @implementation PhoneCall
-@synthesize callDate, callReport, wasCompleted, contactInfo;
+@synthesize callDate, callReport, wasCompleted, contactInfo, studentInfo;
 
 NSString * const STATUS_KEY = @"status";
 NSString * const CREATED_ON_KEY = @"created_on";
@@ -27,7 +27,7 @@ NSString * const CALL_RESULTS_KEY = @"results";
                                 contactInfo.contactId, PHONE_CALL_CONTACT_ID_KEY,
                                 200, STATUS_KEY,
                                 1,   INTENT_KEY,
-                                [formatter stringFromDate: callDate], CREATED_ON_KEY];
+                                [formatter stringFromDate: callDate], CREATED_ON_KEY, nil];
     
     [formatter release];
     
@@ -54,7 +54,7 @@ NSString * const CALL_RESULTS_KEY = @"results";
     return self;
 }
 
-+ (PhoneCall*)createFromDict:(NSDictionary*) input{
++ (PhoneCall*)createFromDict:(NSDictionary*) input withStudentInfo:(StudentInfo*) student{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"%Y-%m-%d %H:%M:%S"];
@@ -70,11 +70,11 @@ NSString * const CALL_RESULTS_KEY = @"results";
     return retVal;
 }
 
-+ (NSMutableArray *) createCallListFromJson:(NSString *) input{
++ (NSMutableArray *) createCallListFromJson:(NSString *) input withStudentInfo:(StudentInfo*)student{
     NSDictionary *responseDict = [input objectFromJSONString];
     NSMutableArray *retVal = [[NSMutableArray alloc] init];
     for(NSDictionary *call in [responseDict objectForKey:CALL_RESULTS_KEY]){ 
-        [retVal addObject:[PhoneCall createFromDict:call]];
+        [retVal addObject:[PhoneCall createFromDict:call withStudentInfo:student]];
     }
     return retVal;
 }
