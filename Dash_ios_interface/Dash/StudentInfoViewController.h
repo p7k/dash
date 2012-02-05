@@ -15,6 +15,9 @@
     UITableView* contactTableView, *callLogTableView;
     NSDateFormatter* dateFormatter;
     UIView* headerView, *notesView;
+
 }
+
+-(id)initWithStudentInfo:(StudentInfo*) inInfo;
 @property (assign) StudentInfo* studentInfo;
 @end
