@@ -3,20 +3,15 @@
     Dash
     ~~~~~~
 """
-from Carbon import Res
 import datetime
-from itertools import chain
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, make_response
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
 from flaskext.wtf import Email, Required, Length, ValidationError
-from flaskext.sqlalchemy import SQLAlchemy
 from flask.helpers import jsonify
+from flask.wrappers import Response
 
 # configuration
-from flask.wrappers import Response
-from sqlalchemy.orm.session import Session
-from sqlalchemy.sql.operators import exists
-
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
@@ -72,7 +67,6 @@ class CallLogEntry(db.Model):
             attempted_on=self.attempted_on.strftime(DT_FORMAT), completed_on=self.completed_on.strftime(DT_FORMAT),
             status=self.status)
 
-db.create_all()
 
 # forms
 class StudentForm(Form):
