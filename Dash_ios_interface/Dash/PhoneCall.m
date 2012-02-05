@@ -16,12 +16,13 @@ NSString * const CREATED_ON_KEY = @"created_on";
 NSString * const INTENT_KEY = @"intent";
 NSString * const PHONE_CALL_CONTACT_ID_KEY = @"contact_id";
 NSString * const CALL_RESULTS_KEY = @"results";
+NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
 
 -(NSString*) toJson
 {
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"%Y-%m-%d %H:%M:%S"];
+    [formatter setDateFormat:DATE_FORMAT];
     
     NSDictionary *outputDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                 contactInfo.contactId, PHONE_CALL_CONTACT_ID_KEY,
@@ -57,7 +58,7 @@ NSString * const CALL_RESULTS_KEY = @"results";
 + (PhoneCall*)createFromDict:(NSDictionary*) input withStudentInfo:(StudentInfo*) student{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"%Y-%m-%d %H:%M:%S"];
+    [formatter setDateFormat:DATE_FORMAT];
     
     PhoneCall *retVal = [[PhoneCall alloc] init];
     [retVal setCallReport:(NSNumber *)[input objectForKey:STATUS_KEY]];
