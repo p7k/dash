@@ -86,7 +86,7 @@ class ContactForm(Form):
 
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
-    intent = SelectField(u'Intent', choices=[(u'0', 0), (u'1', 1)], validators=[Required()])
+    intent = SelectField(u'Intent', choices=[(u'0', 0), (u'1', 1), (u'2', 2)], validators=[Required()])
     created_on = DateTimeField(u'Created on', format=DT_FORMAT, validators=[Required()])
     attempted_on = DateTimeField(u'Attempted on', format=DT_FORMAT, validators=[Required()])
     completed_on = DateTimeField(u'Completed on', format=DT_FORMAT, validators=[Required()])
