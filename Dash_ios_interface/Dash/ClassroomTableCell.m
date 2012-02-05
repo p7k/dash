@@ -93,7 +93,7 @@
 -(void)callNowDown{//:(ContactInfo*)inContactInfo{
     
     
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[myStudentInfo firstContactInfo] phoneNumber]];
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel://%@", [[myStudentInfo firstContactInfo] phoneNumber]];
     printf("\n call %s", [phoneLinkString cString]);
     NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
     //[[UIApplication sharedApplication] openURL:phoneLinkURL];

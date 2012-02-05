@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactInfo.h"
+#import "JSONKit.h"
 
 @interface PhoneCall : NSObject
 
@@ -16,4 +17,6 @@
 @property (retain) NSString* callReport;
 @property BOOL wasCompleted;
 @property (retain) ContactInfo* contactInfo;
+
+-(NSString *)toJson;
 @end
