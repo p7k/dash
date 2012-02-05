@@ -16,6 +16,8 @@
 
 @interface SecondViewController : UIViewController
 
+-(void)removeInfo:(StudentInfo*)inInfo;
+
 @property (retain) NSMutableArray* callQueue;
 @property (retain) UITableView* tableView;
 @end

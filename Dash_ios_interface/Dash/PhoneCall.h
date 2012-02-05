@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactInfo.h"
+//#import "StudentInfo.h"
 #import "JSONKit.h"
 
+@class StudentInfo;
 @interface PhoneCall : NSObject
 
 
@@ -17,6 +19,9 @@
 @property (retain) NSString* callReport;
 @property BOOL wasCompleted;
 @property (retain) ContactInfo* contactInfo;
+@property (retain) StudentInfo* studentInfo;
+@property (retain) NSNumber* callIntent;
 
 -(NSString *)toJson;
++ (NSMutableArray *) createCallListFromJson:(NSString *) input withStudentInfo:(StudentInfo*)student;
 @end
