@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "StudentInfo.h"
 #import <QuartzCore/QuartzCore.h>
+#import "DashConstants.h"
 @interface StudentInfoViewController : UIViewController{
     UILabel* topLabel;
     UISegmentedControl* segmentedControl;
     UITableView* contactTableView, *callLogTableView;
     NSDateFormatter* dateFormatter;
     UIView* headerView, *notesView;
+    
+    UILabel* lastContactLabel, *numberOfCallsLabel, *positivityLabel;
 
 }
 

@@ -13,6 +13,7 @@
 //#import "CallIntent.h"
 #import "StudentInfoViewController.h"
 #import <QuartzCore/QuartzCore.h>
+@class FirstViewController;
 
 @interface SecondViewController : UIViewController
 
@@ -20,4 +21,5 @@
 
 @property (retain) NSMutableArray* callQueue;
 @property (retain) UITableView* tableView;
+@property (assign) FirstViewController* otherController;
 @end
