@@ -30,7 +30,7 @@
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     
     dateFormatter = [[NSDateFormatter alloc]init];
-	[dateFormatter setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
+	[dateFormatter setDateFormat:@"MMM dd: h:mm a"];
 	[dateFormatter retain];
     
     UIView* underNotesView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40+90)];
