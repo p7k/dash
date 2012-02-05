@@ -35,7 +35,7 @@
             viewButtons[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect ];
             viewButtons[i].frame=CGRectMake(20, 80+i*80, 280, 60);
             [viewButtons[i] setTitle:buttonStrings[i] forState:UIControlStateNormal];
-            //[viewButtons[i] addTarget:self action:@selector(viewButtonDown:) forControlEvents:UIControlEventDown];
+            [viewButtons[i] addTarget:self action:@selector(postCallButtonDown:) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:viewButtons[i]];
         }
             
@@ -56,6 +56,24 @@
 
 -(void)back{
     [self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)postCallButtonDown:(id)sender{
+    UIButton *clickedButton = (UIButton *) sender;
+    
+    PhoneCall *newCall = [[PhoneCall alloc] init];
+    [newCall setCallDate:[NSDate date]];
+    [newCall setCallReport:clickedButton.currentTitle];
+    
+    // send the just created call to the server
+    
+    
+    NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog/?student_id=%@", studentInfo.studentId];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] 
+                                    initWithURL:[NSURL URLWithString:urlEndpoint]];
+    //[request setHTTPBody:[newCall toJson];
+    [request setHTTPMethod:@"POST"];
+    [NSURLConnection connectionWithRequest:[request autorelease] delegate:self];
 }
 
 
