@@ -68,7 +68,14 @@
     notesView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:notesView];
     
-    //TODO INFO
+    //INFO
+    lastContactLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 240, 20)];
+    [notesView addSubview:lastContactLabel];
+    numberOfCallsLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 40, 240, 20)];
+    [notesView addSubview:numberOfCallsLabel];
+    positivityLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 240, 20)];
+    [notesView addSubview:positivityLabel];
+    
     
     NSArray* segItems = [NSArray arrayWithObjects:@"Contact Info",@"Call Log", nil];
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segItems];
@@ -124,6 +131,19 @@
     studentInfo = inInfo;
     topLabel.text = [inInfo name];
     
+    NSDate* lastContactDate = [[[studentInfo phoneCallArray] lastObject] callDate];
+    if(lastContactDate==nil) lastContactLabel.text=@"Last Contact: --";
+    else lastContactLabel.text = [NSString stringWithFormat:@"Last Contact: %@", [dateFormatter stringFromDate:lastContactDate]];
+                            
+    numberOfCallsLabel.text = [NSString stringWithFormat:@"Number of Calls: %d", [[studentInfo phoneCallArray] count] ];
+    
+    int positivitySum =0;
+    for(PhoneCall* currCall in [studentInfo phoneCallArray]) positivitySum+=[[currCall intent] intValue];
+    int percent;
+    if([[studentInfo phoneCallArray]count]==0) percent=0;
+    else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
+    positivityLabel.text = [NSString stringWithFormat:@"Positivity: %d%%", percent];
+
 }
 
 
@@ -148,6 +168,8 @@
 	//printf("\ncalled !LISTwillDisplay cell name %s", [[[[cell callIntent] studentInfo] name] cString]);
 	//if([[cell callIntent] isHappy]) cell.backgroundColor = [DashConstants theHappyColor];
 	//else cell.backgroundColor = [DashConstants theSadColor];
+    //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientImage]];
+	
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
@@ -169,6 +191,13 @@
         //cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
         
         //[cell setCallIntent:currCallIntent];
+        
+        /*UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
+        imageView.contentMode = UIViewContentModeScaleToFill;
+        imageView.alpha=.5;
+        cell.backgroundView = imageView;
+        [imageView retain];*/
+        
         
         
     }
@@ -192,6 +221,26 @@
             //cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
             
             //[cell setCallIntent:currCallIntent];
+            
+            /*UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
+            imageView.contentMode = UIViewContentModeScaleToFill;
+            imageView.alpha=.5;
+            cell.backgroundView = imageView;*/
+            
+            UIImageView* iconView = [[UIImageView alloc]init];// ;WithImage:[UIImage imageNamed:@"
+            iconView.frame = CGRectMake(0, 0, 50, 50);
+            [self addSubview:iconView];
+            
+            if( [currPhoneCall callIntent]==1){
+                //self.backgroundColor = [DashConstants theHappyColor];
+                iconView.image = [DashConstants happyImage];
+            }
+            else{
+                iconView.image = [DashConstants sadImage];
+                //self.backgroundColor = [DashConstants theSadColor];
+            }
+            
+            cell.accessoryView = iconView;
             
             
         }

@@ -3,20 +3,16 @@
     Dash
     ~~~~~~
 """
-from Carbon import Res
 import datetime
-from itertools import chain
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, make_response
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
 from flaskext.wtf import Email, Required, Length, ValidationError
-from flaskext.sqlalchemy import SQLAlchemy
 from flask.helpers import jsonify
+from flask.wrappers import Response
+from werkzeug.datastructures import MultiDict
 
 # configuration
-from flask.wrappers import Response
-from sqlalchemy.orm.session import Session
-from sqlalchemy.sql.operators import exists
-
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
@@ -72,7 +68,6 @@ class CallLogEntry(db.Model):
             attempted_on=self.attempted_on.strftime(DT_FORMAT), completed_on=self.completed_on.strftime(DT_FORMAT),
             status=self.status)
 
-db.create_all()
 
 # forms
 class StudentForm(Form):
@@ -88,7 +83,6 @@ class ContactForm(Form):
     phone = TextField(u'Phone', validators=[Required()])
     relationship = TextField(u'Relationship', validators=[Required()])
     submit = SubmitField(u'Save')
-
 
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
@@ -162,9 +156,10 @@ def add_clog_entry():
     form = CallLogEntryForm()
     return render_template('post_log.html', form=form)
 
-@app.route('/api/v1/clog_entry', methods=['POST'])
+@app.route('/api/v1/clog_entry', methods=['POST', 'GET'])
 def call_log_entry_resource():
-    form = CallLogEntryForm(csrf_enabled=False)
+    params = request.json
+    form = CallLogEntryForm(csrf_enabled=False, formdata=MultiDict(params))
     if form.validate():
         call_log_entry = CallLogEntry()
         form.populate_obj(call_log_entry)

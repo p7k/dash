@@ -9,7 +9,7 @@
 #import "SecondViewController.h"
 
 @implementation SecondViewController
-@synthesize tableView, callQueue;
+@synthesize tableView, callQueue, otherController;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,7 +59,7 @@
 
         
         //interface
-        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
+        /*UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
         dashTitleLabel.textAlignment = UITextAlignmentCenter;
         dashTitleLabel.text = @"dash";
         dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
@@ -68,6 +68,16 @@
         
         [self.view addSubview:dashTitleLabel];
         dashTitleLabel.textColor = [UIColor whiteColor];
+        */
+        
+       UIView* headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
+        headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+        [self.view addSubview:headerView];
+
+        
+        UIImageView* titleImageView = [[UIImageView alloc]initWithImage:[DashConstants titleImage]];
+        titleImageView.frame =CGRectMake(104, 5, 72, 30);
+        [headerView addSubview:titleImageView];
         
       
         
@@ -108,7 +118,7 @@
     
 }*/
 
--(void)removeInfo:(StudentInfo*)inInfo{
+-(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
     printf("\nremove %s", [[inInfo name] cString])  ;
     StudentInfo* foundStudentInfo=nil;
     for(StudentInfo* currStudentInfo in callQueue){
@@ -120,6 +130,8 @@
         [callQueue removeObject:foundStudentInfo];
         [tableView reloadData];
     }
+    
+    [otherController removeInfo:inInfo];
 }
 
 //==============table stuff
@@ -134,8 +146,12 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	printf("\ncalled !LISTwillDisplay cell name %s", [[[cell  studentInfo] name] cString]);
-	if([[cell studentInfo] isHappy]) cell.backgroundColor = [DashConstants theHappyColor];
-	else cell.backgroundColor = [DashConstants theSadColor];
+	if([[cell studentInfo] isHappy])
+        //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientHappyImage]];
+         cell.backgroundColor = [DashConstants theHappyColor];
+	else  //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientSadImage]];
+	
+        cell.backgroundColor = [DashConstants theSadColor];
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!

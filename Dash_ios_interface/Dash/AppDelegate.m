@@ -39,6 +39,7 @@
     
     //edit
     viewController1.otherController = viewController2;
+    viewController2.otherController = viewController1;
     
     return YES;
 }

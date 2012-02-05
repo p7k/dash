@@ -99,8 +99,33 @@
 	return cellBackgroundImage;
 }
 
++(UIImage*)titleImage{
+    if(!titleImage){
+		titleImage=[UIImage imageNamed:@"Light_Logo_small.png"];
+		[titleImage retain];
+	}
+	return titleImage;
+}
 
-
-
-
++(UIImage*)cellGradientImage{
+    if(!cellGradientImage){
+		cellGradientImage=[UIImage imageNamed:@"ItemBarGradient_slice.png"];
+		[cellGradientImage retain];
+	}
+	return cellGradientImage;
+}
++(UIImage*)cellGradientHappyImage{
+    if(!cellGradientHappyImage){
+		cellGradientHappyImage=[UIImage imageNamed:@"CellBGHAppy.png"];
+		[cellGradientHappyImage retain];
+	}
+	return cellGradientHappyImage;
+}
++(UIImage*)cellGradientSadImage{
+    if(!cellGradientSadImage){
+		cellGradientSadImage=[UIImage imageNamed:@"CellBGSad.png"];
+		[cellGradientSadImage retain];
+	}
+	return cellGradientSadImage;
+}
 @end

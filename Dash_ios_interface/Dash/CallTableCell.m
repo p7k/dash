@@ -20,6 +20,13 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
+        imageView.contentMode = UIViewContentModeScaleToFill;
+        imageView.alpha=.5;
+        self.backgroundView = imageView;
+        
+        
         studentNameLabel = [[UILabel alloc]init ];
         studentNameLabel.frame = CGRectMake(50, 0, 150, 25);
         studentNameLabel.textAlignment = UITextAlignmentLeft;

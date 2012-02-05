@@ -24,21 +24,29 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
+        imageView.contentMode = UIViewContentModeScaleToFill;
+        imageView.alpha=.5;
+        self.backgroundView = imageView;
+        
         studentNameLabel = [[UILabel alloc]init ];
-        studentNameLabel.frame = CGRectMake(30, 0, 130, 20);
+        studentNameLabel.frame = CGRectMake(20, 3, 130, 20);
+        studentNameLabel.font=[UIFont systemFontOfSize:14];
         studentNameLabel.textAlignment = UITextAlignmentLeft;
        
         studentNameLabel.backgroundColor = [UIColor clearColor];//[ UIColor    lightGrayColor];
         [self addSubview:studentNameLabel];
         
          firstContactNameLabel = [[UILabel alloc]init ];
-        firstContactNameLabel.frame =  CGRectMake(30, 20, 130, 20);
+        firstContactNameLabel.frame =  CGRectMake(20, 20, 140, 20);
         firstContactNameLabel.textAlignment = UITextAlignmentRight;
          firstContactNameLabel.textColor = [UIColor grayColor];
+        firstContactNameLabel.font=[UIFont systemFontOfSize:13];
         firstContactNameLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:firstContactNameLabel];
         
-        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 20,80)];
+        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10,80)];
         [self addSubview:successView]; 
         
         sadButton= [UIButton buttonWithType:UIButtonTypeCustom];
@@ -121,6 +129,8 @@
     [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] name]];
     
     float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
+   // printf("\nsuccessratio %.2f", successRatio);
+    
     
     successView.backgroundColor = [UIColor colorWithRed:1-successRatio green:successRatio blue:.3 alpha:.8];
     
@@ -183,6 +193,10 @@
     }
 }
 
+-(void)resetMood{
+     [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
+    [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
