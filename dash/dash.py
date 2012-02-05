@@ -3,6 +3,7 @@
     Dash
     ~~~~~~
 """
+from Carbon import Res
 import datetime
 from itertools import chain
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, make_response
@@ -12,6 +13,8 @@ from flaskext.sqlalchemy import SQLAlchemy
 from flask.helpers import jsonify
 
 # configuration
+from flask.wrappers import Response
+
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
@@ -88,11 +91,12 @@ class ContactForm(Form):
 
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
-    intent = SelectField(u'Intent', choices=[(0, 0), (1, 1)], validators=[Required()])
+    intent = SelectField(u'Intent', choices=[(u'0', 0), (u'1', 1)], validators=[Required()])
     created_on = DateTimeField(u'Created on', format=DT_FORMAT, validators=[Required()])
     attempted_on = DateTimeField(u'Attempted on', format=DT_FORMAT, validators=[Required()])
     completed_on = DateTimeField(u'Completed on', format=DT_FORMAT, validators=[Required()])
-    status = SelectField(u'Status', choices=[(200, 200), (300, 300), (400, 400), (500, 500)], validators=[Required()])
+    status = SelectField(u'Status', choices=[(u'200', 200), (u'200', 300), (u'400', 400), (u'500', 500)], validators=[Required()])
+    submit = SubmitField(u'Save')
 
 
 class LoginForm(Form):
@@ -158,15 +162,15 @@ def add_clog_entry():
 
 @app.route('/api/v1/clog_entry', methods=['POST'])
 def call_log_entry_resource():
-    form = CallLogEntryForm()
+    form = CallLogEntryForm(csrf_enabled=False)
     if form.validate():
         call_log_entry = CallLogEntry()
         form.populate_obj(call_log_entry)
         db.session.add(call_log_entry)
         db.session.commit()
-        return 201
+        return Response('CREATED', status=201)
     else:
-        abort(400)
+        return Response(jsonify(form.errors), status=400)
 
 @app.route('/api/v1/clog', methods=['GET', 'POST'])
 def call_log_resource():
