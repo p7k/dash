@@ -23,6 +23,16 @@
     self = [super init];
     printf("\ncreate studentVC");
     
+    
+    // we may not need to do this if there's already some call logs. Let's deal with that case later
+    NSError *error = nil;
+    NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog?student_id=%@", studentInfo.studentId];
+    NSURL *url = [NSURL URLWithString:urlEndpoint];
+    NSString *callsJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
+    
+    [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson]];
+                                    
+    
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     
     dateFormatter = [[NSDateFormatter alloc]init];

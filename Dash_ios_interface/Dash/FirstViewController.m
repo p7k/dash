@@ -74,16 +74,7 @@ NSString* _archiveLocation;
     
     //on successful pull, save to local
     [self saveClassArrayLocal];
-    
-            /*  still need to figure out how to do calls
-            
-            PhoneCall* phoneCall = [[PhoneCall alloc]init];
-            [phoneCall setContactInfo:contactInfo];
-            [phoneCall setCallDate:[NSDate date]];
-            [[currInfo phoneCallArray] addObject:phoneCall];
-             
-             */
-    
+
     //search bar
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];
     searchBar.showsCancelButton = YES;

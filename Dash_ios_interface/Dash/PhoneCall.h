@@ -17,6 +17,7 @@
 @property (retain) NSString* callReport;
 @property BOOL wasCompleted;
 @property (retain) ContactInfo* contactInfo;
-
+@property (retain) NSNumber* callIntent;
 -(NSString *)toJson;
+-(NSMutableArray *) createCallListFromJson:(NSString *) input;
 @end
