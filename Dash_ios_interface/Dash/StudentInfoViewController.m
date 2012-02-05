@@ -138,7 +138,12 @@
     numberOfCallsLabel.text = [NSString stringWithFormat:@"Number of Calls: %d", [[studentInfo phoneCallArray] count] ];
     
     int positivitySum =0;
-    for(PhoneCall* currCall in [studentInfo phoneCallArray]) positivitySum+=[[currCall callIntent] intValue];
+    for(PhoneCall* currCall in [studentInfo phoneCallArray]){
+        if([[currCall callIntent] intValue] == 1){
+            positivitySum++;
+        }
+       
+    }
     int percent;
     if([[studentInfo phoneCallArray]count]==0) percent=0;
     else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
@@ -233,12 +238,16 @@
             
             if( [[currPhoneCall callIntent] isEqualToNumber:[NSNumber numberWithInt:1]]){
                 //self.backgroundColor = [DashConstants theHappyColor];
+                iconView.image = [DashConstants happyHighlightImage];
+            }
+            else if([[currPhoneCall callIntent] isEqualToNumber:[NSNumber numberWithInt:0]]){
+                iconView.image = [DashConstants sadHighlightImage];
+                //self.backgroundColor = [DashConstants theSadColor];
+            }else
+            {
                 iconView.image = [DashConstants happyImage];
             }
-            else{
-                iconView.image = [DashConstants sadImage];
-                //self.backgroundColor = [DashConstants theSadColor];
-            }
+            // otherwise it's neutral
             
             cell.accessoryView = iconView;
             
