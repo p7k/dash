@@ -4,6 +4,7 @@
     ~~~~~~
 """
 import datetime
+from itertools import chain
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.wtf import Form, TextField, PasswordField, SubmitField, Email, Required, Length, ValidationError
 from flaskext.sqlalchemy import SQLAlchemy
@@ -42,7 +43,7 @@ class Contact(db.Model):
     phone = db.Column(db.Unicode(20), nullable=False)
     relationship = db.Column(db.Unicode(20), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    call_reports = db.relationship('CallLogEntry', backref='call_log_entries')
+    call_log_entries = db.relationship('CallLogEntry', backref='call_log_entries')
 
     def to_dict(self):
         return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
@@ -57,6 +58,10 @@ class CallLogEntry(db.Model):
     attempted_on = db.Column(db.DateTime(), nullable=False)
     completed_on = db.Column(db.DateTime(), nullable=False)
     status = db.Column(db.Integer(3), nullable=False)
+
+    def to_dict(self):
+        return dict(contact_id=self.contact_id, intent=self.intent, created_on=self.created_on.isoformat(),
+            attempted_on=self.attempted_on.isoformat(), completed_on=self.completed_on.isoformat(), status=self.status)
 
 db.create_all()
 
@@ -135,6 +140,15 @@ def student_resource():
     students = Student.query.all()
     return jsonify(results=[student.to_dict() for student in students])
 
+@app.route('/api/v1/clog')
+def call_log_resource():
+    student_id = request.args.get('student_id')
+    if not student_id:
+        abort(400)
+    student = Student.query.filter_by(id=student_id).first_or_404()
+    call_log_entries = chain(*(contact.call_log_entries for contact in student.contacts))
+    return jsonify(results=[call_log_entry.to_dict() for call_log_entry in call_log_entries])
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -160,13 +174,19 @@ def gen_fixtures():
         Contact(first_name='Foo', last_name='Doe', phone='555-123-4567', email='foo.doe@example.com', relationship='dad'),
         Contact(first_name='Bar', last_name='Doe', phone='555-321-7654', email='bar.doe@example.com', relationship='mom'),
         ])
-    student2 = Student(first_name='Jane', last_name='Smith', contacts=[
-        Contact(first_name='Dash', last_name='Smith', phone='555-123-4567', email='dash.smith@example.com', relationship='dad'),
-        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com', relationship='mom'),
-        ])
+    contact_with_log = Contact(first_name='Dash', last_name='Smith', phone='555-123-4567',
+        email='dash.smith@example.com', relationship='dad', call_log_entries=[
+        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=200),
+        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=300),
+        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=400),
+        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=500)])
+    student2 = Student(first_name='Jane', last_name='Smith', contacts=[contact_with_log,
+        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com',
+            relationship='mom')])
     db.session.add(student1)
     db.session.add(student2)
     db.session.commit()
+
 
 if __name__ == '__main__':
     db.create_all()
