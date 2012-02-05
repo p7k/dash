@@ -63,11 +63,11 @@
 
 -(void)callNowDown{//:(ContactInfo*)inContactInfo{
     
+    // Hacky, we should set this as an instance var
+    ContactInfo * inContactInfo = [studentInfo firstContactInfo];
     
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[studentInfo firstContactInfo] phoneNumber]];
-    printf("\n call %s", [phoneLinkString cString]);
-    NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
-    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
+    
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [inContactInfo phoneNumber]];
     
     UIWebView *callWebview = [[UIWebView alloc] init];
     NSURL *telURL = [NSURL URLWithString:phoneLinkString];
@@ -75,6 +75,7 @@
     
     PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
     [pcvc setStudentInfo:studentInfo];
+    [pcvc setContactInfo:inContactInfo];
     [pcvc setParentVC:parentVC];
     [parentVC presentModalViewController:pcvc animated:YES];
     

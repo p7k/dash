@@ -13,26 +13,38 @@
 
 NSString * const STATUS_KEY = @"status";
 NSString * const CREATED_ON_KEY = @"created_on";
+NSString * const ATTEMPTED_ON_KEY = @"attempted_on";
+NSString * const COMPLETED_ON_KEY = @"completed_on";
 NSString * const INTENT_KEY = @"intent";
 NSString * const PHONE_CALL_CONTACT_ID_KEY = @"contact_id";
 NSString * const CALL_RESULTS_KEY = @"results";
 NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
 
--(NSString*) toJson
+-(NSData*) toJson
 {
     
+    return [[self toDict] JSONData];
+}
+
+-(NSDictionary*) toDict
+{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:DATE_FORMAT];
     
+    NSString * dateString = [formatter stringFromDate: callDate];
+    
+    
     NSDictionary *outputDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                 contactInfo.contactId, PHONE_CALL_CONTACT_ID_KEY,
-                                200, STATUS_KEY,
-                                1,   INTENT_KEY,
-                                [formatter stringFromDate: callDate], CREATED_ON_KEY, nil];
+                                [NSNumber numberWithInt:200], STATUS_KEY,
+                                [studentInfo callIntent], INTENT_KEY,
+                                dateString, ATTEMPTED_ON_KEY,
+                                dateString, COMPLETED_ON_KEY,
+                                dateString, CREATED_ON_KEY, nil];
     
     [formatter release];
+    return outputDict;
     
-    return [outputDict JSONString];
 }
 
 

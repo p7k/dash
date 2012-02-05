@@ -92,11 +92,12 @@
 
 -(void)callNowDown{//:(ContactInfo*)inContactInfo{
     
+    // Hacky, we should set this as an instance var
+    ContactInfo * inContactInfo = [myStudentInfo firstContactInfo];
     
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel://%@", [[myStudentInfo firstContactInfo] phoneNumber]];
-    printf("\n call %s", [phoneLinkString cString]);
-    NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
-    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
+    
+
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel://%@", [inContactInfo phoneNumber]];
     
     UIWebView *callWebview = [[UIWebView alloc] init];
     NSURL *telURL = [NSURL URLWithString:phoneLinkString];
@@ -104,6 +105,7 @@
     
     PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
     [pcvc setStudentInfo:myStudentInfo];
+    [pcvc setContactInfo:inContactInfo];
     [pcvc setParentVC:nil];
     [parentVC presentModalViewController:pcvc animated:YES];
        
@@ -135,7 +137,8 @@
             [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
         }
         
-         myStudentInfo.isHappy=YES;
+        myStudentInfo.isHappy=YES;
+        myStudentInfo.callIntent = [NSNumber numberWithInt:1]; // set call intent to happy
         [[parentVC otherController] addInfo:myStudentInfo];
         //happyButton.layer.borderWidth = 3;
        [happyButton setImage:[DashConstants happyHighlightImage] forState:UIControlStateNormal];
@@ -144,6 +147,8 @@
     }
     else{//off list
         //happyButton.layer.borderWidth = 0;
+        myStudentInfo.isHappy=NO;
+        myStudentInfo.callIntent = [NSNumber numberWithInt:2];  // back to neutral 
         [[parentVC otherController] removeInfo:myStudentInfo];
         [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
         
@@ -164,6 +169,7 @@
         }
         
         myStudentInfo.isHappy=NO;
+        myStudentInfo.callIntent = [NSNumber numberWithInt:0];
         [[parentVC otherController] addInfo:myStudentInfo];
         //sadButton.layer.borderWidth = 3;
         [sadButton setImage:[DashConstants sadHighlightImage] forState:UIControlStateNormal];
@@ -171,6 +177,7 @@
     }
     else{//off list
         //sadButton.layer.borderWidth = 0;
+         myStudentInfo.callIntent = [NSNumber numberWithInt:2]; //back to neutral
          [[parentVC otherController] removeInfo:myStudentInfo];
         [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
     }

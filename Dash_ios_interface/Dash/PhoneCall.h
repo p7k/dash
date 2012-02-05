@@ -22,6 +22,7 @@
 @property (retain) StudentInfo* studentInfo;
 @property (retain) NSNumber* callIntent;
 
--(NSString *)toJson;
+-(NSData *)toJson;
+-(NSDictionary*)toDict;
 + (NSMutableArray *) createCallListFromJson:(NSString *) input withStudentInfo:(StudentInfo*)student;
 @end

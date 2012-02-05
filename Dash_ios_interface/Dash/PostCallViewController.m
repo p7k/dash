@@ -9,7 +9,7 @@
 #import "PostCallViewController.h"
 #import "StudentInfo.h"
 @implementation PostCallViewController
-@synthesize studentInfo, parentVC;
+@synthesize studentInfo, parentVC, contactInfo, callIntent;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -97,17 +97,24 @@
     [newCall setCallDate:[NSDate date]];
     [newCall setCallReport:clickedButton.currentTitle];
     [newCall setStudentInfo:studentInfo];
-    
+    [newCall setContactInfo:contactInfo];
+
     
     // send the just created call to the server
     
     
-    NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog/?student_id=%@", studentInfo.studentId];
+    NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog_entry", studentInfo.studentId];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] 
                                     initWithURL:[NSURL URLWithString:urlEndpoint]];
-    //[request setHTTPBody:[newCall toJson];
+    [request setHTTPBody:[newCall toJson]];
     [request setHTTPMethod:@"POST"];
+
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [NSURLConnection connectionWithRequest:[request autorelease] delegate:self];
+    
+    // also add it to the current StudentInfo
+    
+    [[studentInfo phoneCallArray] addObject:newCall];
     
     [self back];
 }
@@ -130,13 +137,13 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -151,4 +158,31 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+// delegate methods for NSURLConnection
+
+// required methods: connection:didReceiveResponse:, connection:didReceiveData:, connection:didFailWithError: and connectionDidFinishLoading:.
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    
+}
+
+- (void)connection:(NSURLConnection *)connection
+  didFailWithError:(NSError *)error
+{
+    // release the connection, and the data object
+    //[connection release];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // release the connection, and the data object
+    //[connection release];
+ }
 @end
