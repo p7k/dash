@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC16526F14DDE2CE0063934A /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526214DDE2CE0063934A /* Background.png */; };
+		DC16527014DDE2CE0063934A /* Call_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526314DDE2CE0063934A /* Call_Button.png */; };
+		DC16527114DDE2CE0063934A /* Dash_Main_GUI_sliced.psd in Resources */ = {isa = PBXBuildFile; fileRef = DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */; };
+		DC16527214DDE2CE0063934A /* Happy_Face_Activated_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526514DDE2CE0063934A /* Happy_Face_Activated_Icon.png */; };
+		DC16527314DDE2CE0063934A /* Happy_Face_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526614DDE2CE0063934A /* Happy_Face_icon.png */; };
+		DC16527414DDE2CE0063934A /* ItemBarGradient_slice.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526714DDE2CE0063934A /* ItemBarGradient_slice.png */; };
+		DC16527514DDE2CE0063934A /* Pad_Header.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526814DDE2CE0063934A /* Pad_Header.png */; };
+		DC16527614DDE2CE0063934A /* Progress_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526914DDE2CE0063934A /* Progress_icon.png */; };
+		DC16527714DDE2CE0063934A /* Sad_Face_Icon_Activated.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526A14DDE2CE0063934A /* Sad_Face_Icon_Activated.png */; };
+		DC16527814DDE2CE0063934A /* Sad_Face_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526B14DDE2CE0063934A /* Sad_Face_icon.png */; };
+		DC16527914DDE2CE0063934A /* Search_Box.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526C14DDE2CE0063934A /* Search_Box.png */; };
+		DC16527A14DDE2CE0063934A /* Search_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526D14DDE2CE0063934A /* Search_delete_button.png */; };
+		DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526E14DDE2CE0063934A /* Search_Icon.png */; };
+		DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */; };
+		DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */; };
 		DCABBE8614DD784A0007409B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8514DD784A0007409B /* UIKit.framework */; };
 		DCABBE8814DD784A0007409B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8714DD784A0007409B /* Foundation.framework */; };
 		DCABBE8A14DD784A0007409B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8914DD784A0007409B /* CoreGraphics.framework */; };
@@ -37,6 +52,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC16526214DDE2CE0063934A /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = graphics/Background.png; sourceTree = "<group>"; };
+		DC16526314DDE2CE0063934A /* Call_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Call_Button.png; path = graphics/Call_Button.png; sourceTree = "<group>"; };
+		DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */ = {isa = PBXFileReference; lastKnownFileType = file; name = Dash_Main_GUI_sliced.psd; path = graphics/Dash_Main_GUI_sliced.psd; sourceTree = "<group>"; };
+		DC16526514DDE2CE0063934A /* Happy_Face_Activated_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Happy_Face_Activated_Icon.png; path = graphics/Happy_Face_Activated_Icon.png; sourceTree = "<group>"; };
+		DC16526614DDE2CE0063934A /* Happy_Face_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Happy_Face_icon.png; path = graphics/Happy_Face_icon.png; sourceTree = "<group>"; };
+		DC16526714DDE2CE0063934A /* ItemBarGradient_slice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ItemBarGradient_slice.png; path = graphics/ItemBarGradient_slice.png; sourceTree = "<group>"; };
+		DC16526814DDE2CE0063934A /* Pad_Header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pad_Header.png; path = graphics/Pad_Header.png; sourceTree = "<group>"; };
+		DC16526914DDE2CE0063934A /* Progress_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Progress_icon.png; path = graphics/Progress_icon.png; sourceTree = "<group>"; };
+		DC16526A14DDE2CE0063934A /* Sad_Face_Icon_Activated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Sad_Face_Icon_Activated.png; path = graphics/Sad_Face_Icon_Activated.png; sourceTree = "<group>"; };
+		DC16526B14DDE2CE0063934A /* Sad_Face_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Sad_Face_icon.png; path = graphics/Sad_Face_icon.png; sourceTree = "<group>"; };
+		DC16526C14DDE2CE0063934A /* Search_Box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_Box.png; path = graphics/Search_Box.png; sourceTree = "<group>"; };
+		DC16526D14DDE2CE0063934A /* Search_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_delete_button.png; path = graphics/Search_delete_button.png; sourceTree = "<group>"; };
+		DC16526E14DDE2CE0063934A /* Search_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_Icon.png; path = graphics/Search_Icon.png; sourceTree = "<group>"; };
+		DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Roster_icon.png; path = graphics/Roster_icon.png; sourceTree = "<group>"; };
+		DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Playlist_Icon.png; path = graphics/Playlist_Icon.png; sourceTree = "<group>"; };
 		DCABBE8114DD784A0007409B /* Dash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCABBE8514DD784A0007409B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCABBE8714DD784A0007409B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -99,9 +129,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC16526014DDE2AA0063934A /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */,
+				DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */,
+				DC16526214DDE2CE0063934A /* Background.png */,
+				DC16526314DDE2CE0063934A /* Call_Button.png */,
+				DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */,
+				DC16526514DDE2CE0063934A /* Happy_Face_Activated_Icon.png */,
+				DC16526614DDE2CE0063934A /* Happy_Face_icon.png */,
+				DC16526714DDE2CE0063934A /* ItemBarGradient_slice.png */,
+				DC16526814DDE2CE0063934A /* Pad_Header.png */,
+				DC16526914DDE2CE0063934A /* Progress_icon.png */,
+				DC16526A14DDE2CE0063934A /* Sad_Face_Icon_Activated.png */,
+				DC16526B14DDE2CE0063934A /* Sad_Face_icon.png */,
+				DC16526C14DDE2CE0063934A /* Search_Box.png */,
+				DC16526D14DDE2CE0063934A /* Search_delete_button.png */,
+				DC16526E14DDE2CE0063934A /* Search_Icon.png */,
+			);
+			name = graphics;
+			sourceTree = "<group>";
+		};
 		DCABBE7614DD78490007409B = {
 			isa = PBXGroup;
 			children = (
+				DC16526014DDE2AA0063934A /* graphics */,
 				DCABBEF314DDBA600007409B /* QuartzCore.framework */,
 				DCABBE8B14DD784A0007409B /* Dash */,
 				DCABBE8414DD784A0007409B /* Frameworks */,
@@ -239,6 +292,21 @@
 				DCABBEA414DD784A0007409B /* second@2x.png in Resources */,
 				DCABBEA714DD784A0007409B /* FirstViewController.xib in Resources */,
 				DCABBEAA14DD784A0007409B /* SecondViewController.xib in Resources */,
+				DC16526F14DDE2CE0063934A /* Background.png in Resources */,
+				DC16527014DDE2CE0063934A /* Call_Button.png in Resources */,
+				DC16527114DDE2CE0063934A /* Dash_Main_GUI_sliced.psd in Resources */,
+				DC16527214DDE2CE0063934A /* Happy_Face_Activated_Icon.png in Resources */,
+				DC16527314DDE2CE0063934A /* Happy_Face_icon.png in Resources */,
+				DC16527414DDE2CE0063934A /* ItemBarGradient_slice.png in Resources */,
+				DC16527514DDE2CE0063934A /* Pad_Header.png in Resources */,
+				DC16527614DDE2CE0063934A /* Progress_icon.png in Resources */,
+				DC16527714DDE2CE0063934A /* Sad_Face_Icon_Activated.png in Resources */,
+				DC16527814DDE2CE0063934A /* Sad_Face_icon.png in Resources */,
+				DC16527914DDE2CE0063934A /* Search_Box.png in Resources */,
+				DC16527A14DDE2CE0063934A /* Search_delete_button.png in Resources */,
+				DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */,
+				DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */,
+				DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

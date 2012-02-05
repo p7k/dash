@@ -40,4 +40,21 @@ NSString * const PHONE_NUMBER_KEY = @"phone";
     return retVal;
 }
 
+- (void)encodeWithCoder:(NSCoder *)coder {
+	[coder encodeObject:name forKey:@"name"];
+    [coder encodeObject:contactId forKey:@"contactId"];
+    [coder encodeObject:phoneNumber forKey:@"phoneNumber"];
+    
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    if(self=[super init]){
+		name = [[coder decodeObjectForKey:@"name"] retain];
+        contactId = [[coder decodeObjectForKey:@"contactId"] retain];
+        phoneNumber = [[coder decodeObjectForKey:@"phoneNumber"] retain];
+        
+    }
+    return self;
+}
+
 @end
