@@ -91,6 +91,10 @@ class LoginForm(Form):
 
 
 # views
+@app.route('/index')
+def index():
+	return render_template("index.html")
+
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
     form = ContactForm()
