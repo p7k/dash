@@ -17,6 +17,7 @@
 @property (retain) NSMutableArray* contactsArray;
 @property (retain) NSMutableArray* phoneCallArray;
 @property (assign) ContactInfo* firstContactInfo;
+@property (assign) NSNumber* callIntent;
 
 @property BOOL isHappy;//don't store any info with this, just for temporary call queue
 

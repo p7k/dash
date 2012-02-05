@@ -18,5 +18,7 @@
     UIButton* viewButtons[4];
 }
 @property(retain) StudentInfo* studentInfo;
+@property(retain) ContactInfo* contactInfo;
+@property(retain) NSNumber* callIntent;
 @property (assign) UIViewController* parentVC;//something when presented from call list, nil from roster. STUPID HACK 
 @end

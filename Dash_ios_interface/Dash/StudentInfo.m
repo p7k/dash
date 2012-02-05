@@ -16,6 +16,7 @@
 @synthesize contactsArray, phoneCallArray;
 @synthesize firstContactInfo;
 @synthesize isHappy;
+@synthesize callIntent;
 
 NSString * const STUDENT_ID_KEY = @"id";
 NSString * const FIRST_NAME_KEY = @"first_name";
@@ -27,6 +28,7 @@ NSString * const CONTACTS_KEY = @"contacts";
    self= [super init];
     contactsArray = [[NSMutableArray alloc]init];
     phoneCallArray = [[NSMutableArray alloc]init];
+    callIntent = [NSNumber numberWithInt:2]; // initialize to be neutral. 0 = negative 1 = positive
     return self;
 }
 
