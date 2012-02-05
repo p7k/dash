@@ -15,7 +15,7 @@
 @synthesize studentId;
 @synthesize contactsArray, phoneCallArray;
 @synthesize firstContactInfo;
-
+@synthesize isHappy;
 
 NSString * const STUDENT_ID_KEY = @"id";
 NSString * const FIRST_NAME_KEY = @"first_name";

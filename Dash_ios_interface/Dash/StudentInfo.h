@@ -18,5 +18,7 @@
 @property (retain) NSMutableArray* phoneCallArray;
 @property (assign) ContactInfo* firstContactInfo;
 
+@property BOOL isHappy;//don't store any info with this, just for temporary call queue
+
 + (NSArray *) createStudentListWithJsonString:(NSString *) input;
 @end
