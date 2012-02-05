@@ -115,9 +115,9 @@ class LoginForm(Form):
 
 
 # views
-@app.route('/index')
+@app.route('/')
 def index():
-	return render_template("index.html")
+    return render_template("index.html")
 
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
@@ -136,7 +136,7 @@ def show_student(student_id):
     student = Student.query.filter_by(id=student_id).first_or_404()
     return render_template('show_student.html', student=student, form=form)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/class', methods=['GET', 'POST'])
 def show_class():
     form = StudentForm()
     if request.method == 'POST':
@@ -186,6 +186,7 @@ def call_log_resource():
         .filter(Contact.id.in_([c.id for c in student.contacts]))
     return jsonify(results=[call_log_entry.to_dict() for call_log_entry in call_log_entries])
 
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
