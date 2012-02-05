@@ -39,9 +39,14 @@
         [self addSubview:iconView];
         
         callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        callButton.frame = CGRectMake(220, 0, 100, 50);
-        [callButton setTitle:@"call" forState:UIControlStateNormal];
-        callButton.backgroundColor=[DashConstants theCallNowColor];//[DashConstants theHappyColor]];// forState:UIControlStateNormal];
+        callButton.frame = CGRectMake(220, 5, 40, 40);
+        //[callButton setTitle:@"call" forState:UIControlStateNormal];
+        
+        callButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+        callButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        callButton.contentMode = UIViewContentModeScaleToFill;
+        [callButton setImage:[DashConstants phoneImage] forState:UIControlStateNormal];
+       // callButton.backgroundColor=[DashConstants theCallNowColor];//[DashConstants theHappyColor]];// forState:UIControlStateNormal];
         //[callButton setBackgroundColor:[DashConstants theCallNowColor];// forState:UIControlStateSelected];
         [callButton addTarget:self action:@selector(callNowDown) forControlEvents:UIControlEventTouchDown];
         [self addSubview:callButton];

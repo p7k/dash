@@ -25,9 +25,9 @@
 
     self = [super init ];
     if (self) {
-        self.title = NSLocalizedString(@"Second", @"Second");
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
-        
+        self.title = NSLocalizedString(@"Playlist", @"Playlist");
+        self.tabBarItem.image = [UIImage imageNamed:@"Playlist_Icon.png"];
+         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
         printf("\nview did load");
         
         //data
@@ -48,24 +48,34 @@
             [classInfoArray addObject:currInfo];
         }*/
         
+        UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 350)];
+        underPadView.backgroundColor=[UIColor blackColor];
+        underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+        underPadView.layer.shadowOpacity = 1.0;
+        underPadView.layer.shadowRadius = 5.0;
+        underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+        underPadView.clipsToBounds = NO; 
+        [self.view addSubview:underPadView];
+
         
         //interface
-       UIView* headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
-        headerView.backgroundColor = [UIColor grayColor];
-        [self.view addSubview:headerView];
-        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:headerView.frame];
+        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
         dashTitleLabel.textAlignment = UITextAlignmentCenter;
         dashTitleLabel.text = @"dash";
-        dashTitleLabel.backgroundColor = [UIColor clearColor];
+        dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+
+        //[UIColor grayColor];
+        
+        [self.view addSubview:dashTitleLabel];
         dashTitleLabel.textColor = [UIColor whiteColor];
-        [headerView addSubview:dashTitleLabel];
         
       
         
         
-        tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 40, 320, 350)];
+        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
         tableView.dataSource = self;
         tableView.delegate = self;
+        
         [self.view addSubview:tableView];
         
         

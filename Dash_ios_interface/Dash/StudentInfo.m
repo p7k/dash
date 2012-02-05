@@ -30,6 +30,23 @@ NSString * const CONTACTS_KEY = @"contacts";
     return self;
 }
 
+- (void)encodeWithCoder:(NSCoder *)coder {
+	[coder encodeObject:name forKey:@"name"];
+    [coder encodeObject:studentId forKey:@"studentID"];
+    [coder encodeObject:contactsArray forKey:@"contactsArray"];
+    [coder encodeObject:phoneCallArray forKey:@"phoneCallArray"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    if(self=[super init]){
+		name = [[coder decodeObjectForKey:@"name"] retain];
+        studentId = [[coder decodeObjectForKey:@"studentId"] retain];
+        contactsArray = [[coder decodeObjectForKey:@"contactsArray"] retain];
+        phoneCallArray = [[coder decodeObjectForKey:@"phoneCallArray"] retain];
+    }
+    return self;
+}
+
 
 + (StudentInfo *)createFromDict:(NSDictionary*) input{
     

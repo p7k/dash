@@ -15,7 +15,7 @@
 @class SecondViewController;
 
 @interface FirstViewController : UIViewController{
-    
+    UIButton* sortTableButton;
 }
 
 @property (retain, nonatomic) UISearchBar *searchBar;

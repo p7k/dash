@@ -12,6 +12,7 @@
 #import "CallTableCell.h"
 #import "CallIntent.h"
 #import "StudentInfoViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SecondViewController : UIViewController
 

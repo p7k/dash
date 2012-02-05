@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "StudentInfo.h"
-
+#import <QuartzCore/QuartzCore.h>
 @interface StudentInfoViewController : UIViewController{
     UILabel* topLabel;
     UISegmentedControl* segmentedControl;
     UITableView* contactTableView, *callLogTableView;
     NSDateFormatter* dateFormatter;
+    UIView* headerView, *notesView;
 }
 @property (assign) StudentInfo* studentInfo;
 @end
