@@ -3,6 +3,7 @@
     Dash
     ~~~~~~
 """
+from Carbon import Res
 import datetime
 from itertools import chain
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, make_response
@@ -12,6 +13,10 @@ from flaskext.sqlalchemy import SQLAlchemy
 from flask.helpers import jsonify
 
 # configuration
+from flask.wrappers import Response
+from sqlalchemy.orm.session import Session
+from sqlalchemy.sql.operators import exists
+
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
@@ -70,7 +75,6 @@ class CallLogEntry(db.Model):
 db.create_all()
 
 # forms
-
 class StudentForm(Form):
     first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
     last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
@@ -88,11 +92,12 @@ class ContactForm(Form):
 
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
-    intent = SelectField(u'Intent', choices=[(0, 0), (1, 1)], validators=[Required()])
+    intent = SelectField(u'Intent', choices=[(u'0', 0), (u'1', 1)], validators=[Required()])
     created_on = DateTimeField(u'Created on', format=DT_FORMAT, validators=[Required()])
     attempted_on = DateTimeField(u'Attempted on', format=DT_FORMAT, validators=[Required()])
     completed_on = DateTimeField(u'Completed on', format=DT_FORMAT, validators=[Required()])
-    status = SelectField(u'Status', choices=[(200, 200), (300, 300), (400, 400), (500, 500)], validators=[Required()])
+    status = SelectField(u'Status', choices=[(u'200', 200), (u'200', 300), (u'400', 400), (u'500', 500)], validators=[Required()])
+    submit = SubmitField(u'Save')
 
 
 class LoginForm(Form):
@@ -110,14 +115,13 @@ class LoginForm(Form):
 
 
 # views
-@app.route('/index')
+@app.route('/')
 def index():
-	return render_template("index.html")
+    return render_template("index.html")
 
 @app.route('/student/<int:student_id>', methods=['GET', 'POST'])
 def show_student(student_id):
     form = ContactForm()
-
     if request.method == 'POST':
         if form.validate_on_submit():
             contact = Contact()
@@ -129,14 +133,12 @@ def show_student(student_id):
             return redirect(url_for('show_student', student_id=student_id))
         else:
             flash('Form errors')
-
     student = Student.query.filter_by(id=student_id).first_or_404()
     return render_template('show_student.html', student=student, form=form)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/class', methods=['GET', 'POST'])
 def show_class():
     form = StudentForm()
-
     if request.method == 'POST':
         if form.validate_on_submit():
             student = Student()
@@ -147,7 +149,6 @@ def show_class():
             return redirect(url_for('show_class'))
         else:
             flash('Form errors')
-
     students = Student.query.all()
     return render_template('show_class.html', students=students, form=form)
 
@@ -163,25 +164,29 @@ def add_clog_entry():
 
 @app.route('/api/v1/clog_entry', methods=['POST'])
 def call_log_entry_resource():
-    form = CallLogEntryForm()
+    form = CallLogEntryForm(csrf_enabled=False)
     if form.validate():
         call_log_entry = CallLogEntry()
         form.populate_obj(call_log_entry)
         db.session.add(call_log_entry)
         db.session.commit()
-        return 201
+        return Response('CREATED', status=201)
     else:
-        abort(400)
+        return Response(jsonify(form.errors), status=400)
 
 @app.route('/api/v1/clog', methods=['GET', 'POST'])
 def call_log_resource():
     student_id = request.args.get('student_id')
     if not student_id:
         abort(400)
-    student = Student.query.filter_by(id=student_id).first_or_404()
-    call_log_entries = chain(*(contact.call_log_entries for contact in student.contacts))
+    student = Student.query.filter_by(id=student_id).first()
+    if not student:
+        abort(400)
+    call_log_entries = db.session.query(CallLogEntry).select_from(Contact).join(Contact.call_log_entries)\
+        .filter(Contact.id.in_([c.id for c in student.contacts]))
     return jsonify(results=[call_log_entry.to_dict() for call_log_entry in call_log_entries])
 
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():

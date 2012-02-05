@@ -18,4 +18,5 @@
     UIButton* viewButtons[4];
 }
 @property(retain) StudentInfo* studentInfo;
+@property (assign) UIViewController* parentVC;//something when presented from call list, nil from roster. STUPID HACK 
 @end
