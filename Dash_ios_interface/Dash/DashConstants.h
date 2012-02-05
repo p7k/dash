@@ -15,9 +15,9 @@ static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, 
     
 }
 +(UIColor*) theHappyColor;
-+(UIColor*) theHappyHighlightColor;
+//+(UIColor*) theHappyHighlightColor;
 +(UIColor*) theSadColor;
-+(UIColor*) theSadHighlightColor;
+//+(UIColor*) theSadHighlightColor;
 +(UIColor*) theCallNowColor;
 +(UIImage*) happyImage;
 +(UIImage*) sadImage;

@@ -10,25 +10,26 @@
 #import "PostCallViewController.h"
 
 @implementation CallTableCell
-@synthesize callIntent;
+@synthesize isHappy;
 @synthesize studentNameLabel;
 @synthesize firstContactNameLabel, iconView, callButton;
-
+@synthesize studentInfo;
+@synthesize parentVC;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         studentNameLabel = [[UILabel alloc]init ];
-        studentNameLabel.frame = CGRectMake(50, 0, 280, 25);
+        studentNameLabel.frame = CGRectMake(50, 0, 150, 25);
         studentNameLabel.textAlignment = UITextAlignmentLeft;
         
         studentNameLabel.backgroundColor = [UIColor clearColor];//[ UIColor    lightGrayColor];
         [self addSubview:studentNameLabel];
         
         firstContactNameLabel = [[UILabel alloc]init ];
-        firstContactNameLabel.frame =  CGRectMake(50, 25, 280, 25);
-        firstContactNameLabel.textAlignment = UITextAlignmentLeft;
+        firstContactNameLabel.frame =  CGRectMake(50, 25, 150, 25);
+        firstContactNameLabel.textAlignment = UITextAlignmentRight;
         firstContactNameLabel.textColor = [UIColor grayColor];
         firstContactNameLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:firstContactNameLabel];
@@ -63,25 +64,29 @@
 -(void)callNowDown{//:(ContactInfo*)inContactInfo{
     
     
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[[callIntent studentInfo] firstContactInfo] phoneNumber]];
-    printf("\n call test %s", [phoneLinkString cString]);
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [[studentInfo firstContactInfo] phoneNumber]];
+    printf("\n call %s", [phoneLinkString cString]);
     NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
+    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
     
-    // a somewhat hack to let us regain control of the app after a phonecall
     UIWebView *callWebview = [[UIWebView alloc] init];
     NSURL *telURL = [NSURL URLWithString:phoneLinkString];
     [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
     
-    //PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
-    //[pcvc setStudentInfo:myStudentInfo];
-    //[parentVC presentModalViewController:pcvc animated:YES];
-    //[[UIApplication sharedApplication] openURL:phoneLinkURL];
+    PostCallViewController *pcvc = [[PostCallViewController alloc]init ];
+    [pcvc setStudentInfo:studentInfo];
+    [parentVC presentModalViewController:pcvc animated:YES];
+    
+    
+    
+    
     
 }
 
--(void)setCallIntent:(CallIntent*)inIntent{
-    callIntent=inIntent;
-    if([inIntent isHappy]){
+/*-(void)setIsHappy:(BOOL)inIsHappy{
+    isHappy = inIsHappy;
+    
+    if( isHappy){
         //self.backgroundColor = [DashConstants theHappyColor];
         iconView.image = [DashConstants happyImage];
     }
@@ -90,9 +95,23 @@
         //self.backgroundColor = [DashConstants theSadColor];
     }
         
-    StudentInfo* myStudentInfo = [inIntent studentInfo];
-    [studentNameLabel setText:[myStudentInfo name]];
-    [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] name]];
+   
+}*/
+
+-(void)setStudentInfo:(StudentInfo*)inInfo{
+    studentInfo = inInfo;
+    [studentNameLabel setText:[studentInfo name]];
+    [firstContactNameLabel setText:[[studentInfo firstContactInfo] name]];
+    
+    if( [studentInfo isHappy]){
+        //self.backgroundColor = [DashConstants theHappyColor];
+        iconView.image = [DashConstants happyImage];
+    }
+    else{
+        iconView.image = [DashConstants sadImage];
+        //self.backgroundColor = [DashConstants theSadColor];
+    }
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
