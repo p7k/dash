@@ -138,7 +138,7 @@
     numberOfCallsLabel.text = [NSString stringWithFormat:@"Number of Calls: %d", [[studentInfo phoneCallArray] count] ];
     
     int positivitySum =0;
-    for(PhoneCall* currCall in [studentInfo phoneCallArray]) positivitySum+=[[currCall intent] intValue];
+    for(PhoneCall* currCall in [studentInfo phoneCallArray]) positivitySum+=[[currCall callIntent] intValue];
     int percent;
     if([[studentInfo phoneCallArray]count]==0) percent=0;
     else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
@@ -229,9 +229,9 @@
             
             UIImageView* iconView = [[UIImageView alloc]init];// ;WithImage:[UIImage imageNamed:@"
             iconView.frame = CGRectMake(0, 0, 50, 50);
-            [self addSubview:iconView];
+          //  [cell addSubview:iconView];
             
-            if( [currPhoneCall callIntent]==1){
+            if( [[currPhoneCall callIntent] isEqualToNumber:[NSNumber numberWithInt:1]]){
                 //self.backgroundColor = [DashConstants theHappyColor];
                 iconView.image = [DashConstants happyImage];
             }

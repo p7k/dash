@@ -250,8 +250,8 @@ NSString* _archiveLocation;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
 		int newIndex = [indexPath indexAtPosition:1];
         
-    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
-                               // initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+    //StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
     [nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
 
     [self presentModalViewController:nextController animated:YES];
