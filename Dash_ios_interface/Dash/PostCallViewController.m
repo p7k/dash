@@ -81,6 +81,17 @@
 -(void)postCallButtonDown:(id)sender{
     UIButton *clickedButton = (UIButton *) sender;
     
+    //if this call was triggered from the playlist view controller, remove call from that list
+    //printf("\n parentVC exists? %d", [self parentViewController]);
+    
+    if( [[[self parentViewController] selectedViewController ]respondsToSelector:@selector(removeInfo:)] ){
+    //if( [[self parentViewController] isClass:[SecondViewController class]] ){
+        
+        printf(" ..and responds!");
+        [[[self parentViewController] selectedViewController] removeInfo:studentInfo];
+    }
+    
+    
     PhoneCall *newCall = [[PhoneCall alloc] init];
     [newCall setCallDate:[NSDate date]];
     [newCall setCallReport:clickedButton.currentTitle];
@@ -94,6 +105,8 @@
     //[request setHTTPBody:[newCall toJson];
     [request setHTTPMethod:@"POST"];
     [NSURLConnection connectionWithRequest:[request autorelease] delegate:self];
+    
+    [self back];
 }
 
 

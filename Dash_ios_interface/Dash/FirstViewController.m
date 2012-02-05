@@ -70,10 +70,13 @@ NSString* _archiveLocation;
     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
     
+    if (studentJson!=nil && [studentJson length]>0) {//check for sucess
+    
     classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
     
     //on successful pull, save to local
     [self saveClassArrayLocal];
+    }
     
             /*  still need to figure out how to do calls
             
