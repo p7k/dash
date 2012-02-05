@@ -175,7 +175,7 @@
     
     StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//WithNibName:@"NextView" bundle:nil];
     [self presentModalViewController:nextController animated:YES];
-    [nextController setStudentInfo:[[callQueue objectAtIndex:newIndex] studentInfo]];
+    [nextController setStudentInfo:[callQueue objectAtIndex:newIndex] ];
     
     
 }

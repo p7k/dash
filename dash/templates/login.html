@@ -1,16 +1,27 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h2>Login</h2>
+  <h2 style="text-align:center"> &#32; </h2>
   {% if form.errors %}<p class=error><strong>{{ form.errors }}</strong>{% endif %}
   <form action="{{ url_for('login') }}" method=post>
-    {{ form.hidden_tag() }}
+    <div style="margin:10px 0;"> {{ form.hidden_tag() }} </div>
     <dl>
-        <dt>{{ form.username.label }}
-      <dd>{{ form.username }} </dd></dt>
-      <dt>{{ form.password.label }}
-      <dd>{{ form.password }} {{ form.password.errors[0] }}
-      <dt>{{ form.submit }}
+      <dt>{{form.username.label}} {{form.username}}</dt>
+      <dt style="margin:5px;">{{ form.password.label }}  
+      {{ form.password }} <dt style="color:red">{{ form.password.errors[0] }}</dt> </dt>
+     <dt>{{ form.submit }}  </dt>
 	
     </dl>
+    <!-- <div>
+	<div class="login" >{{ form.username.label }} </div>
+    <div class="logein" >{{ form.username }} </div>
+    </div>
+	<div>
+	<div class="login" >{{ form.password.label }} </div>
+    <div class="logein" >{{ form.password }} {{ form.password.errors[0] }} 
+	</div>
+    
+	<div>{{ form.submit }} </div> -->
+
+
   </form>
 {% endblock %}
