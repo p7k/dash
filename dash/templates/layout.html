@@ -3,9 +3,9 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 
 <div id="nav">
-	<img class="navlogo" src="static/img/Light_Logo.png">
+	<img class="navlogo" src="{{ url_for('static', filename='img/Light_Logo.png') }}">
 	<div id="navleft">
-		<a href="{{ url_for('login') }}"> Home </a>
+        <a href="{% if session.logged_in %}{{ url_for('show_class') }}{% else %}{{ url_for('index') }}{% endif %}">Home</a>
 	</div>  <!--navleft -->
 	
 	<div id="navright">
@@ -18,7 +18,7 @@
 </div>  <!-- nav -->
 
 <div class=page>
-  <h1 style="text-align:center"><img class="navlogo" src="static/img/Light_Logo.png"></h1>
+  <!--<h1 style="text-align:center"><img class="navlogo" src="static/img/Light_Logo.png"></h1>-->
   <div class=metanav>
   {% if not session.logged_in %}
     <a href="{{ url_for('login') }}">Log In</a>
