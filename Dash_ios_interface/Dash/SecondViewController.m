@@ -25,9 +25,9 @@
 
     self = [super init ];
     if (self) {
-        self.title = NSLocalizedString(@"Second", @"Second");
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
-        
+        self.title = NSLocalizedString(@"Playlist", @"Playlist");
+        self.tabBarItem.image = [UIImage imageNamed:@"Playlist_Icon.png"];
+         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
         printf("\nview did load");
         
         //data
@@ -48,24 +48,34 @@
             [classInfoArray addObject:currInfo];
         }*/
         
+        UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 350)];
+        underPadView.backgroundColor=[UIColor blackColor];
+        underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+        underPadView.layer.shadowOpacity = 1.0;
+        underPadView.layer.shadowRadius = 5.0;
+        underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+        underPadView.clipsToBounds = NO; 
+        [self.view addSubview:underPadView];
+
         
         //interface
-       UIView* headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
-        headerView.backgroundColor = [UIColor grayColor];
-        [self.view addSubview:headerView];
-        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:headerView.frame];
+        UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
         dashTitleLabel.textAlignment = UITextAlignmentCenter;
         dashTitleLabel.text = @"dash";
-        dashTitleLabel.backgroundColor = [UIColor clearColor];
+        dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+
+        //[UIColor grayColor];
+        
+        [self.view addSubview:dashTitleLabel];
         dashTitleLabel.textColor = [UIColor whiteColor];
-        [headerView addSubview:dashTitleLabel];
         
       
         
         
-        tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 40, 320, 350)];
+        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
         tableView.dataSource = self;
         tableView.delegate = self;
+        
         [self.view addSubview:tableView];
         
         
@@ -73,37 +83,41 @@
     return self;
 }
 
-
--(void)addHappy:(StudentInfo*)inInfo{
+-(void)addInfo:(StudentInfo*)inInfo{
+    printf("\nadd info:%s happy? %d", [[inInfo name] cString], [inInfo isHappy] );
+    [callQueue addObject:inInfo];
+    [tableView reloadData];
+}
+/*-(void)addHappy:(StudentInfo*)inInfo{
     printf("\nadd happy:%s", [[inInfo name] cString]);
-    CallIntent* newIntent = [[CallIntent alloc]init ];
-    newIntent.studentInfo = inInfo;
-    newIntent.isHappy = YES;
-    [callQueue addObject:newIntent];
+   // CallIntent* newIntent = [[CallIntent alloc]init ];
+   // newIntent.studentInfo = inInfo;
+   // newIntent.isHappy = YES;
+    [callQueue addObject:inInfo];
     [tableView reloadData];
 
 }
 
 -(void)addSad:(StudentInfo*)inInfo{
     printf("\nadd sad:%s", [[inInfo name] cString]);
-    CallIntent* newIntent = [[CallIntent alloc]init ];
-    newIntent.studentInfo = inInfo;
-    newIntent.isHappy = NO;
-    [callQueue addObject:newIntent];
+    //CallIntent* newIntent = [[CallIntent alloc]init ];
+    //newIntent.studentInfo = inInfo;
+    //newIntent.isHappy = NO;
+    [callQueue addObject:inInfo];
     [tableView reloadData];
     
-}
+}*/
 
 -(void)removeInfo:(StudentInfo*)inInfo{
     printf("\nremove %s", [[inInfo name] cString])  ;
-    CallIntent* foundIntent=nil;
-    for(CallIntent* currIntent in callQueue){
-        if([currIntent studentInfo]==inInfo){
-            foundIntent = currIntent;
+    StudentInfo* foundStudentInfo=nil;
+    for(StudentInfo* currStudentInfo in callQueue){
+        if(currStudentInfo==inInfo){
+            foundStudentInfo = currStudentInfo;
         }
     }
-    if(foundIntent!=nil){
-        [callQueue removeObject:foundIntent];
+    if(foundStudentInfo!=nil){
+        [callQueue removeObject:foundStudentInfo];
         [tableView reloadData];
     }
 }
@@ -119,16 +133,16 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	printf("\ncalled !LISTwillDisplay cell name %s", [[[[cell callIntent] studentInfo] name] cString]);
-	if([[cell callIntent] isHappy]) cell.backgroundColor = [DashConstants theHappyColor];
+	printf("\ncalled !LISTwillDisplay cell name %s", [[[cell  studentInfo] name] cString]);
+	if([[cell studentInfo] isHappy]) cell.backgroundColor = [DashConstants theHappyColor];
 	else cell.backgroundColor = [DashConstants theSadColor];
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
-    CallIntent* currCallIntent = [callQueue  objectAtIndex: [indexPath indexAtPosition:1]];
-    NSString *CellPersIDString = [[currCallIntent studentInfo] name];
+    StudentInfo* currStudentInfo = [callQueue  objectAtIndex: [indexPath indexAtPosition:1]];
+    NSString *CellPersIDString = [currStudentInfo  name];
     CallTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
     if(cell==nil){
         cell = [[CallTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
@@ -139,8 +153,8 @@
         //cell.selectedBackgroundView.backgroundColor=[MBConstants theRedHighlightColor];
         //cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
         
-        [cell setCallIntent:currCallIntent];
-        
+        [cell setStudentInfo:currStudentInfo];
+         cell.parentVC=self;
         
     }
     return cell;

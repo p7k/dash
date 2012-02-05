@@ -12,7 +12,20 @@
 @synthesize searchBar, classroomTableView, headerView, classInfoArray;
 @synthesize otherController;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+NSString* _archiveLocation; 
++ (NSString*)archiveLocation{
+	if (_archiveLocation == nil)
+	{
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];
+		_archiveLocation = [[documentsDirectory stringByAppendingPathComponent:@"PresetsDict.ar"] retain];       
+		//printf("\ntemp= %s ", [_archiveLocation cString]);
+	}
+	return _archiveLocation;
+}
+
+
+/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -20,15 +33,15 @@
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
     }
     return self;
-}
+}*/
 
 - (id)init{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 
     self = [super init];//initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first.png"];
-        
+        self.title = NSLocalizedString(@"Roster", @"Roster");
+        self.tabBarItem.image = [UIImage imageNamed:@"Roster_icon.png"];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     }
     return self;
 }
@@ -48,46 +61,71 @@
 	// Do any additional setup after loading the view, typically from a nib.
     printf("\nview did load");
     
+    //first, read classInfoArray from local copy before internet sync
+    
+    classInfoArray = [self loadClassArrayLocal];
+    
     // request data from the api
     NSError * error = nil;
     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
     
-    classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
-            
-            /*  still need to figure out how to do calls
-            
-            PhoneCall* phoneCall = [[PhoneCall alloc]init];
-            [phoneCall setContactInfo:contactInfo];
-            [phoneCall setCallDate:[NSDate date]];
-            [[currInfo phoneCallArray] addObject:phoneCall];
-             
-             */
+    if (studentJson!=nil && [studentJson length]>0) {//check for sucess
     
+        classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
     
-    //interface
-    headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
-    headerView.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:headerView];
-    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:headerView.frame];
-    dashTitleLabel.textAlignment = UITextAlignmentCenter;
-    dashTitleLabel.text = @"dash";
-    dashTitleLabel.backgroundColor = [UIColor clearColor];
-    dashTitleLabel.textColor = [UIColor whiteColor];
-    [headerView addSubview:dashTitleLabel];
-    
+        //on successful pull, save to local
+        [self saveClassArrayLocal];
+    }
     //search bar
-    searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0,40,320, 40)];
+    searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];
     searchBar.showsCancelButton = YES;
     searchBar.delegate = self;
+   // searchBar.tintColor = [UIColor grayColor];
+    searchBar.barStyle = UIBarStyleBlack;
+    searchBar.translucent = YES;
     [self.view addSubview:searchBar];
     
     
-    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 80, 320, 340)];
+    
+    
+    UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 340)];
+    underPadView.backgroundColor=[UIColor blackColor];
+    underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+    underPadView.layer.shadowOpacity = 1.0;
+    underPadView.layer.shadowRadius = 5.0;
+    underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+    underPadView.clipsToBounds = NO; 
+    [self.view addSubview:underPadView];
+    
+    
+    //interface
+     headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+    headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+
+    
+    [self.view addSubview:headerView];
+    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 280, 40)];
+    dashTitleLabel.textAlignment = UITextAlignmentCenter;
+    dashTitleLabel.text = @"dash";
+    dashTitleLabel.backgroundColor = [UIColor clearColor];    //[UIColor grayColor];
+    dashTitleLabel.textColor = [UIColor whiteColor];
+    [headerView addSubview:dashTitleLabel];
+    
+    sortTableButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    sortTableButton.frame = CGRectMake(200, 5, 50,30);
+    sortTableButton.backgroundColor = [UIColor grayColor];
+    [sortTableButton setTitle:@"sort" forState:UIControlStateNormal];
+    sortTableButton.layer.cornerRadius=4;
+    [headerView addSubview:sortTableButton];
+    
+    
+    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 100, 280, 300)];
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
+     
     [self.view addSubview:classroomTableView];
-    
+   
     
     
 }
@@ -173,8 +211,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	//if(isPad) return 96;
-	return 100;
+	return 40;
 	
 	
 }
@@ -182,14 +219,37 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
 		int newIndex = [indexPath indexAtPosition:1];
         
-        StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//WithNibName:@"NextView" bundle:nil];
-    [nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];  
+        StudentInfoViewController *nextController = [[StudentInfoViewController alloc] 
+                                initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+
     [self presentModalViewController:nextController animated:YES];
       
-    
         
-        
-        
+}
+
+
+-(NSMutableArray*) loadClassArrayLocal{
+    NSMutableArray* tempArray;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[FirstViewController archiveLocation]]) {
+		tempArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[FirstViewController archiveLocation]];
+		printf("\nlocal array file exists, has %d records ", [tempArray count]);
+		//printf("\ninit dictionary:%s", [[trackInfoDict description]cString]);
+	}
+    else{ 
+        tempArray=[[NSMutableArray alloc]init ];
+    }
+    return tempArray;
+}
+
+-(void) saveClassArrayLocal{
+	printf("\ncalled save");
+	printf("contents:");
+	/*for(int i=0;i<[classInfoArray count];i++){
+		printf("\n-%s -- %d", [[[stateInfoArray objectAtIndex:i] presetName] cString], [[stateInfoArray objectAtIndex:i] osc1Cent] );
+	}*/
+	BOOL result = [NSKeyedArchiver archiveRootObject:classInfoArray toFile:[FirstViewController archiveLocation]];	
+	if(result)printf(" --save successful");
+	else printf("\nsave UNsuccessful!");
 }
 
 

@@ -15,7 +15,7 @@
 @synthesize studentId;
 @synthesize contactsArray, phoneCallArray;
 @synthesize firstContactInfo;
-
+@synthesize isHappy;
 
 NSString * const STUDENT_ID_KEY = @"id";
 NSString * const FIRST_NAME_KEY = @"first_name";
@@ -27,6 +27,23 @@ NSString * const CONTACTS_KEY = @"contacts";
    self= [super init];
     contactsArray = [[NSMutableArray alloc]init];
     phoneCallArray = [[NSMutableArray alloc]init];
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+	[coder encodeObject:name forKey:@"name"];
+    [coder encodeObject:studentId forKey:@"studentID"];
+    [coder encodeObject:contactsArray forKey:@"contactsArray"];
+    [coder encodeObject:phoneCallArray forKey:@"phoneCallArray"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    if(self=[super init]){
+		name = [[coder decodeObjectForKey:@"name"] retain];
+        studentId = [[coder decodeObjectForKey:@"studentId"] retain];
+        contactsArray = [[coder decodeObjectForKey:@"contactsArray"] retain];
+        phoneCallArray = [[coder decodeObjectForKey:@"phoneCallArray"] retain];
+    }
     return self;
 }
 
@@ -56,5 +73,13 @@ NSString * const CONTACTS_KEY = @"contacts";
         [retVal addObject:[StudentInfo createFromDict:student]];
     }
     return retVal;
+}
+
+- (ContactInfo *) findContactById:(NSNumber *) contactId{
+    for(ContactInfo * curr in contactsArray){
+        if(curr.contactId == contactId)
+            return curr;
+    }
+    return nil;
 }
 @end

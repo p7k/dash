@@ -10,10 +10,13 @@
 #import "StudentInfo.h"
 #import "ContactInfo.h"
 #import "CallTableCell.h"
-#import "CallIntent.h"
+//#import "CallIntent.h"
 #import "StudentInfoViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SecondViewController : UIViewController
+
+-(void)removeInfo:(StudentInfo*)inInfo;
 
 @property (retain) NSMutableArray* callQueue;
 @property (retain) UITableView* tableView;

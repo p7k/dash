@@ -4,8 +4,10 @@
     ~~~~~~
 """
 import datetime
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-from flaskext.wtf import Form, TextField, PasswordField, SubmitField, Email, Required, Length, ValidationError
+from itertools import chain
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, make_response
+from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
+from flaskext.wtf import Email, Required, Length, ValidationError
 from flaskext.sqlalchemy import SQLAlchemy
 from flask.helpers import jsonify
 
@@ -21,6 +23,8 @@ PASSWORD = 'default'
 app = Flask(__name__)
 app.config.from_object(__name__)
 db = SQLAlchemy(app)
+
+DT_FORMAT = r'%Y-%m-%d %H:%M:%S'
 
 # models
 class Student(db.Model):
@@ -42,7 +46,7 @@ class Contact(db.Model):
     phone = db.Column(db.Unicode(20), nullable=False)
     relationship = db.Column(db.Unicode(20), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    call_reports = db.relationship('CallLogEntry', backref='call_log_entries')
+    call_log_entries = db.relationship('CallLogEntry', backref='call_log_entries')
 
     def to_dict(self):
         return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
@@ -58,28 +62,43 @@ class CallLogEntry(db.Model):
     completed_on = db.Column(db.DateTime(), nullable=False)
     status = db.Column(db.Integer(3), nullable=False)
 
+    def to_dict(self):
+        return dict(contact_id=self.contact_id, intent=self.intent, created_on=self.created_on.strftime(DT_FORMAT),
+            attempted_on=self.attempted_on.strftime(DT_FORMAT), completed_on=self.completed_on.strftime(DT_FORMAT),
+            status=self.status)
+
 db.create_all()
 
 # forms
+
 class StudentForm(Form):
-    first_name = TextField("First name", validators=[Required(), Length(min=2, max=20)])
-    last_name = TextField("Last name", validators=[Required(), Length(min=2, max=20)])
-    submit = SubmitField("Save")
+    first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
+    last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
+    submit = SubmitField(u'Save')
 
 
 class ContactForm(Form):
-    first_name = TextField("First name", validators=[Required(), Length(min=2, max=20)])
-    last_name = TextField("Last name", validators=[Required(), Length(min=2, max=20)])
-    email = TextField('Email', validators=[Email()])
-    phone = TextField('Phone', validators=[Required()])
-    relationship = TextField('Relationship', validators=[Required()])
-    submit = SubmitField("Save")
+    first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
+    last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
+    email = TextField(u'Email', validators=[Email()])
+    phone = TextField(u'Phone', validators=[Required()])
+    relationship = TextField(u'Relationship', validators=[Required()])
+    submit = SubmitField(u'Save')
+
+
+class CallLogEntryForm(Form):
+    contact_id = IntegerField(u'Contact id', validators=[Required()])
+    intent = SelectField(u'Intent', choices=[(0, 0), (1, 1)], validators=[Required()])
+    created_on = DateTimeField(u'Created on', format=DT_FORMAT, validators=[Required()])
+    attempted_on = DateTimeField(u'Attempted on', format=DT_FORMAT, validators=[Required()])
+    completed_on = DateTimeField(u'Completed on', format=DT_FORMAT, validators=[Required()])
+    status = SelectField(u'Status', choices=[(200, 200), (300, 300), (400, 400), (500, 500)], validators=[Required()])
 
 
 class LoginForm(Form):
-    username = TextField("Username")
-    password = PasswordField("Password")
-    submit = SubmitField("Login")
+    username = TextField(u'Username')
+    password = PasswordField(u'Password')
+    submit = SubmitField(u'Login')
     
     def validate_username(self, field):
         if field.data != USERNAME:
@@ -114,7 +133,6 @@ def show_student(student_id):
     student = Student.query.filter_by(id=student_id).first_or_404()
     return render_template('show_student.html', student=student, form=form)
 
-
 @app.route('/', methods=['GET', 'POST'])
 def show_class():
     form = StudentForm()
@@ -133,14 +151,37 @@ def show_class():
     students = Student.query.all()
     return render_template('show_class.html', students=students, form=form)
 
-
 @app.route('/api/v1/student')
 def student_resource():
     students = Student.query.all()
     return jsonify(results=[student.to_dict() for student in students])
 
+@app.route('/add_clog_entry', methods=['GET', 'POST'])
+def add_clog_entry():
+    form = CallLogEntryForm()
+    return render_template('post_log.html', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/v1/clog_entry', methods=['POST'])
+def call_log_entry_resource():
+    form = CallLogEntryForm()
+    if form.validate():
+        call_log_entry = CallLogEntry()
+        form.populate_obj(call_log_entry)
+        db.session.add(call_log_entry)
+        db.session.commit()
+        return 201
+    else:
+        abort(400)
+
+@app.route('/api/v1/clog', methods=['GET', 'POST'])
+def call_log_resource():
+    student_id = request.args.get('student_id')
+    if not student_id:
+        abort(400)
+    student = Student.query.filter_by(id=student_id).first_or_404()
+    call_log_entries = chain(*(contact.call_log_entries for contact in student.contacts))
+    return jsonify(results=[call_log_entry.to_dict() for call_log_entry in call_log_entries])
+
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -148,7 +189,6 @@ def login():
         flash('You were logged in')
         return redirect(url_for('show_class'))
     return render_template('login.html', form=form)
-
 
 @app.route('/logout')
 def logout():
@@ -158,19 +198,24 @@ def logout():
 
 
 
-
 def gen_fixtures():
     student1 = Student(first_name='John', last_name='Doe', contacts=[
         Contact(first_name='Foo', last_name='Doe', phone='555-123-4567', email='foo.doe@example.com', relationship='dad'),
         Contact(first_name='Bar', last_name='Doe', phone='555-321-7654', email='bar.doe@example.com', relationship='mom'),
         ])
-    student2 = Student(first_name='Jane', last_name='Smith', contacts=[
-        Contact(first_name='Dash', last_name='Smith', phone='555-123-4567', email='dash.smith@example.com', relationship='dad'),
-        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com', relationship='mom'),
-        ])
+    contact_with_log = Contact(first_name='Dash', last_name='Smith', phone='555-123-4567',
+        email='dash.smith@example.com', relationship='dad', call_log_entries=[
+        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=200),
+        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=300),
+        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=400),
+        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=500)])
+    student2 = Student(first_name='Jane', last_name='Smith', contacts=[contact_with_log,
+        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com',
+            relationship='mom')])
     db.session.add(student1)
     db.session.add(student2)
     db.session.commit()
+
 
 if __name__ == '__main__':
     db.create_all()

@@ -26,4 +26,5 @@
 @property(retain) UIButton* callButton;
 @property (assign) StudentInfo* myStudentInfo;
 @property (assign) FirstViewController* parentVC;
+@property (retain) UIView* successView;
 @end

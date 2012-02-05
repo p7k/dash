@@ -18,6 +18,7 @@
 @synthesize tabBarController = _tabBarController;
 
 
+
 - (void)dealloc
 {
     [_window release];
@@ -81,6 +82,9 @@
      See also applicationDidEnterBackground:.
      */
 }
+
+
+
 
 /*
 // Optional UITabBarControllerDelegate method.

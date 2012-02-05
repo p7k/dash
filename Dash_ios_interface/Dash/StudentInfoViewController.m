@@ -22,48 +22,86 @@
 -(id)init{
     self = [super init];
     printf("\ncreate studentVC");
-     [super viewDidLoad];
+    
+    
+
+                                    
+    
+     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     
     dateFormatter = [[NSDateFormatter alloc]init];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
 	[dateFormatter retain];
     
-    [self.view setBackgroundColor:[UIColor lightGrayColor]];
+    UIView* underNotesView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40+90)];
+    underNotesView.backgroundColor=[UIColor blackColor];
+    underNotesView.layer.shadowColor = [UIColor blackColor].CGColor;
+    underNotesView.layer.shadowOpacity = 1.0;
+    underNotesView.layer.shadowRadius = 5.0;
+    underNotesView.layer.shadowOffset = CGSizeMake(5, 5);
+    underNotesView.clipsToBounds = NO; 
+    [self.view addSubview:underNotesView];
+    
+    headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
+    headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+    [self.view addSubview:headerView];
+    
+   
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
-	backButton.frame = CGRectMake(10, 10, 60, 40);
+	backButton.frame = CGRectMake(10, 5, 60, 30);
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
-    backButton.backgroundColor = [UIColor blueColor];
-    [self.view addSubview:backButton];
-    //[self.navigationItem setLeftBarButtonItem:backButton];
+    backButton.backgroundColor = [UIColor grayColor ];
+    backButton.layer.cornerRadius=4;
+    [headerView addSubview:backButton];
     
-   topLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 320, 60)];
-    topLabel.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:topLabel];
+   topLabel = [[UILabel alloc]initWithFrame:CGRectMake(70, 5, 180, 30)];
+    topLabel.textColor = [UIColor whiteColor];
+    topLabel.textAlignment = UITextAlignmentCenter;
+    topLabel.backgroundColor = [UIColor clearColor];
+    [headerView addSubview:topLabel];
+    
+   
+    notesView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 90)];
+    notesView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:notesView];
     
     //TODO INFO
     
     NSArray* segItems = [NSArray arrayWithObjects:@"Contact Info",@"Call Log", nil];
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segItems];
     segmentedControl.selectedSegmentIndex=0;
-    segmentedControl.frame=CGRectMake(10,160, 300, 40);
+    segmentedControl.frame=CGRectMake(20,170, 280, 40);
     [segmentedControl addTarget:self action:@selector(segDown) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:segmentedControl];
     
-    contactTableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 200, 300, 200)];// style:<#(UITableViewStyle)#>
+    UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];
+    underPadView.backgroundColor=[UIColor blackColor];
+    underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+    underPadView.layer.shadowOpacity = 1.0;
+    underPadView.layer.shadowRadius = 5.0;
+    underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+    underPadView.clipsToBounds = NO; 
+    [self.view addSubview:underPadView];
+    
+    contactTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
     contactTableView.dataSource=self;
     contactTableView.delegate = self;
     [self.view addSubview:contactTableView];
     
-    callLogTableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 200, 300, 200)];// style:<#(UITableViewStyle)#>
+    callLogTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
     callLogTableView.dataSource=self;
     callLogTableView.delegate = self;
     [self.view addSubview:callLogTableView];
     callLogTableView.hidden=YES;
    
     return self;
+}
+-(id)initWithStudentInfo:(StudentInfo*) inInfo{
+    studentInfo = inInfo;
+    return [self init];
 }
 
 -(void)segDown{
@@ -202,13 +240,20 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // we may not need to do this if there's already some call logs. Let's deal with that case later
+    NSError *error = nil;
+    NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog?student_id=%@", studentInfo.studentId];
+    NSURL *url = [NSURL URLWithString:urlEndpoint];
+    NSString *callsJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
+    
+    [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson withStudentInfo:studentInfo]];
 }
-*/
 
 - (void)viewDidUnload
 {

@@ -12,35 +12,35 @@
 
 +(UIColor*)theHappyColor{
 	if(!theHappyColor){
-		theHappyColor=[UIColor colorWithRed:.1922 green:.8 blue:0 alpha:1];
+		theHappyColor=[UIColor colorWithRed:.5 green:.9 blue:.5 alpha:1];
 		[theHappyColor retain];
 	}
 	return theHappyColor;
 }
 
-+(UIColor*)theHappyHighlightColor{
+/*+(UIColor*)theHappyHighlightColor{
 	if(!theHappyHighlightColor){
 		theHappyHighlightColor=[UIColor colorWithRed:.8 green:.196 blue:.3 alpha:1];//puple+.3 was too gray
 		[theHappyHighlightColor retain];
 	}
 	return theHappyHighlightColor;
-}
+}*/
 
 +(UIColor*)theSadColor{
 	if(!theSadColor){
-		theSadColor=[UIColor colorWithRed:.8 green:.8 blue:.1569 alpha:1];
+		theSadColor=[UIColor colorWithRed:.9 green:.5 blue:.5 alpha:1];
 		[theSadColor retain];
 	}
 	return theSadColor;
 }
 
-+(UIColor*)theSadHighlightColor{
+/*+(UIColor*)theSadHighlightColor{
 	if(!theSadHighlightColor){
 		theSadHighlightColor=[UIColor colorWithRed:.5 green:.4 blue:0 alpha:1];//puple+.3 was too gray
 		[theSadHighlightColor retain];
 	}
 	return theSadHighlightColor;
-}
+}*/
 
 +(UIColor*)theCallNowColor{
 	if(!theCallNowColor){
@@ -52,19 +52,54 @@
 
 +(UIImage*)happyImage{
     if(!happyImage){
-		happyImage=[UIImage imageNamed:@"happyIcon.png"];
+		happyImage=[UIImage imageNamed:@"Happy_Face_icon.png"];
 		[happyImage retain];
 	}
 	return happyImage;
 }
 
++(UIImage*)happyHighlightImage{
+    if(!happyHighlightImage){
+		happyHighlightImage=[UIImage imageNamed:@"Happy_Face_Activated_Icon.png"];
+		[happyHighlightImage retain];
+	}
+	return happyHighlightImage;
+}
+
 +(UIImage*)sadImage{
     if(!sadImage){
-		sadImage=[UIImage imageNamed:@"happyIcon.png"];
+		sadImage=[UIImage imageNamed:@"Sad_Face_icon.png"];
 		[sadImage retain];
 	}
 	return sadImage;
 }
+
++(UIImage*)sadHighlightImage{
+    if(!sadHighlightImage){
+		sadHighlightImage=[UIImage imageNamed:@"Sad_Face_Icon_Activated.png"];
+		[sadHighlightImage retain];
+	}
+	return sadHighlightImage;
+}
+
++(UIImage*)phoneImage{
+    if(!phoneImage){
+		phoneImage=[UIImage imageNamed:@"Call_Button.png"];
+		[phoneImage retain];
+	}
+	return phoneImage;
+}
+
+
++(UIImage*)cellBackgroundImage{
+    if(!cellBackgroundImage){
+		cellBackgroundImage=[UIImage imageNamed:@"cellBackground.png"];
+		[cellBackgroundImage retain];
+	}
+	return cellBackgroundImage;
+}
+
+
 
 
 

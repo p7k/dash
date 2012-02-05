@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "StudentInfo.h " 
-
+//#import "StudentInfo.h "
+#import <QuartzCore/QuartzCore.h>
+#import "SecondViewController.h"
 @class StudentInfo;
+
 @interface PostCallViewController : UIViewController{
     UILabel* topLabel;
+    UIView* headerView;
     UIButton* viewButtons[4];
 }
 @property(retain) StudentInfo* studentInfo;
