@@ -91,6 +91,8 @@ NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     for(NSDictionary *call in [responseDict objectForKey:CALL_RESULTS_KEY]){ 
         [retVal addObject:[PhoneCall createFromDict:call withStudentInfo:student]];
     }
+    // reverse the array so latest comes first
+    retVal = [[retVal reverseObjectEnumerator] allObjects];
     return retVal;
 }
 

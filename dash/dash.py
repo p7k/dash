@@ -156,7 +156,7 @@ def add_clog_entry():
     form = CallLogEntryForm()
     return render_template('post_log.html', form=form)
 
-@app.route('/api/v1/clog_entry', methods=['POST', 'GET'])
+@app.route('/api/v1/clog_entry', methods=['POST'])
 def call_log_entry_resource():
     params = request.json
     form = CallLogEntryForm(csrf_enabled=False, formdata=MultiDict(params))
@@ -216,6 +216,47 @@ def gen_fixtures():
     db.session.add(student2)
     db.session.commit()
 
+def xlsx_import():
+    from openpyxl.reader.excel import load_workbook
+
+    wb = load_workbook(filename = r'/Users/pkatsev/Downloads/Administrative PS Export.xlsx')
+    ws = wb.worksheets[0]
+
+    def split_fullname(fullname):
+        res = dict(last_name='', first_name='')
+        if not fullname:
+            return res
+        splits = fullname.split(',')
+        if len(splits) < 2:
+            return res
+        return dict(zip(['last_name', 'first_name'], [name.strip() for name in fullname.split(',')]))
+
+    headers = [c.value for c in ws.rows[0]]
+    for row in ws.rows[1:]:
+        record = dict(zip(headers, [c.value for c in row]))
+        student = dict(first_name=record['First Name'], last_name=record['Last Name'])
+        father_home = dict(phone=record['Father Home Phone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
+        father_cell = dict(phone=record['Fathercellphone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
+        father_day = dict(phone=record['Fatherdayphone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
+        mother_home = dict(phone=record['Mother Home Phone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
+        mother_cell = dict(phone=record['Mothercellphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
+        mother_day = dict(phone=record['Motherdayphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
+
+        with app.test_request_context():
+            sf = StudentForm(formdata=MultiDict(student), csrf_enabled=False)
+            if sf.validate():
+                s = Student()
+                sf.populate_obj(s)
+                db.session.add(s)
+
+                for contact in [father_home, father_cell, father_day, mother_home, mother_cell, mother_day]:
+                    cf = ContactForm(formdata=MultiDict(contact), csrf_enabled=False)
+                    if cf.validate():
+                        c = Contact()
+                        cf.populate_obj(c)
+                        db.session.add(c)
+
+                db.session.commit()
 
 if __name__ == '__main__':
     db.create_all()
