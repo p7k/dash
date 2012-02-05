@@ -4,6 +4,7 @@
     ~~~~~~
 """
 import datetime
+import os
 import re
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.sqlalchemy import SQLAlchemy
@@ -14,12 +15,17 @@ from flask.wrappers import Response
 from werkzeug.datastructures import MultiDict
 
 # configuration
+from werkzeug.utils import secure_filename
+
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
+#UPLOAD_FOLDER = 'upload'
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
+ALLOWED_EXTENSIONS = {'xlsx'}
 
 # create our little application :)
 app = Flask(__name__)
@@ -198,7 +204,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
 def gen_fixtures():
     student1 = Student(first_name='John', last_name='Doe', contacts=[
         Contact(first_name='Foo', last_name='Doe', phone='555-123-4567', email='foo.doe@example.com', relationship='dad'),
@@ -217,10 +222,13 @@ def gen_fixtures():
     db.session.add(student2)
     db.session.commit()
 
-def xlsx_import(safe_phone=True):
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def xlsx_import(filename, safe_phone=True):
     from openpyxl.reader.excel import load_workbook
 
-    wb = load_workbook(filename = r'/Users/pkatsev/Downloads/Administrative PS Export.xlsx')
+    wb = load_workbook(filename)
     ws = wb.worksheets[0]
 
     def split_fullname(fullname):
@@ -258,13 +266,27 @@ def xlsx_import(safe_phone=True):
                         cf.populate_obj(c)
                         if safe_phone:
                             if isinstance(c.phone, basestring):
-                                c.phone = re.sub(r'[0-9]{3}', '555', c.phone, 1)
+                                c.phone = re.sub(r'[0-9]', '5', c.phone, 3)
                         s.contacts.append(c)
                     else:
                         app.logger.debug(cf.errors)
                 if len(s.contacts) > 0:
                     db.session.add(s)
                     db.session.commit()
+
+
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            xlsx_import(filename)
+            flash('Your file has been imported')
+            return redirect(url_for('show_class'))
+    flash('Something went south with your upload')
+    return redirect(url_for('show_class'))
 
 if __name__ == '__main__':
     db.create_all()
