@@ -4,9 +4,9 @@ a		       { color: lightgray; text-decoration: none }
 h2		       { color: darkslategray; }
 h1, h2          { font-family: 'Georgia', serif; margin: 0; }
 h1              { border-bott om: 2px solid #eee; }
-h2              { font-size: 30px; }
+h2              { font-size: 30px;	text-shadow: 1px 1px 1px white; }
 
-.page           { margin: 200px auto; width: 35em; border: 2px solid black;
+.page           { margin: 150px auto; width: 35em; border: 2px solid black;
                   padding: 0.8em; background: rgba(250, 250, 250, 0.2);
  				  box-shadow: 0 0 20px 5px black; border-radius:20px}
 .entries        { list-style: none; margin: 0; padding: 0; }
@@ -22,8 +22,8 @@ h2              { font-size: 30px; }
 			               darkslategray);
 			       background: -webkit-gradient(
 			               linear, left top, left bottom,
-			               from(#6d84a2),
-			               to(#b0bccd));
+			               from(gray),
+			               to(darkslategray));
 			       border-radius: 3px;
 			       -moz-border-radius: 3px;
 			       -webkit-border-radius: 3px;
@@ -43,11 +43,16 @@ h2              { font-size: 30px; }
 					             top,
 					             black 0%,
 					             darkslategray);
+							background: -webkit-gradient(
+					           linear, left top, left bottom,
+				               from(gray),
+				               to(darkslategray));
+							color: white;
 						}	
-.entries li h2  { margin-left: 1em; }
+.entries li h2  { margin-left: 1em; text-shadow: 1px 1px 1px black; }
 .add-entry      { font-size: 1.3em; border-bottom: 3px solid black; }
 .add-entry dl   { font-weight: bold; }
-.metanav        { text-align: left; font-size: 1.1em; padding: 0.5em;
+.metanav        { text-align: center; font-size: 1.1em; padding: 0.5em;
                   margin: 10px 0 10px; background: black; border-bottom:thin solid white; 
 				box-shadow:0px 3px 10px 1px black; border-radius:10px 10px 0 0;}
 .flash          { background: #CEE5F5; padding: 0.5em;
@@ -62,10 +67,12 @@ input			{
 				background: rgba(0,0,0,.5);
 				font-size:1.3em;
 				color:white;
+				box-shadow: 0 1px 1px 1px black inset;
+				width:100%;
 				}
-input:hover		{box-shadow: 0 0 5px 5px white;}
+input:hover		{box-shadow: 0 1px 1px 1px black inset,  0 0 2px 2px white;}
 
-label			{ margin:0 10px 0 0;}
+label			{ margin:0 10px 0 0; text-shadow:1px 1px 1px white; }
 
 #nav {
 	background:black;
@@ -103,4 +110,7 @@ label			{ margin:0 10px 0 0;}
 	font-size:24px;
 }
 
+.navlogo{
+	height:50px;
+}
 
