@@ -9,7 +9,7 @@
 #import "PostCallViewController.h"
 #import "StudentInfo.h"
 @implementation PostCallViewController
-@synthesize studentInfo;
+@synthesize studentInfo, parentVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -83,13 +83,14 @@
     
     //if this call was triggered from the playlist view controller, remove call from that list
     //printf("\n parentVC exists? %d", [self parentViewController]);
+    //printf("\nselected VC index %d", [[self parentViewController] selectedIndex ] );
     
-    if( [[[self parentViewController] selectedViewController ]respondsToSelector:@selector(removeInfo:)] ){
+    //if( [[self parentViewController] selectedIndex ]==1) {//espondsToSelector:@selector(removeInfo:)] ){
     //if( [[self parentViewController] isClass:[SecondViewController class]] ){
         
-        printf(" ..and responds!");
-        [[[self parentViewController] selectedViewController] removeInfo:studentInfo];
-    }
+        //printf(" ..and responds!");
+      if(parentVC!=nil)  [parentVC removeInfo:studentInfo];
+    //}
     
     
     PhoneCall *newCall = [[PhoneCall alloc] init];
