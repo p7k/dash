@@ -62,7 +62,8 @@ NSString * const CALL_RESULTS_KEY = @"results";
     PhoneCall *retVal = [[PhoneCall alloc] init];
     [retVal setCallReport:(NSNumber *)[input objectForKey:STATUS_KEY]];
     [retVal setCallIntent:(NSNumber *)[input objectForKey:INTENT_KEY]];
-    [retVal setCallDate:[formatter dateFromString:(NSString *)[input objectForKey:CREATED_ON_KEY]]];
+    NSString *theDate = (NSString *)[input objectForKey:CREATED_ON_KEY];
+    [retVal setCallDate:[formatter dateFromString:theDate]];
     // set contact info here, by searching student
     // need to set studentinfo for the phone call
     [retVal setContactInfo: [student findContactById: (NSNumber*) [input objectForKey:PHONE_CALL_CONTACT_ID_KEY]]];
