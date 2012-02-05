@@ -4,15 +4,19 @@
     <form action="{{ url_for('show_class') }}" method=post class=add-entry>
         {{ form.hidden_tag() }}
       <dl>
-          <dt>{{ form.first_name.label }}:
-          <dd>{{ form.first_name }}
+          <h2 style="text-align:center;"> Add New Students </h2>
+		  <dt>{{ form.first_name.label }}:
+          {{ form.first_name }} </dt>
           <dt>{{ form.last_name.label }}:
-          <dd>{{ form.last_name }}
+          {{ form.last_name }}</dt>
           <dd>{{ form.submit }}
       </dl>
     </form>
-  {% endif %}
+
+ 	<div style="display:block; margin: 15px 0 0 0;"><h2 style="text-align:center;"> Class Roster </h2></div>
+  
   <ul class=entries>
+
   {% for student in students %}
     <li>
       <a href="{{ url_for('show_student', student_id=student.id)}}">{{ student.first_name }} {{ student.last_name }}</a>
@@ -20,4 +24,5 @@
     <li><em>Unbelievable.  No students here so far</em>
   {% endfor %}
   </ul>
+  {% endif %}
 {% endblock %}
