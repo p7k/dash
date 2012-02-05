@@ -105,12 +105,18 @@ NSString* _archiveLocation;
 
     
     [self.view addSubview:headerView];
-    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 280, 40)];
+   /* UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 280, 40)];
     dashTitleLabel.textAlignment = UITextAlignmentCenter;
     dashTitleLabel.text = @"dash";
     dashTitleLabel.backgroundColor = [UIColor clearColor];    //[UIColor grayColor];
     dashTitleLabel.textColor = [UIColor whiteColor];
     [headerView addSubview:dashTitleLabel];
+    */
+    
+    UIImageView* titleImageView = [[UIImageView alloc]initWithImage:[DashConstants titleImage]];
+    titleImageView.frame =CGRectMake(104, 5, 72, 30);
+    [headerView addSubview:titleImageView];
+    
     
     sortTableButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sortTableButton.frame = CGRectMake(200, 5, 50,30);
@@ -129,6 +135,30 @@ NSString* _archiveLocation;
     
     
 }
+//doesn't actually remove, just resets mood, called from othercontroller. really hack-y!
+-(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
+   // printf("\nremove %s", [[inInfo name] cString])  ;
+    //StudentInfo* foundStudentInfo=nil;
+   // for(StudentInfo* currStudentInfo in classInfoArray){
+    int foundStudentIndex=-1;
+    for(int i=0;i<[classInfoArray count];i++){  
+        StudentInfo* currStudentInfo = [classInfoArray objectAtIndex:i];
+        if(currStudentInfo==inInfo){
+            foundStudentIndex = i;
+        }
+    }
+    if(foundStudentIndex!=-1){
+       // printf("found %d ", foundStudentIndex);
+        int pathArray[2]={0,foundStudentIndex};
+        NSIndexPath* path = [NSIndexPath indexPathWithIndexes:pathArray length:2];
+        //NSString *CellPersIDString = [foundStudentInfo name];
+        //ClassroomTableCell* cell = [classroomTableView dequeueReusableCellWithIdentifier:CellPersIDString];
+        UITableViewCell* cell = [classroomTableView cellForRowAtIndexPath:path];
+       // printf(" cell? %d", cell);
+        [cell resetMood];
+    }
+    
+}    
 
 //search bar delegate
 -(void)searchBarCancelButtonClicked:(UISearchBar*)inBar{
@@ -182,6 +212,7 @@ NSString* _archiveLocation;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	//printf("\ncalled !LISTwillDisplay");
 	//cell.backgroundColor = [UI//[MBConstants theRedColor];
+   // cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientImage]];
 	
 }
 
@@ -219,8 +250,9 @@ NSString* _archiveLocation;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
 		int newIndex = [indexPath indexAtPosition:1];
         
-        StudentInfoViewController *nextController = [[StudentInfoViewController alloc] 
-                                initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
+                               // initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+    [nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
 
     [self presentModalViewController:nextController animated:YES];
       
