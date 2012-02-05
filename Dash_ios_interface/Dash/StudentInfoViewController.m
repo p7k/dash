@@ -30,7 +30,7 @@
     NSURL *url = [NSURL URLWithString:urlEndpoint];
     NSString *callsJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
     
-    [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson]];
+    [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson withStudentInfo:studentInfo]];
                                     
     
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];

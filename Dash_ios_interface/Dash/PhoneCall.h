@@ -23,5 +23,5 @@
 @property (retain) NSNumber* callIntent;
 
 -(NSString *)toJson;
-+(NSMutableArray *) createCallListFromJson:(NSString *) input;
++ (NSMutableArray *) createCallListFromJson:(NSString *) input withStudentInfo:(StudentInfo*)student;
 @end
