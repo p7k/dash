@@ -31,6 +31,7 @@ NSString * const PHONE_CALL_CONTACT_ID_KEY = @"contact_id";
     [formatter release];
     
     return [outputDict JSONString];
+}
 
 
 - (void)encodeWithCoder:(NSCoder *)coder {
