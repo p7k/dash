@@ -4,6 +4,7 @@
     ~~~~~~
 """
 import datetime
+import re
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
@@ -216,7 +217,7 @@ def gen_fixtures():
     db.session.add(student2)
     db.session.commit()
 
-def xlsx_import():
+def xlsx_import(safe_phone=True):
     from openpyxl.reader.excel import load_workbook
 
     wb = load_workbook(filename = r'/Users/pkatsev/Downloads/Administrative PS Export.xlsx')
@@ -255,6 +256,9 @@ def xlsx_import():
                     if cf.validate():
                         c = Contact()
                         cf.populate_obj(c)
+                        if safe_phone:
+                            if isinstance(c.phone, basestring):
+                                c.phone = re.sub(r'[0-9]{3}', '555', c.phone, 1)
                         s.contacts.append(c)
                     else:
                         app.logger.debug(cf.errors)
