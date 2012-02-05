@@ -76,6 +76,7 @@ NSString* _archiveLocation;
     
     //on successful pull, save to local
     [self saveClassArrayLocal];
+<<<<<<< HEAD
     }
     
             /*  still need to figure out how to do calls
@@ -87,6 +88,9 @@ NSString* _archiveLocation;
              
              */
     
+=======
+
+>>>>>>> 446bfa24aae21da3f1df188ea8f086e4800388b9
     //search bar
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];
     searchBar.showsCancelButton = YES;
