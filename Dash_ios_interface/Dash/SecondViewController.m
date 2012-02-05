@@ -25,8 +25,8 @@
 
     self = [super init ];
     if (self) {
-        self.title = NSLocalizedString(@"Second", @"Second");
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
+        self.title = NSLocalizedString(@"Playlist", @"Playlist");
+        self.tabBarItem.image = [UIImage imageNamed:@"Playlist_Icon.png"];
          self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
         printf("\nview did load");
         
@@ -48,6 +48,15 @@
             [classInfoArray addObject:currInfo];
         }*/
         
+        UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 350)];
+        underPadView.backgroundColor=[UIColor blackColor];
+        underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+        underPadView.layer.shadowOpacity = 1.0;
+        underPadView.layer.shadowRadius = 5.0;
+        underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+        underPadView.clipsToBounds = NO; 
+        [self.view addSubview:underPadView];
+
         
         //interface
         UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
@@ -63,14 +72,10 @@
       
         
         
-        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 350)];
+        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
         tableView.dataSource = self;
         tableView.delegate = self;
-        tableView.layer.shadowColor = [UIColor blackColor].CGColor;
-        tableView.layer.shadowOpacity = 1.0;
-        tableView.layer.shadowRadius = 5.0;
-        tableView.layer.shadowOffset = CGSizeMake(5, 5);
-        tableView.clipsToBounds = NO;  
+        
         [self.view addSubview:tableView];
         
         

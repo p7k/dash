@@ -15,27 +15,39 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self.view setBackgroundColor:[UIColor lightGrayColor]];
+        //[self.view setBackgroundColor:[UIColor lightGrayColor]];
+         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
+        UIView* underNotesView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
+        underNotesView.backgroundColor=[UIColor blackColor];
+        underNotesView.layer.shadowColor = [UIColor blackColor].CGColor;
+        underNotesView.layer.shadowOpacity = 1.0;
+        underNotesView.layer.shadowRadius = 5.0;
+        underNotesView.layer.shadowOffset = CGSizeMake(5, 5);
+        underNotesView.clipsToBounds = NO; 
+        [self.view addSubview:underNotesView];
         
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        //[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
-        backButton.frame = CGRectMake(10, 10, 60, 40);
-        [backButton setTitle:@"Back" forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
-        backButton.backgroundColor = [UIColor blueColor];
-        [self.view addSubview:backButton];
-        //[self.navigationItem setLeftBarButtonItem:backButton];
+        headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
+        headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+        [self.view addSubview:headerView];
         
-        topLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, 320, 60)];
-        topLabel.backgroundColor = [UIColor grayColor];
-        [self.view addSubview:topLabel];
+               
+       topLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 260, 30)];
+        topLabel.textColor = [UIColor whiteColor];
+        topLabel.textAlignment = UITextAlignmentCenter;
+        topLabel.backgroundColor = [UIColor clearColor];
+        [headerView addSubview:topLabel];
+
+        
+        
+        
+       
         
         NSString* buttonStrings[4]={@"Completed Contact", @"Left Message", @"Kept Ringing", @"Disconnected"};
         for(int i=0;i<4;i++){
             viewButtons[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect ];
             viewButtons[i].frame=CGRectMake(20, 80+i*80, 280, 60);
             [viewButtons[i] setTitle:buttonStrings[i] forState:UIControlStateNormal];
-            //[viewButtons[i] addTarget:self action:@selector(viewButtonDown:) forControlEvents:UIControlEventDown];
+            [viewButtons[i] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
             [self.view addSubview:viewButtons[i]];
         }
             

@@ -12,7 +12,20 @@
 @synthesize searchBar, classroomTableView, headerView, classInfoArray;
 @synthesize otherController;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+NSString* _archiveLocation; 
++ (NSString*)archiveLocation{
+	if (_archiveLocation == nil)
+	{
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];
+		_archiveLocation = [[documentsDirectory stringByAppendingPathComponent:@"PresetsDict.ar"] retain];       
+		//printf("\ntemp= %s ", [_archiveLocation cString]);
+	}
+	return _archiveLocation;
+}
+
+
+/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -20,14 +33,14 @@
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
     }
     return self;
-}
+}*/
 
 - (id)init{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 
     self = [super init];//initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first.png"];
+        self.title = NSLocalizedString(@"Roster", @"Roster");
+        self.tabBarItem.image = [UIImage imageNamed:@"Roster_icon.png"];
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     }
     return self;
@@ -48,13 +61,20 @@
 	// Do any additional setup after loading the view, typically from a nib.
     printf("\nview did load");
     
+    //first, read classInfoArray from local copy before internet sync
+    
+    classInfoArray = [self loadClassArrayLocal];
+    
     // request data from the api
     NSError * error = nil;
     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
     
     classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
-            
+    
+    //on successful pull, save to local
+    [self saveClassArrayLocal];
+    
             /*  still need to figure out how to do calls
             
             PhoneCall* phoneCall = [[PhoneCall alloc]init];
@@ -73,32 +93,46 @@
     searchBar.translucent = YES;
     [self.view addSubview:searchBar];
     
+    
+    
+    
+    UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 340)];
+    underPadView.backgroundColor=[UIColor blackColor];
+    underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
+    underPadView.layer.shadowOpacity = 1.0;
+    underPadView.layer.shadowRadius = 5.0;
+    underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+    underPadView.clipsToBounds = NO; 
+    [self.view addSubview:underPadView];
+    
+    
     //interface
-   // headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
-    //headerView.backgroundColor = [UIColor grayColor];
-    //[self.view addSubview:headerView];
-    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+     headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+    headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+
+    
+    [self.view addSubview:headerView];
+    UILabel *dashTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 280, 40)];
     dashTitleLabel.textAlignment = UITextAlignmentCenter;
     dashTitleLabel.text = @"dash";
-    dashTitleLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
-    //[UIColor grayColor];
-    [self.view addSubview:dashTitleLabel];
+    dashTitleLabel.backgroundColor = [UIColor clearColor];    //[UIColor grayColor];
     dashTitleLabel.textColor = [UIColor whiteColor];
-    //[headerView addSubview:dashTitleLabel];
+    [headerView addSubview:dashTitleLabel];
     
-   
+    sortTableButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    sortTableButton.frame = CGRectMake(200, 5, 50,30);
+    sortTableButton.backgroundColor = [UIColor grayColor];
+    [sortTableButton setTitle:@"sort" forState:UIControlStateNormal];
+    sortTableButton.layer.cornerRadius=4;
+    [headerView addSubview:sortTableButton];
     
     
     classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 100, 280, 300)];
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
-    classroomTableView.layer.shadowColor = [UIColor blackColor].CGColor;
-    classroomTableView.layer.shadowOpacity = 1.0;
-    classroomTableView.layer.shadowRadius = 5.0;
-    classroomTableView.layer.shadowOffset = CGSizeMake(5, 5);
-    classroomTableView.clipsToBounds = NO;    
+     
     [self.view addSubview:classroomTableView];
-    
+   
     
     
 }
@@ -184,7 +218,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	return 80;
+	return 40;
 	
 	
 }
@@ -196,10 +230,32 @@
     [nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];  
     [self presentModalViewController:nextController animated:YES];
       
-    
         
-        
-        
+}
+
+
+-(NSMutableArray*) loadClassArrayLocal{
+    NSMutableArray* tempArray;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[FirstViewController archiveLocation]]) {
+		tempArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[FirstViewController archiveLocation]];
+		printf("\nlocal array file exists, has %d records ", [tempArray count]);
+		//printf("\ninit dictionary:%s", [[trackInfoDict description]cString]);
+	}
+    else{ 
+        tempArray=[[NSMutableArray alloc]init ];
+    }
+    return tempArray;
+}
+
+-(void) saveClassArrayLocal{
+	printf("\ncalled save");
+	printf("contents:");
+	/*for(int i=0;i<[classInfoArray count];i++){
+		printf("\n-%s -- %d", [[[stateInfoArray objectAtIndex:i] presetName] cString], [[stateInfoArray objectAtIndex:i] osc1Cent] );
+	}*/
+	BOOL result = [NSKeyedArchiver archiveRootObject:classInfoArray toFile:[FirstViewController archiveLocation]];	
+	if(result)printf(" --save successful");
+	else printf("\nsave UNsuccessful!");
 }
 
 

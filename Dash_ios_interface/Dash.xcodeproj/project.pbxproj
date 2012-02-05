@@ -20,6 +20,8 @@
 		DC16527914DDE2CE0063934A /* Search_Box.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526C14DDE2CE0063934A /* Search_Box.png */; };
 		DC16527A14DDE2CE0063934A /* Search_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526D14DDE2CE0063934A /* Search_delete_button.png */; };
 		DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526E14DDE2CE0063934A /* Search_Icon.png */; };
+		DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */; };
+		DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */; };
 		DCABBE8614DD784A0007409B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8514DD784A0007409B /* UIKit.framework */; };
 		DCABBE8814DD784A0007409B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8714DD784A0007409B /* Foundation.framework */; };
 		DCABBE8A14DD784A0007409B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8914DD784A0007409B /* CoreGraphics.framework */; };
@@ -63,6 +65,8 @@
 		DC16526C14DDE2CE0063934A /* Search_Box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_Box.png; path = graphics/Search_Box.png; sourceTree = "<group>"; };
 		DC16526D14DDE2CE0063934A /* Search_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_delete_button.png; path = graphics/Search_delete_button.png; sourceTree = "<group>"; };
 		DC16526E14DDE2CE0063934A /* Search_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_Icon.png; path = graphics/Search_Icon.png; sourceTree = "<group>"; };
+		DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Roster_icon.png; path = graphics/Roster_icon.png; sourceTree = "<group>"; };
+		DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Playlist_Icon.png; path = graphics/Playlist_Icon.png; sourceTree = "<group>"; };
 		DCABBE8114DD784A0007409B /* Dash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCABBE8514DD784A0007409B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCABBE8714DD784A0007409B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -128,6 +132,8 @@
 		DC16526014DDE2AA0063934A /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */,
+				DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */,
 				DC16526214DDE2CE0063934A /* Background.png */,
 				DC16526314DDE2CE0063934A /* Call_Button.png */,
 				DC16526414DDE2CE0063934A /* Dash_Main_GUI_sliced.psd */,
@@ -299,6 +305,8 @@
 				DC16527914DDE2CE0063934A /* Search_Box.png in Resources */,
 				DC16527A14DDE2CE0063934A /* Search_delete_button.png in Resources */,
 				DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */,
+				DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */,
+				DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

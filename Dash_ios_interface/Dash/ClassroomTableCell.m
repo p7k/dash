@@ -20,19 +20,19 @@
 @synthesize successView;
 
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 80 high, 280 wide
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high, 280 wide
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         studentNameLabel = [[UILabel alloc]init ];
-        studentNameLabel.frame = CGRectMake(40, 0, 320, 20);
+        studentNameLabel.frame = CGRectMake(30, 0, 130, 20);
         studentNameLabel.textAlignment = UITextAlignmentLeft;
        
         studentNameLabel.backgroundColor = [UIColor clearColor];//[ UIColor    lightGrayColor];
         [self addSubview:studentNameLabel];
         
          firstContactNameLabel = [[UILabel alloc]init ];
-        firstContactNameLabel.frame =  CGRectMake(20, 20, 260, 20);
+        firstContactNameLabel.frame =  CGRectMake(30, 20, 130, 20);
         firstContactNameLabel.textAlignment = UITextAlignmentRight;
          firstContactNameLabel.textColor = [UIColor grayColor];
         firstContactNameLabel.backgroundColor = [UIColor clearColor];
@@ -42,7 +42,7 @@
         [self addSubview:successView]; 
         
         sadButton= [UIButton buttonWithType:UIButtonTypeCustom];
-        sadButton.frame = CGRectMake(30, 40, 40, 40);
+        sadButton.frame = CGRectMake(160, 0, 40, 40);
         sadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         sadButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
         sadButton.contentMode = UIViewContentModeScaleToFill;
@@ -56,7 +56,7 @@
 
         
         happyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        happyButton.frame = CGRectMake(110, 40, 40, 40);
+        happyButton.frame = CGRectMake(160+40, 0, 40, 40);
         // happyButton.layer.borderColor = [[UIColor blackColor] CGColor];
         happyButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         happyButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
@@ -70,7 +70,7 @@
         [self addSubview:happyButton];
         
         callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        callButton.frame = CGRectMake(180, 40, 100, 40);
+        callButton.frame = CGRectMake(160+80, 0, 40, 40);
         [callButton setTitle:@"call now" forState:UIControlStateNormal];
         callButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         callButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
