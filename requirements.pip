@@ -7,4 +7,5 @@ WTForms==0.6.3
 Werkzeug==0.8.2
 ipdb==0.6.1
 ipython==0.12
+openpyxl==1.5.7
 wsgiref==0.1.2
