@@ -281,8 +281,9 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            xlsx_import(filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            xlsx_import(filepath)
             flash('Your file has been imported')
             return redirect(url_for('show_class'))
     flash('Something went south with your upload')
