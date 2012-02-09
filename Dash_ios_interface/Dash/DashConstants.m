@@ -128,4 +128,14 @@
 	}
 	return cellGradientSadImage;
 }
-@end
+
++(NSDateFormatter*)dateFormatter{
+    if(!dateFormatter){
+        dateFormatter = [[NSDateFormatter alloc]init];
+        [dateFormatter setDateFormat:@"MMM d, h:mm a"];
+        [dateFormatter retain];
+    }
+    return dateFormatter;
+}
+
+ @end

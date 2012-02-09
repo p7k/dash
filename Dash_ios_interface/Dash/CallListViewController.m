@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SecondViewController.h"
+#import "CallListViewController.h"
 
-@implementation SecondViewController
+@implementation CallListViewController
 @synthesize tableView, callQueue, otherController;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -85,6 +85,8 @@
         tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
         tableView.dataSource = self;
         tableView.delegate = self;
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        tableView.backgroundColor=[UIColor clearColor];
         
         [self.view addSubview:tableView];
         

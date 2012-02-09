@@ -12,6 +12,8 @@
 
 @property (retain) NSString* name;
 @property (retain) NSString* phoneNumber;
+@property (retain) NSString* relation;
+@property (retain) NSString* contactType;//work/cell/etc
 @property (retain) NSNumber *contactId;
 
 + (NSArray *) createContactListFromArray:(NSArray *) input;

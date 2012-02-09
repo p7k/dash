@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DashConstants.h"
+#import "ContactInfo.h"
+#import "StudentInfo.h"
+#import "PostCallViewController.h"
 
-@interface ContactInfoCell : UITableViewCell
+@class StudentInfoViewController;
 
+@interface ContactInfoCell : UITableViewCell{
+    UILabel* nameLabel, *phoneNumberLabel, *relationLabel, *contactTypeLabel;
+    
+}
+@property (assign) StudentInfoViewController* parentVC;
+@property (assign) StudentInfo* studentInfo;
+@property (assign) ContactInfo* contactInfo;
 @end

@@ -8,9 +8,9 @@
 
 #import "AppDelegate.h"
 
-#import "FirstViewController.h"
+#import "ClassroomViewController.h"
 
-#import "SecondViewController.h"
+#import "CallListViewController.h"
 
 @implementation AppDelegate
 
@@ -30,8 +30,8 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    FirstViewController *viewController1 = [[FirstViewController alloc] init];//WithNibName:@"FirstViewController" bundle:nil] autorelease];
-    SecondViewController *viewController2 = [[SecondViewController alloc] init];//initWithNibName:@"SecondViewController" bundle:nil] autorelease];
+    ClassroomViewController *viewController1 = [[ClassroomViewController alloc] init];//WithNibName:@"FirstViewController" bundle:nil] autorelease];
+    CallListViewController *viewController2 = [[CallListViewController alloc] init];//initWithNibName:@"SecondViewController" bundle:nil] autorelease];
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, nil];
     self.window.rootViewController = self.tabBarController;

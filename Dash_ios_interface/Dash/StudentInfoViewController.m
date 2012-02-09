@@ -29,9 +29,7 @@
     
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     
-    dateFormatter = [[NSDateFormatter alloc]init];
-	[dateFormatter setDateFormat:@"MMM dd: h:mm a"];
-	[dateFormatter retain];
+   
     
     UIView* underNotesView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40+90)];
     underNotesView.backgroundColor=[UIColor blackColor];
@@ -64,16 +62,21 @@
     [headerView addSubview:topLabel];
     
    
-    notesView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 90)];
-    notesView.backgroundColor = [UIColor whiteColor];
+    notesView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
+     notesView.frame =CGRectMake(20, 60, 280, 90);
+    notesView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
+    notesView.contentMode = UIViewContentModeScaleToFill;
     [self.view addSubview:notesView];
     
     //INFO
-    lastContactLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 20, 240, 20)];
+    lastContactLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 15, 240, 20)];
+    lastContactLabel.backgroundColor=[UIColor clearColor];
     [notesView addSubview:lastContactLabel];
-    numberOfCallsLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 40, 240, 20)];
+    numberOfCallsLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 35, 240, 20)];
+    numberOfCallsLabel.backgroundColor=[UIColor clearColor];
     [notesView addSubview:numberOfCallsLabel];
-    positivityLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 240, 20)];
+    positivityLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 55, 240, 20)];
+    positivityLabel.backgroundColor=[UIColor clearColor];
     [notesView addSubview:positivityLabel];
     
     
@@ -96,11 +99,15 @@
     contactTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
     contactTableView.dataSource=self;
     contactTableView.delegate = self;
+    contactTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    contactTableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:contactTableView];
     
     callLogTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
     callLogTableView.dataSource=self;
     callLogTableView.delegate = self;
+    callLogTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    callLogTableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:callLogTableView];
     callLogTableView.hidden=YES;
    
@@ -127,13 +134,17 @@
 }
 
 -(void)setStudentInfo:(StudentInfo*) inInfo{
-    printf("\nsetStudentInfo %s", [[inInfo name] cString ] );
+    
     studentInfo = inInfo;
     topLabel.text = [inInfo name];
     
-    NSDate* lastContactDate = [[[studentInfo phoneCallArray] lastObject] callDate];
+     printf("\nstudentinfoview : set student info %s, %d calls", [[studentInfo name] cString], [[studentInfo phoneCallArray] count] );
+   /* for(PhoneCall* call in [studentInfo phoneCallArray]){
+        printf("\n- %s %s", [[[call contactInfo] name ]cString], [[call callDate] cString] );
+    }*/
+    NSDate* lastContactDate = [[[studentInfo phoneCallArray] objectAtIndex:0] callDate];
     if(lastContactDate==nil) lastContactLabel.text=@"Last Contact: --";
-    else lastContactLabel.text = [NSString stringWithFormat:@"Last Contact: %@", [dateFormatter stringFromDate:lastContactDate]];
+    else lastContactLabel.text = [NSString stringWithFormat:@"Last Contact: %@", [[DashConstants dateFormatter] stringFromDate:lastContactDate]];
                             
     numberOfCallsLabel.text = [NSString stringWithFormat:@"Number of Calls: %d", [[studentInfo phoneCallArray] count] ];
     
@@ -174,7 +185,7 @@
 	//if([[cell callIntent] isHappy]) cell.backgroundColor = [DashConstants theHappyColor];
 	//else cell.backgroundColor = [DashConstants theSadColor];
     //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientImage]];
-	
+	cell.backgroundColor = [UIColor whiteColor];
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
@@ -183,73 +194,27 @@
     printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
     ContactInfo* currContactInfo = [[studentInfo contactsArray] objectAtIndex: [indexPath indexAtPosition:1]];
     NSString *CellPersIDString = [currContactInfo name];
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
+    ContactInfoCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
     if(cell==nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
-        [[cell textLabel] setNumberOfLines:3];
-        [cell textLabel].text = [NSString stringWithFormat:@"%s \n %s ", [[currContactInfo name] cString], [[currContactInfo phoneNumber] cString] ];
-        //=[currStudentInfo name];//[currCollection valueForProperty: MPMediaPlaylistPropertyName];
-        //[cell textLabel].font=[MBConstants paramLabelFont];//[parentVC theButtonFont];
-        //[cell textLabel].textColor = [MBConstants thePurpleColor];
-        //cell.selectedBackgroundView=[[UIView alloc]initWithFrame:[cell frame]];
-        //cell.selectedBackgroundView.backgroundColor=[MBConstants theRedHighlightColor];
-        //cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
-        
-        //[cell setCallIntent:currCallIntent];
-        
-        /*UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
-        imageView.contentMode = UIViewContentModeScaleToFill;
-        imageView.alpha=.5;
-        cell.backgroundView = imageView;
-        [imageView retain];*/
-        
-        
-        
+        cell = [[ContactInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
+        [cell setContactInfo:currContactInfo];
+        [cell setStudentInfo:studentInfo];
+        [cell setParentVC:self];
     }
     return cell;
     }
     
     if(tableView == callLogTableView){
-        printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
+        printf("\ncell phone create index %d ", [indexPath indexAtPosition:1]);
         PhoneCall* currPhoneCall = [[studentInfo phoneCallArray] objectAtIndex: [indexPath indexAtPosition:1]];
-        NSString *CellPersIDString = [dateFormatter stringFromDate:[currPhoneCall callDate]];
-        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
+        NSString *CellPersIDString = [[DashConstants dateFormatter] stringFromDate:[currPhoneCall callDate]];
+        CallLogTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
         if(cell==nil){
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
-            [[cell textLabel] setNumberOfLines:3];
-            [cell textLabel].text = [NSString stringWithFormat:@"%s \n %s", [[[currPhoneCall contactInfo] name] cString], [[dateFormatter stringFromDate:[currPhoneCall callDate]] cString] ];
-            //=[currStudentInfo name];//[currCollection valueForProperty: MPMediaPlaylistPropertyName];
-            //[cell textLabel].font=[MBConstants paramLabelFont];//[parentVC theButtonFont];
-            //[cell textLabel].textColor = [MBConstants thePurpleColor];
-            //cell.selectedBackgroundView=[[UIView alloc]initWithFrame:[cell frame]];
-            //cell.selectedBackgroundView.backgroundColor=[MBConstants theRedHighlightColor];
-            //cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
-            
-            //[cell setCallIntent:currCallIntent];
-            
-            /*UIImageView *imageView = [[UIImageView alloc] initWithImage:[DashConstants cellGradientImage] ];
-            imageView.contentMode = UIViewContentModeScaleToFill;
-            imageView.alpha=.5;
-            cell.backgroundView = imageView;*/
-            
-            UIImageView* iconView = [[UIImageView alloc]init];// ;WithImage:[UIImage imageNamed:@"
-            iconView.frame = CGRectMake(0, 0, 50, 50);
-          //  [cell addSubview:iconView];
-            
-            if( [[currPhoneCall callIntent] isEqualToNumber:[NSNumber numberWithInt:1]]){
-                //self.backgroundColor = [DashConstants theHappyColor];
-                iconView.image = [DashConstants happyHighlightImage];
-            }
-            else if([[currPhoneCall callIntent] isEqualToNumber:[NSNumber numberWithInt:0]]){
-                iconView.image = [DashConstants sadHighlightImage];
-                //self.backgroundColor = [DashConstants theSadColor];
-            }else
-            {
-                iconView.image = [DashConstants happyImage];
-            }
-            // otherwise it's neutral
-            
-            cell.accessoryView = iconView;
+            cell = [[CallLogTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
+            //[[cell textLabel] setNumberOfLines:3];
+            //[cell textLabel].text = [NSString stringWithFormat:@"%s \n %s", [[[currPhoneCall contactInfo] name] cString], [[dateFormatter stringFromDate:[currPhoneCall callDate]] cString] ];
+                        
+            [cell setPhoneCall:currPhoneCall];
             
             
         }
@@ -262,9 +227,8 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	//if(isPad) return 96;
-	return 50;
-	
+	if(tableView==contactTableView) return 40;
+	else return 60;
 	
 }
 
@@ -309,6 +273,7 @@
     NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog?student_id=%@", studentInfo.studentId];
     NSURL *url = [NSURL URLWithString:urlEndpoint];
     NSString *callsJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
+    //printf("\n========CALLS\n %s", [callsJson cString]);
     
     [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson withStudentInfo:studentInfo]];
 }

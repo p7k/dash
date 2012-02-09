@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 //#import "StudentInfo.h "
 #import <QuartzCore/QuartzCore.h>
-#import "SecondViewController.h"
+#import "CallListViewController.h"
 @class StudentInfo;
 
 @interface PostCallViewController : UIViewController{

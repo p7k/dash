@@ -11,12 +11,13 @@
 @implementation ContactInfo
 @synthesize name;
 @synthesize contactId;
-@synthesize phoneNumber;
+@synthesize phoneNumber, relation, contactType;
 
 NSString * const CONTACT_ID_KEY = @"id";
 NSString * const CONTACT_FIRST_NAME_KEY = @"first_name";
 NSString * const CONTACT_LAST_NAME_KEY = @"last_name";
 NSString * const PHONE_NUMBER_KEY = @"phone";
+NSString * const CONTACT_RELATIONSHIP_KEY = @"relationship";
 
 + (ContactInfo *)createFromDict:(NSDictionary*) input{
     
@@ -28,6 +29,12 @@ NSString * const PHONE_NUMBER_KEY = @"phone";
     
     [retVal setContactId:(NSNumber *)[input objectForKey:CONTACT_ID_KEY]];
     [retVal setPhoneNumber:(NSString *)[input objectForKey:PHONE_NUMBER_KEY]]; 
+    [retVal setRelation:(NSString*)[input objectForKey:CONTACT_RELATIONSHIP_KEY]];
+    
+    //SERVER TODO HERE add keys/code for contactType 
+    
+    //temporary
+    [retVal setContactType:@"contactTypeHere"];
     
     return retVal;
 }
@@ -40,10 +47,14 @@ NSString * const PHONE_NUMBER_KEY = @"phone";
     return retVal;
 }
 
+//for local storage
 - (void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:name forKey:@"name"];
     [coder encodeObject:contactId forKey:@"contactId"];
     [coder encodeObject:phoneNumber forKey:@"phoneNumber"];
+       [coder encodeObject:relation forKey:@"relation"];
+    [coder encodeObject:contactType forKey:@"contactType"];
+
     
 }
 
@@ -52,7 +63,8 @@ NSString * const PHONE_NUMBER_KEY = @"phone";
 		name = [[coder decodeObjectForKey:@"name"] retain];
         contactId = [[coder decodeObjectForKey:@"contactId"] retain];
         phoneNumber = [[coder decodeObjectForKey:@"phoneNumber"] retain];
-        
+        relation = [[coder decodeObjectForKey:@"relation"] retain];  
+        contactType = [[coder decodeObjectForKey:@"contactType"] retain];  
     }
     return self;
 }

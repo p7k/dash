@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "FirstViewController.h"
+#import "ClassroomViewController.h"
 
-@implementation FirstViewController
+@implementation ClassroomViewController
 @synthesize searchBar, classroomTableView, headerView, classInfoArray;
 @synthesize otherController;
 
@@ -69,6 +69,7 @@ NSString* _archiveLocation;
     NSError * error = nil;
     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
+    printf("\n========CLASSROOM\n%s", [studentJson cString]);
     
     if (studentJson!=nil && [studentJson length]>0) {//check for sucess
         classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
@@ -77,6 +78,10 @@ NSString* _archiveLocation;
         //on successful pull, save to local
         [self saveClassArrayLocal];
     }
+    
+    classInfoSearchSubArray = [[NSMutableArray alloc]init ];
+    
+    
     //search bar
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(30,0,260, 40)];
     searchBar.showsCancelButton = YES;
@@ -129,7 +134,9 @@ NSString* _archiveLocation;
     classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 100, 280, 300)];
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
-     
+    classroomTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    classroomTableView.backgroundColor=[UIColor clearColor];
+    
     [self.view addSubview:classroomTableView];
    
     
@@ -163,9 +170,51 @@ NSString* _archiveLocation;
 //search bar delegate
 -(void)searchBarCancelButtonClicked:(UISearchBar*)inBar{
     [searchBar resignFirstResponder];
+    searching=NO;
+    searchBar.text=@"";
+     [classroomTableView reloadData];
 }
 
+- (void)searchBar:(UISearchBar *)inBar textDidChange:(NSString *)searchText{
+    printf("\ntext:%s", [searchText cString]);
+   
+    [classInfoSearchSubArray removeAllObjects];
+    
+    if([searchText length] > 0) {
+        searching = YES;
+        for(StudentInfo* currInfo in classInfoArray){
+        
+            NSRange textRange =[[[currInfo name] lowercaseString] rangeOfString:[searchText lowercaseString]];
+        
+            if(textRange.location != NSNotFound){
+                printf("*");
+                [classInfoSearchSubArray addObject:currInfo];
+            }
+        }
+    }
+    
+    else searching=NO;
+    
+    [classroomTableView reloadData];
+    
+}
 
+/*- (void)searchBarSearchButtonClicked:(UISearchBar *)inBar{
+    [searchBar resignFirstResponder];
+}*/ //if we resign, we leave the text in the space and the clear button 
+
+- (void) searchBarTextDidBeginEditing:(UISearchBar *)theSearchBar {
+     printf("\nbegin editing");
+    //searching=YES;
+     [classroomTableView reloadData];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+    printf("\nend editing");
+    //searching=NO; - this is called on "search" button hit, so only turn off searching on cancel
+}
+
+//====
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -206,30 +255,29 @@ NSString* _archiveLocation;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-	return [classInfoArray count];
+	if(!searching)return [classInfoArray count];
+    else return [classInfoSearchSubArray count];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	//printf("\ncalled !LISTwillDisplay");
-	//cell.backgroundColor = [UI//[MBConstants theRedColor];
+	cell.backgroundColor = [UIColor whiteColor];//[MBConstants theRedColor];
    // cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientImage]];
 	
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
+
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 		printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
-		StudentInfo* currStudentInfo = [classInfoArray  objectAtIndex: [indexPath indexAtPosition:1]];
+	StudentInfo* currStudentInfo;	
+    if(!searching) currStudentInfo = [classInfoArray  objectAtIndex: [indexPath indexAtPosition:1]];
+        else currStudentInfo = [classInfoSearchSubArray  objectAtIndex: [indexPath indexAtPosition:1]];
     NSString *CellPersIDString = [currStudentInfo name];
         ClassroomTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
 		if(cell==nil){
-			cell = [[ClassroomTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
-			//[cell textLabel].text=[currStudentInfo name];//[currCollection valueForProperty: MPMediaPlaylistPropertyName];
-			//[cell textLabel].font=[MBConstants paramLabelFont];//[parentVC theButtonFont];
-			//[cell textLabel].textColor = [MBConstants thePurpleColor];
-			//cell.selectedBackgroundView=[[UIView alloc]initWithFrame:[cell frame]];
-			//cell.selectedBackgroundView.backgroundColor=[MBConstants theRedHighlightColor];
-			//cell.textLabel.highlightedTextColor = [MBConstants thePurpleColor];
+			cell = [[[ClassroomTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] autorelease] ;
+			
             
             [cell setStudentInfo:currStudentInfo];
             cell.parentVC=self;
@@ -262,8 +310,8 @@ NSString* _archiveLocation;
 
 -(NSMutableArray*) loadClassArrayLocal{
     NSMutableArray* tempArray;
-	if ([[NSFileManager defaultManager] fileExistsAtPath:[FirstViewController archiveLocation]]) {
-		tempArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[FirstViewController archiveLocation]];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[ClassroomViewController archiveLocation]]) {
+		tempArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[ClassroomViewController archiveLocation]];
 		printf("\nlocal array file exists, has %d records ", [tempArray count]);
 		//printf("\ninit dictionary:%s", [[trackInfoDict description]cString]);
 	}
@@ -280,7 +328,7 @@ NSString* _archiveLocation;
 	/*for(int i=0;i<[classInfoArray count];i++){
 		printf("\n-%s -- %d", [[[stateInfoArray objectAtIndex:i] presetName] cString], [[stateInfoArray objectAtIndex:i] osc1Cent] );
 	}*/
-	BOOL result = [NSKeyedArchiver archiveRootObject:classInfoArray toFile:[FirstViewController archiveLocation]];	
+	BOOL result = [NSKeyedArchiver archiveRootObject:classInfoArray toFile:[ClassroomViewController archiveLocation]];	
 	if(result)printf(" --save successful");
 	else printf("\nsave UNsuccessful!");
 }

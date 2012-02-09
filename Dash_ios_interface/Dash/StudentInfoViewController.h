@@ -10,12 +10,15 @@
 #import "StudentInfo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "DashConstants.h"
+#import "ContactInfoCell.h"
+#import "CallLogTableCell.h"
+
 @interface StudentInfoViewController : UIViewController{
     UILabel* topLabel;
     UISegmentedControl* segmentedControl;
     UITableView* contactTableView, *callLogTableView;
-    NSDateFormatter* dateFormatter;
-    UIView* headerView, *notesView;
+   
+    UIImageView* headerView, *notesView;
     
     UILabel* lastContactLabel, *numberOfCallsLabel, *positivityLabel;
 

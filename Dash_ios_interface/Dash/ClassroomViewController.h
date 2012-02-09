@@ -12,16 +12,18 @@
 #import "ClassroomTableCell.h"
 #import "StudentInfoViewController.h"
 
-@class SecondViewController;
+@class CallListViewController;
 
-@interface FirstViewController : UIViewController{
+@interface ClassroomViewController : UIViewController{
     UIButton* sortTableButton;
+    NSMutableArray* classInfoSearchSubArray;
+    BOOL searching;
 }
 
 @property (retain, nonatomic) UISearchBar *searchBar;
 @property (retain, nonatomic) UITableView* classroomTableView;
 @property (retain, nonatomic) UIView*  headerView;
 @property (retain, nonatomic) NSMutableArray* classInfoArray;
-@property (assign) SecondViewController* otherController;
+@property (assign) CallListViewController* otherController;
 
 @end

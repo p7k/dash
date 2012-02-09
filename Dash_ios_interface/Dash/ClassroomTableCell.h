@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PostCallViewController.h"
 
-@class FirstViewController;
+@class ClassroomViewController;
 @interface ClassroomTableCell : UITableViewCell
 
 
@@ -25,6 +25,6 @@
 @property(retain) UIButton* sadButton;
 @property(retain) UIButton* callButton;
 @property (assign) StudentInfo* myStudentInfo;
-@property (assign) FirstViewController* parentVC;
+@property (assign) ClassroomViewController* parentVC;
 @property (retain) UIView* successView;
 @end

@@ -87,9 +87,6 @@
     [parentVC presentModalViewController:pcvc animated:YES];
     
     
-    
-    
-    
 }
 
 /*-(void)setIsHappy:(BOOL)inIsHappy{

@@ -13,13 +13,13 @@
 //#import "CallIntent.h"
 #import "StudentInfoViewController.h"
 #import <QuartzCore/QuartzCore.h>
-@class FirstViewController;
+@class ClassroomViewController;
 
-@interface SecondViewController : UIViewController
+@interface CallListViewController : UIViewController
 
 -(void)removeInfo:(StudentInfo*)inInfo;
 
 @property (retain) NSMutableArray* callQueue;
 @property (retain) UITableView* tableView;
-@property (assign) FirstViewController* otherController;
+@property (assign) ClassroomViewController* otherController;
 @end

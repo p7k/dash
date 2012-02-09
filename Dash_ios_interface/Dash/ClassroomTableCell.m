@@ -46,7 +46,7 @@
         firstContactNameLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:firstContactNameLabel];
         
-        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10,80)];
+        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10,40)];
         [self addSubview:successView]; 
         
         sadButton= [UIButton buttonWithType:UIButtonTypeCustom];
@@ -128,10 +128,18 @@
     [studentNameLabel setText:[myStudentInfo name]];
     [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] name]];
     
-    float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
+    //float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
    // printf("\nsuccessratio %.2f", successRatio);
-    
-    
+    printf("\nclassroomtable cell: set student info %s, %d calls", [[myStudentInfo name] cString], [[myStudentInfo phoneCallArray] count] );
+    float successRatio = 0;
+    if([[myStudentInfo phoneCallArray] count]==0) successRatio = .5;
+    else {
+        for(PhoneCall* currCall in [myStudentInfo phoneCallArray]){
+            if([currCall wasCompleted]) successRatio++;
+        }
+        [[myStudentInfo phoneCallArray] count];
+    }
+               printf("\nsuccess %.2f", successRatio);
     successView.backgroundColor = [UIColor colorWithRed:1-successRatio green:successRatio blue:.3 alpha:.8];
     
 }
@@ -203,6 +211,11 @@
    // [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+-(void)dealloc{
+    printf("\nclassrromtablecell dealloc");
+    
 }
 
 @end

@@ -10,6 +10,7 @@
 
 static UIColor *theHappyHighlightColor, *theHappyColor, *theSadHighlightColor, *theSadColor, *theCallNowColor;
 static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, *cellBackgroundImage, *phoneImage, *titleImage, *cellGradientImage, *cellGradientHappyImage, *cellGradientSadImage;
+static  NSDateFormatter* dateFormatter;
 
 @interface DashConstants : NSObject{
     
@@ -29,6 +30,7 @@ static UIImage* happyImage, *sadImage, *happyHighlightImage,*sadHighlightImage, 
 +(UIImage*) cellGradientImage;
 +(UIImage*) cellGradientHappyImage;
 +(UIImage*) cellGradientSadImage;
++(NSDateFormatter*)dateFormatter;
 
 
 @end
