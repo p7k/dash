@@ -97,14 +97,14 @@
     contactTableView.dataSource=self;
     contactTableView.delegate = self;
     contactTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    contactTableView.backgroundColor=[UIColor clearColor];
+    contactTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
     [self.view addSubview:contactTableView];
     
     callLogTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
     callLogTableView.dataSource=self;
     callLogTableView.delegate = self;
     callLogTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    callLogTableView.backgroundColor=[UIColor clearColor];
+    callLogTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
     [self.view addSubview:callLogTableView];
     callLogTableView.hidden=YES;
     

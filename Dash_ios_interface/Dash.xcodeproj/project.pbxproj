@@ -52,6 +52,7 @@
 		DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEFC14DDCD7A0007409B /* PhoneCall.m */; };
 		DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBF0F14DDD4180007409B /* PostCallViewController.m */; };
 		DCCE5F3D14E45E3F00309361 /* CallLogTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCE5F3C14E45E3F00309361 /* CallLogTableCell.m */; };
+		DCDFC92514E5BD900067C07F /* cardboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DCDFC92414E5BD900067C07F /* cardboard.jpg */; };
 		FCB0097114DDE49500442A78 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB0097014DDE49500442A78 /* JSONKit.m */; };
 /* End PBXBuildFile section */
 
@@ -117,6 +118,7 @@
 		DCABBF0F14DDD4180007409B /* PostCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCallViewController.m; sourceTree = "<group>"; };
 		DCCE5F3C14E45E3F00309361 /* CallLogTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallLogTableCell.m; sourceTree = "<group>"; };
 		DCCE5F3E14E45E8D00309361 /* CallLogTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallLogTableCell.h; sourceTree = "<group>"; };
+		DCDFC92414E5BD900067C07F /* cardboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = cardboard.jpg; path = graphics/cardboard.jpg; sourceTree = "<group>"; };
 		FCB0096F14DDE49500442A78 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		FCB0097014DDE49500442A78 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +141,7 @@
 		DC16526014DDE2AA0063934A /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				DCDFC92414E5BD900067C07F /* cardboard.jpg */,
 				DCABBE9A14DD784A0007409B /* first.png */,
 				DCABBE9C14DD784A0007409B /* first@2x.png */,
 				DCABBEA114DD784A0007409B /* second.png */,
@@ -346,6 +349,7 @@
 				DC07E69414DEDD35007942ED /* Icon.png in Resources */,
 				DC07E6A714DEDFC8007942ED /* CellBGHappy.png in Resources */,
 				DC07E6A814DEDFC8007942ED /* CellBGSad.png in Resources */,
+				DCDFC92514E5BD900067C07F /* cardboard.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -97,7 +97,7 @@
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        tableView.backgroundColor=[UIColor clearColor];
+        tableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];//[UIColor clearColor];
         
         [self.view addSubview:tableView];
         
@@ -169,7 +169,7 @@
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
+    //printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
     StudentInfo* currStudentInfo = [callQueue  objectAtIndex: [indexPath indexAtPosition:1]];
     NSString *CellPersIDString = [currStudentInfo  name];
     CallTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];

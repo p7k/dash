@@ -137,7 +137,7 @@ NSString* _archiveLocation;
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
     classroomTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    classroomTableView.backgroundColor=[UIColor clearColor];
+    classroomTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
     
     [self.view addSubview:classroomTableView];
    
@@ -271,7 +271,7 @@ NSString* _archiveLocation;
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-		printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
+		//printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
 	StudentInfo* currStudentInfo;	
     if(!searching) currStudentInfo = [classInfoArray  objectAtIndex: [indexPath indexAtPosition:1]];
         else currStudentInfo = [classInfoSearchSubArray  objectAtIndex: [indexPath indexAtPosition:1]];
@@ -301,7 +301,10 @@ NSString* _archiveLocation;
 		int newIndex = [indexPath indexAtPosition:1];
         
     //StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
-    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+    StudentInfo* selectedStudentInfo;
+    if(searching)selectedStudentInfo = [classInfoSearchSubArray objectAtIndex:newIndex];
+    else selectedStudentInfo = [classInfoArray objectAtIndex:newIndex];
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:selectedStudentInfo];//WithNibName:@"NextView" bundle:nil];
     //[nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
 
     [self presentModalViewController:nextController animated:YES];
