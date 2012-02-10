@@ -138,4 +138,31 @@
     return dateFormatter;
 }
 
++(UIButton*)gradientButton{//assume 50x25
+    UIButton* button=[UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 60,25);
+// Create a gradient for the background.
+CAGradientLayer* shineLayer = [CAGradientLayer layer] ;
+    shineLayer = [CAGradientLayer layer];
+    shineLayer.frame = button.layer.bounds;
+    shineLayer.colors = [NSArray arrayWithObjects: //was alpha .4 .2 .2 .2 .4
+                         (id)[UIColor colorWithWhite:.2f alpha:1].CGColor,
+                         (id)[UIColor colorWithWhite:.5f alpha:1].CGColor,
+                         (id)[UIColor colorWithWhite:0.5f alpha:1].CGColor,
+                         (id)[UIColor colorWithWhite:0.2f alpha:1].CGColor,
+                         (id)[UIColor colorWithWhite:.5f alpha:1].CGColor,
+                         nil];
+    shineLayer.locations = [NSArray arrayWithObjects:
+                            [NSNumber numberWithFloat:0.0f],
+                            [NSNumber numberWithFloat:0.5f],
+                            [NSNumber numberWithFloat:0.5f],
+                            [NSNumber numberWithFloat:0.8f],
+                            [NSNumber numberWithFloat:1.0f],
+                            nil];
+       [button.layer addSublayer:shineLayer];
+    button.clipsToBounds=YES;
+
+    
+    return button;
+}
  @end

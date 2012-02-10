@@ -16,7 +16,7 @@
 @synthesize studentInfo;
 @synthesize parentVC;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier 
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -59,8 +59,12 @@
         [callButton addTarget:self action:@selector(callNowDown) forControlEvents:UIControlEventTouchDown];
         [self addSubview:callButton];
         
-        
-        
+        /*deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        deleteButton.frame = CGRectMake(5, 5, 30, 30);
+        deleteButton.layer.cornerRadius=5;
+        deleteButton.backgroundColor=[UIColor redColor];
+        deleteButton.hidden=YES;
+        [self addSubview:deleteButton];*/
         
     }
     
@@ -87,6 +91,21 @@
     [parentVC presentModalViewController:pcvc animated:YES];
     
     
+}
+
+
+-(void)didTransitionToState:(UITableViewCellStateMask)state{
+ 
+    printf("\ntransition to state %d", state);
+    if(state==0){//default
+        iconView.hidden=NO;
+        callButton.hidden=NO;
+    }
+    else{
+        iconView.hidden=YES;
+        callButton.hidden=YES;
+    }
+    [super didTransitionToState:state];
 }
 
 /*-(void)setIsHappy:(BOOL)inIsHappy{

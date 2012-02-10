@@ -69,7 +69,7 @@ NSString* _archiveLocation;
     NSError * error = nil;
     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
-    printf("\n========CLASSROOM\n%s", [studentJson cString]);
+   // printf("\n========CLASSROOM\n%s", [studentJson cString]);
     
     if (studentJson!=nil && [studentJson length]>0) {//check for sucess
         classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
@@ -94,7 +94,7 @@ NSString* _archiveLocation;
     
     
     
-    UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 340)];
+    UIView* underPadView = [[UIView alloc]initWithFrame:CGRectMake(20, 50, 280, 340)];
     underPadView.backgroundColor=[UIColor blackColor];
     underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
     underPadView.layer.shadowOpacity = 1.0;
@@ -105,7 +105,7 @@ NSString* _archiveLocation;
     
     
     //interface
-     headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 60, 280, 40)];
+     headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 50, 280, 40)];
     headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
 
     
@@ -123,15 +123,17 @@ NSString* _archiveLocation;
     [headerView addSubview:titleImageView];
     
     
-    sortTableButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    sortTableButton.frame = CGRectMake(200, 5, 50,30);
+    //sortTableButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *sortTableButton = [DashConstants gradientButton];
+    
+    sortTableButton.frame = CGRectMake(200, 5, 50,25);
     sortTableButton.backgroundColor = [UIColor grayColor];
     [sortTableButton setTitle:@"sort" forState:UIControlStateNormal];
     sortTableButton.layer.cornerRadius=4;
     [headerView addSubview:sortTableButton];
     
     
-    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 100, 280, 300)];
+    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 90, 280, 300)];
     classroomTableView.dataSource = self;
     classroomTableView.delegate = self;
     classroomTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -300,7 +302,7 @@ NSString* _archiveLocation;
         
     //StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
     StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[classInfoArray objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
-    [nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
+    //[nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
 
     [self presentModalViewController:nextController animated:YES];
       

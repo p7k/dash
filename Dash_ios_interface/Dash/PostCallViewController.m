@@ -30,8 +30,9 @@
         headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
         [self.view addSubview:headerView];
         
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        //UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         //[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
+        UIButton *backButton = [DashConstants gradientButton];
         backButton.frame = CGRectMake(10, 5, 60, 30);
         [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];

@@ -19,17 +19,13 @@
     return self;
 }*/
 
--(id)init{
+-(id)initWithStudentInfo:(StudentInfo *)inInfo{
     self = [super init];
     printf("\ncreate studentVC");
     
-    
-
-                                    
+    studentInfo = inInfo;
     
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
-    
-   
     
     UIView* underNotesView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40+90)];
     underNotesView.backgroundColor=[UIColor blackColor];
@@ -46,9 +42,10 @@
     
    
     
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
-	backButton.frame = CGRectMake(10, 5, 60, 30);
+	UIButton *backButton  = [DashConstants gradientButton];
+    backButton.frame = CGRectMake(10, 5, 50, 25);
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
     backButton.backgroundColor = [UIColor grayColor ];
@@ -110,13 +107,36 @@
     callLogTableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:callLogTableView];
     callLogTableView.hidden=YES;
-   
+    
+    //this was in "setStudentInfo", moved here
+    topLabel.text = [inInfo name];
+    
+    printf("\nstudentinfoview : set student info %s, %d contacts, %d calls", [[studentInfo name] cString], [[studentInfo contactsArray] count], [[studentInfo phoneCallArray] count] );
+    
+    NSDate* lastContactDate=nil;
+    if([[studentInfo phoneCallArray] count]>0) lastContactDate= [[[studentInfo phoneCallArray] objectAtIndex:0] callDate];
+    
+    if(lastContactDate==nil) lastContactLabel.text=@"Last Contact: --";
+    else lastContactLabel.text = [NSString stringWithFormat:@"Last Contact: %@", [[DashConstants dateFormatter] stringFromDate:lastContactDate]];
+    
+    numberOfCallsLabel.text = [NSString stringWithFormat:@"Number of Calls: %d", [[studentInfo phoneCallArray] count] ];
+    
+    int positivitySum =0;
+    for(PhoneCall* currCall in [studentInfo phoneCallArray]){
+        if([[currCall callIntent] intValue] == 1){
+            positivitySum++;
+        }
+        
+    }
+    int percent;
+    if([[studentInfo phoneCallArray]count]==0) percent=0;
+    else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
+    positivityLabel.text = [NSString stringWithFormat:@"Positivity: %d%%", percent];
+    
+   //====
     return self;
 }
--(id)initWithStudentInfo:(StudentInfo*) inInfo{
-    studentInfo = inInfo;
-    return [self init];
-}
+
 
 -(void)segDown{
     int index = [segmentedControl selectedSegmentIndex];
@@ -133,16 +153,16 @@
 	//[parentVC setVoxCount:newVoxCount];   
 }
 
--(void)setStudentInfo:(StudentInfo*) inInfo{
+/*-(void)setStudentInfo:(StudentInfo*) inInfo{
     
     studentInfo = inInfo;
     topLabel.text = [inInfo name];
     
-     printf("\nstudentinfoview : set student info %s, %d calls", [[studentInfo name] cString], [[studentInfo phoneCallArray] count] );
-   /* for(PhoneCall* call in [studentInfo phoneCallArray]){
-        printf("\n- %s %s", [[[call contactInfo] name ]cString], [[call callDate] cString] );
-    }*/
-    NSDate* lastContactDate = [[[studentInfo phoneCallArray] objectAtIndex:0] callDate];
+     printf("\nstudentinfoview : set student info %s, %d contacts, %d calls", [[studentInfo name] cString], [[studentInfo contactsArray] count], [[studentInfo phoneCallArray] count] );
+       
+    NSDate* lastContactDate=nil;
+    if([[studentInfo phoneCallArray] count]>0) lastContactDate= [[[studentInfo phoneCallArray] objectAtIndex:0] callDate];
+    
     if(lastContactDate==nil) lastContactLabel.text=@"Last Contact: --";
     else lastContactLabel.text = [NSString stringWithFormat:@"Last Contact: %@", [[DashConstants dateFormatter] stringFromDate:lastContactDate]];
                             
@@ -160,7 +180,10 @@
     else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
     positivityLabel.text = [NSString stringWithFormat:@"Positivity: %d%%", percent];
 
-}
+    [callLogTableView reloadData];
+    [contactTableView reloadData];
+
+}*/
 
 
 -(void)back{

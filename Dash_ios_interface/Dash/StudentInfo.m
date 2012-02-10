@@ -45,6 +45,7 @@ NSString * const CONTACTS_KEY = @"contacts";
         studentId = [[coder decodeObjectForKey:@"studentId"] retain];
         contactsArray = [[coder decodeObjectForKey:@"contactsArray"] retain];
         phoneCallArray = [[coder decodeObjectForKey:@"phoneCallArray"] retain];
+        if([contactsArray count ]>0)firstContactInfo= [contactsArray objectAtIndex:0];
     }
     return self;
 }

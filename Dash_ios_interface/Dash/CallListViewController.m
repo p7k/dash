@@ -9,7 +9,7 @@
 #import "CallListViewController.h"
 
 @implementation CallListViewController
-@synthesize tableView, callQueue, otherController;
+@synthesize tableView, callQueue, otherController, editing;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,12 +73,23 @@
        UIView* headerView = [[UIView alloc]initWithFrame:CGRectMake(20, 20, 280, 40)];
         headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
         [self.view addSubview:headerView];
-
+        
         
         UIImageView* titleImageView = [[UIImageView alloc]initWithImage:[DashConstants titleImage]];
         titleImageView.frame =CGRectMake(104, 5, 72, 30);
         [headerView addSubview:titleImageView];
         
+        //editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        editButton  = [DashConstants gradientButton];
+        editButton.frame = CGRectMake(200, 5, 50,25);
+        editButton.backgroundColor = [UIColor grayColor];
+        [editButton setTitle:@"edit" forState:UIControlStateNormal];
+        [editButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateSelected];
+        [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        editButton.layer.cornerRadius=5;
+        [editButton addTarget:self action:@selector(editTable:) forControlEvents:UIControlEventTouchDown];
+        [headerView addSubview:editButton];
       
         
         
@@ -191,16 +202,87 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
     int newIndex = [indexPath indexAtPosition:1];
     
-    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//WithNibName:@"NextView" bundle:nil];
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[callQueue objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
     [self presentModalViewController:nextController animated:YES];
-    [nextController setStudentInfo:[callQueue objectAtIndex:newIndex] ];
+    //[nextController setStudentInfo:[callQueue objectAtIndex:newIndex] ];
     
     
 }
 
+//table editing
+
+    
+    
+- (void) editTable:(id)sender{
+    [self setEditing:!editing];
+}
+
+-(void)setEditing:(BOOL)inEditing{
+    editing=inEditing;
+	if(!editing)
+	{
+        [editButton setSelected:NO];
+		//[super setEditing:NO animated:NO]; 
+		[tableView setEditing:NO animated:NO];
+		[tableView reloadData];
+		//[self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
+		//[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+	}
+	else
+	{
+         [editButton setSelected:YES];
+		//[super setEditing:YES animated:YES]; 
+		[tableView setEditing:YES animated:YES];
+		[tableView reloadData];
+		//[self.navigationItem.leftBarButtonItem setTitle:@"Done"];
+		//[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
+	}
+}
+
+// The editing style for a row is the kind of button displayed to the left of the cell when in editing mode.
+- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // No editing style if not editing or the index path is nil.
+    if (editing == NO || !indexPath) return UITableViewCellEditingStyleNone;
+    // Determine the editing style based on whether the cell is a placeholder for adding content or already 
+    // existing content. Existing content can be deleted.    
+   
+   	return UITableViewCellEditingStyleDelete;
+	
+}
+
+// Update the data model according to edit actions delete or insert.
+- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+    //turn off icons in classroom view
+    StudentInfo* infoToRemove = [callQueue objectAtIndex:indexPath.row];
+    [otherController removeInfo:infoToRemove];
+       
+    [callQueue removeObjectAtIndex:indexPath.row];
+		[tableView reloadData];
+    
+    
+    
+}
+
+#pragma mark Row reordering
+// Determine whether a given row is eligible for reordering or not.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+// Process the row move. This means updating the data model to correct the item indices.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath 
+	  toIndexPath:(NSIndexPath *)toIndexPath {
+	
+   // NSString *item = [[arryData objectAtIndex:fromIndexPath.row] retain];
+	StudentInfo* item = [[callQueue objectAtIndex:fromIndexPath.row] retain];
+    [callQueue removeObject:item];
+	[callQueue insertObject:item atIndex:toIndexPath.row];
+	[item release];
+}
 
 
 
+//
 
 							
 - (void)didReceiveMemoryWarning

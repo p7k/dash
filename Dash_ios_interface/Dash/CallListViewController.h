@@ -15,11 +15,15 @@
 #import <QuartzCore/QuartzCore.h>
 @class ClassroomViewController;
 
-@interface CallListViewController : UIViewController
+@interface CallListViewController : UIViewController{
+   
+    UIButton* editButton;
+}
 
 -(void)removeInfo:(StudentInfo*)inInfo;
 
 @property (retain) NSMutableArray* callQueue;
 @property (retain) UITableView* tableView;
 @property (assign) ClassroomViewController* otherController;
+@property  BOOL editing;
 @end

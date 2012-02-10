@@ -8,15 +8,13 @@
 
 #import "AppDelegate.h"
 
-#import "ClassroomViewController.h"
 
-#import "CallListViewController.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
-
+//@synthesize viewController1, viewController2;
 
 
 - (void)dealloc
@@ -30,11 +28,12 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    ClassroomViewController *viewController1 = [[ClassroomViewController alloc] init];//WithNibName:@"FirstViewController" bundle:nil] autorelease];
-    CallListViewController *viewController2 = [[CallListViewController alloc] init];//initWithNibName:@"SecondViewController" bundle:nil] autorelease];
+    viewController1 = [[ClassroomViewController alloc] init];//WithNibName:@"FirstViewController" bundle:nil] autorelease];
+    viewController2 = [[CallListViewController alloc] init];//initWithNibName:@"SecondViewController" bundle:nil] autorelease];
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, nil];
     self.window.rootViewController = self.tabBarController;
+    self.tabBarController.delegate=self;
     [self.window makeKeyAndVisible];
     
     //edit
@@ -87,12 +86,15 @@
 
 
 
-/*
+
 // Optional UITabBarControllerDelegate method.
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+    if(viewController==viewController1){//switched to classroom view, turn off editing of table in call list
+        if([viewController2 editing]) [viewController2 setEditing:NO];
+    }
 }
-*/
+
 
 /*
 // Optional UITabBarControllerDelegate method.

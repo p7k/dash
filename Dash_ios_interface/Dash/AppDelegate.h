@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClassroomViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+#import "CallListViewController.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>{
+    ClassroomViewController *viewController1;
+   CallListViewController *viewController2;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) UITabBarController *tabBarController;
+
+//@property (retain) ClassroomViewController *viewController1;
+//@property (retain) CallListViewController *viewController2;
 
 @end

@@ -10,12 +10,15 @@
 #import "StudentInfo.h"
 //#import "CallIntent.h"
 #import "DashConstants.h"
+#import <QuartzCore/QuartzCore.h>
+
 @class SecondViewController;
 @interface CallTableCell : UITableViewCell
 
 @property(retain) UILabel* studentNameLabel;
 @property(retain) UILabel* firstContactNameLabel;
 @property(retain) UIButton* callButton;
+//@property(retain) UIButton* deleteButton;
 
 @property BOOL isHappy;
 @property (retain) UIImageView* iconView;

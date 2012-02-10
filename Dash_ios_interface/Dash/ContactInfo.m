@@ -34,7 +34,7 @@ NSString * const CONTACT_RELATIONSHIP_KEY = @"relationship";
     //SERVER TODO HERE add keys/code for contactType 
     
     //temporary
-    [retVal setContactType:@"contactTypeHere"];
+    [retVal setContactType:@"mobile"];
     
     return retVal;
 }
