@@ -202,7 +202,9 @@
 }
 
 -(void)resetMood{
+    [sadButton setSelected:NO];
      [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
+    [happyButton setSelected:NO];
     [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
 }
 

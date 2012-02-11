@@ -94,18 +94,20 @@
 }
 
 
--(void)didTransitionToState:(UITableViewCellStateMask)state{
- 
-    printf("\ntransition to state %d", state);
-    if(state==0){//default
-        iconView.hidden=NO;
-        callButton.hidden=NO;
-    }
-    else{
+/*-(void)didTransitionToState:(UITableViewCellStateMask)state{
+ */
+- (void)setEditing:(BOOL)editing animated:(BOOL)animate
+{
+    [super setEditing:editing animated:animate];
+    printf("\ntransition to editing %d", editing);
+    if(editing) {
         iconView.hidden=YES;
         callButton.hidden=YES;
     }
-    [super didTransitionToState:state];
+    else{
+        iconView.hidden=NO;
+        callButton.hidden=NO;
+    }
 }
 
 /*-(void)setIsHappy:(BOOL)inIsHappy{
