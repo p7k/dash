@@ -1,70 +1,61 @@
-# -*- coding: utf-8 -*-
-"""
-    Dash
-    ~~~~~~
-"""
-import datetime
-import re
+import os, datetime
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-from flaskext.sqlalchemy import SQLAlchemy
+from flaskext.mongoengine import MongoEngine
 from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
 from flaskext.wtf import Email, Required, Length, ValidationError
 from flask.helpers import jsonify
 from flask.wrappers import Response
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.datastructures import MultiDict
-
-# configuration
 from werkzeug.utils import secure_filename
 
-# create our little application :)
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-db = SQLAlchemy(app)
+db = MongoEngine(app)
 toolbar = DebugToolbarExtension(app)
 
 DT_FORMAT = r'%Y-%m-%d %H:%M:%S'
 
 # models
-class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.Unicode(20), nullable=False)
-    last_name = db.Column(db.Unicode(20), nullable=False)
-    contacts = db.relationship('Contact', backref='student')
-
-    def to_dict(self):
-        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name,
-            contacts=[contact.to_dict() for contact in self.contacts])
-
-
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.Unicode(20), nullable=False)
-    last_name = db.Column(db.Unicode(20), nullable=False)
-    email = db.Column(db.Unicode(200))
-    phone = db.Column(db.Unicode(20), nullable=False)
-    relationship = db.Column(db.Unicode(20), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    call_log_entries = db.relationship('CallLogEntry', backref='call_log_entries')
-
-    def to_dict(self):
-        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
-            relationship=self.relationship, email=self.email)
-
-
-class CallLogEntry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'))
-    intent = db.Column(db.Integer(3), nullable=False)
-    created_on = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
-    attempted_on = db.Column(db.DateTime(), nullable=False)
-    completed_on = db.Column(db.DateTime(), nullable=False)
-    status = db.Column(db.Integer(3), nullable=False)
-
-    def to_dict(self):
-        return dict(contact_id=self.contact_id, intent=self.intent, created_on=self.created_on.strftime(DT_FORMAT),
-            attempted_on=self.attempted_on.strftime(DT_FORMAT), completed_on=self.completed_on.strftime(DT_FORMAT),
-            status=self.status)
+#class Student(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    first_name = db.Column(db.Unicode(20), nullable=False)
+#    last_name = db.Column(db.Unicode(20), nullable=False)
+#    contacts = db.relationship('Contact', backref='student')
+#
+#    def to_dict(self):
+#        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name,
+#            contacts=[contact.to_dict() for contact in self.contacts])
+#
+#
+#class Contact(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    first_name = db.Column(db.Unicode(20), nullable=False)
+#    last_name = db.Column(db.Unicode(20), nullable=False)
+#    email = db.Column(db.Unicode(200))
+#    phone = db.Column(db.Unicode(20), nullable=False)
+#    relationship = db.Column(db.Unicode(20), nullable=False)
+#    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+#    call_log_entries = db.relationship('CallLogEntry', backref='call_log_entries')
+#
+#    def to_dict(self):
+#        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, phone=self.phone,
+#            relationship=self.relationship, email=self.email)
+#
+#
+#class CallLogEntry(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'))
+#    intent = db.Column(db.Integer(3), nullable=False)
+#    created_on = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
+#    attempted_on = db.Column(db.DateTime(), nullable=False)
+#    completed_on = db.Column(db.DateTime(), nullable=False)
+#    status = db.Column(db.Integer(3), nullable=False)
+#
+#    def to_dict(self):
+#        return dict(contact_id=self.contact_id, intent=self.intent, created_on=self.created_on.strftime(DT_FORMAT),
+#            attempted_on=self.attempted_on.strftime(DT_FORMAT), completed_on=self.completed_on.strftime(DT_FORMAT),
+#            status=self.status)
 
 
 # forms
@@ -194,80 +185,9 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('index'))
 
-
-def gen_fixtures():
-    student1 = Student(first_name='John', last_name='Doe', contacts=[
-        Contact(first_name='Foo', last_name='Doe', phone='555-123-4567', email='foo.doe@example.com', relationship='dad'),
-        Contact(first_name='Bar', last_name='Doe', phone='555-321-7654', email='bar.doe@example.com', relationship='mom'),
-        ])
-    contact_with_log = Contact(first_name='Dash', last_name='Smith', phone='555-123-4567',
-        email='dash.smith@example.com', relationship='dad', call_log_entries=[
-        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=200),
-        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=300),
-        CallLogEntry(intent=0, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=400),
-        CallLogEntry(intent=1, attempted_on=datetime.datetime.now(), completed_on=datetime.datetime.now(), status=500)])
-    student2 = Student(first_name='Jane', last_name='Smith', contacts=[contact_with_log,
-        Contact(first_name='Rules', last_name='Smith', phone='555-321-7654', email='rules.smith@example.com',
-            relationship='mom')])
-    db.session.add(student1)
-    db.session.add(student2)
-    db.session.commit()
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-def xlsx_import(filename, safe_phone=True):
-    from openpyxl.reader.excel import load_workbook
-
-    wb = load_workbook(filename)
-    ws = wb.worksheets[0]
-
-    def split_fullname(fullname):
-        res = dict(last_name='', first_name='')
-        if not fullname:
-            return res
-        splits = fullname.split(',')
-        if len(splits) < 2:
-            return res
-        return dict(zip(['last_name', 'first_name'], [name.strip() for name in fullname.split(',')]))
-
-    headers = [c.value for c in ws.rows[0]]
-    for row in ws.rows[1:]:
-        record = dict(zip(headers, [c.value for c in row]))
-        student = dict(first_name=record['First Name'], last_name=record['Last Name'])
-        father_home = dict(phone=record['Father Home Phone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
-        father_cell = dict(phone=record['Fathercellphone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
-        father_day = dict(phone=record['Fatherdayphone'], email=record['Fatheremail'], relationship='Father', **split_fullname(record['Father']))
-        mother_home = dict(phone=record['Mother Home Phone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
-        mother_cell = dict(phone=record['Mothercellphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
-        mother_day = dict(phone=record['Motherdayphone'], email=record['Motheremail'], relationship='Mother', **split_fullname(record['Mother']))
-
-        class RelaxedContactForm(ContactForm):
-            email = TextField(u'Email')
-
-        with app.test_request_context():
-            sf = StudentForm(formdata=MultiDict(student), csrf_enabled=False)
-            if sf.validate():
-                s = Student()
-                sf.populate_obj(s)
-                for contact in [father_home, father_cell, father_day, mother_home, mother_cell, mother_day]:
-                    cf = RelaxedContactForm(formdata=MultiDict(contact), csrf_enabled=False)
-                    if cf.validate():
-                        c = Contact()
-                        cf.populate_obj(c)
-                        if safe_phone:
-                            if isinstance(c.phone, basestring):
-                                c.phone = re.sub(r'[0-9]', '5', c.phone, 3)
-                        s.contacts.append(c)
-                    else:
-                        app.logger.debug(cf.errors)
-                if len(s.contacts) > 0:
-                    db.session.add(s)
-                    db.session.commit()
-
-
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    from utils import allowed_file, xlsx_import
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -281,5 +201,4 @@ def upload_file():
     return redirect(url_for('show_class'))
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(host='0.0.0.0')

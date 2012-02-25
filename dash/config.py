@@ -1,6 +1,7 @@
 import os
 
 DEBUG = False
+MONGODB_DB = 'dash'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
 SQLALCHEMY_ECHO = DEBUG
 SECRET_KEY = 'development key'
