@@ -12,6 +12,7 @@ from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextFie
 from flaskext.wtf import Email, Required, Length, ValidationError
 from flask.helpers import jsonify
 from flask.wrappers import Response
+from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.datastructures import MultiDict
 
 # configuration
@@ -31,6 +32,7 @@ ALLOWED_EXTENSIONS = {'xlsx'}
 app = Flask(__name__)
 app.config.from_object(__name__)
 db = SQLAlchemy(app)
+toolbar = DebugToolbarExtension(app)
 
 DT_FORMAT = r'%Y-%m-%d %H:%M:%S'
 
