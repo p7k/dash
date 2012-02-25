@@ -4,7 +4,6 @@
     ~~~~~~
 """
 import datetime
-import os
 import re
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.sqlalchemy import SQLAlchemy
@@ -18,19 +17,9 @@ from werkzeug.datastructures import MultiDict
 # configuration
 from werkzeug.utils import secure_filename
 
-DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'sqlite:///dash.db'
-SQLALCHEMY_ECHO = DEBUG
-SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'default'
-#UPLOAD_FOLDER = 'upload'
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
-ALLOWED_EXTENSIONS = {'xlsx'}
-
 # create our little application :)
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
 toolbar = DebugToolbarExtension(app)
 
