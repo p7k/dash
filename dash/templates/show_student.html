@@ -2,30 +2,27 @@
 {% block body %}
 <h2> <span style="color:black;"> Add Contacts For: </span> {{ student.first_name }} {{ student.last_name}}</h2>
 <form action="{{ url_for('show_student', student_id=student.id) }}" method=post class=add-entry>
-  {{ form.hidden_tag() }}
-
-
   <dl>
     <dt>{{ form.first_name.label }}:
     {{ form.first_name }} </dt>
     <dt>{{ form.last_name.label }}:
     {{ form.last_name }}</dt>
-    <dt>{{ form.phone.label }}:
-    {{ form.phone }}</dt>
     <dt>{{ form.email.label }}:
     {{ form.email }}</dt>
     <dt>{{ form.relationship.label }}:
     {{ form.relationship }}</dt>
     <dd style="background:rgba(0,0,0,.8); border-radius:5px; width:150px;">{{ form.submit }}
   </dl>
-
-
 </form>
-
 
 <ul class=entries>
   {% for contact in student.contacts %}
-    <li><h2 style="color:white;">{{ contact.first_name }} {{ contact.last_name }}</h2>{{ contact.phone }} | <span style="color:navy;"> {{ contact.email }} </span> | {{ contact.relationship }}
+    <li><h2 style="color:white;">{{ contact.first_name }} {{ contact.last_name }}</h2><span style="color:navy;"> {{ contact.email }} </span> | {{ contact.relationship }}
+        <ul>
+            {% for phone in contact.phones %}
+                <li>{{ phone.number }}, {{ phone.type }}</li>
+            {% endfor %}
+        </ul>
   {% else %}
     <li><em>Unbelievable.  No contacts here so far</em>
   {% endfor %}

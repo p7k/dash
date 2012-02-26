@@ -2,3 +2,4 @@
 *.db
 .idea
 /uploads/*
+config_local.py

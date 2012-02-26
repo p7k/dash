@@ -5,7 +5,6 @@
         <input type="file" name="file"><input type="submit" value="Upload"/>
     </form>
     <form action="{{ url_for('show_class') }}" method=post class=add-entry>
-        {{ form.hidden_tag() }}
       <dl>
           <h2 style="text-align:center;"> Add New Students </h2>
 		  <dt>{{ form.first_name.label }}:
