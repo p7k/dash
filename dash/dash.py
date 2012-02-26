@@ -1,16 +1,18 @@
+import os, datetime
 from flask.helpers import jsonify
 from flask_mongokit import BSONObjectIdConverter
-import os, datetime
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from flaskext.mongoengine import MongoEngine
 from flaskext.mongoengine.wtf import model_form
-from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, TextField, PasswordField, SubmitField
-from flaskext.wtf import Email, Required, Length, ValidationError
+from flaskext.wtf import Form, DateTimeField, SelectField, IntegerField, PasswordField, SubmitField
 from flask.wrappers import Response
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
+from wtforms.fields import TextField
+from wtforms.validators import ValidationError, Required, Optional, Email
 from serializers import mongo_jsonify, DT_FORMAT
+from utils import xlsx_importer, allowed_file, EmailOrBlank
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -24,39 +26,50 @@ USERNAME, PASSWORD = 'admin', 'default'
 class Phone(db.EmbeddedDocument):
     type = db.StringField(required=True, default='home')
     number = db.StringField(required=True)
-    stats = db.MapField(db.IntField(), default={'200': 0, '300': 0, '400': 0, '500': 0})
+    stats = db.MapField(db.IntField(), default=dict(s=0, m=0, n=0, d=0))
 
 class Contact(db.EmbeddedDocument):
     first_name = db.StringField(required=True)
     last_name = db.StringField(required=True)
     email = db.EmailField()
     relationship = db.StringField()
+    is_guardian = db.BooleanField(default=False)
     phones = db.ListField(db.EmbeddedDocumentField(Phone))
+
+class StudentStats(db.EmbeddedDocument):
+    count = db.IntField(default=0)
+    charge = db.MapField(db.IntField(), default=dict(p=0, n=0))
+    last_contact = db.DateTimeField()
 
 class Student(db.Document):
     first_name = db.StringField(required=True)
     last_name = db.StringField(required=True)
     contacts = db.ListField(db.EmbeddedDocumentField(Contact))
     groups = db.ListField(db.StringField())
+    stats = db.EmbeddedDocumentField(StudentStats, default=StudentStats())
 
 class CallLogEntry(db.Document):
-    _id = db.StringField(required=True)
-    intent = db.IntField(required=True)
+    phone = db.StringField(primary_key=True, required=True)
+    charge = db.IntField(required=True)
     created_on = db.DateTimeField(default=datetime.datetime.now, required=True)
     attempted_on = db.DateTimeField(required=True)
     completed_on = db.DateTimeField(required=True)
     status = db.IntField(required=False)
 
 # forms
-StudentForm = model_form(Student)
+PhoneForm = model_form(Phone, exclude=('stats',))
+ContactForm = model_form(Contact, exclude=('phones',))
+class ContactImportForm(ContactForm):
+    email = TextField(u'Email', validators=[EmailOrBlank()])
+StudentForm = model_form(Student, exclude=('contacts', 'stats',))
 
-class ContactForm(Form):
-    first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
-    last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
-    email = TextField(u'Email', validators=[Email()])
-    phone = TextField(u'Phone', validators=[Required()])
-    relationship = TextField(u'Relationship', validators=[Required()])
-    submit = SubmitField(u'Save')
+#class ContactForm(Form):
+#    first_name = TextField(u'First name', validators=[Required(), Length(min=2, max=20)])
+#    last_name = TextField(u'Last name', validators=[Required(), Length(min=2, max=20)])
+#    email = TextField(u'Email', validators=[Email()])
+#    phone = TextField(u'Phone', validators=[Required()])
+#    relationship = TextField(u'Relationship', validators=[Required()])
+#    submit = SubmitField(u'Save')
 
 class CallLogEntryForm(Form):
     contact_id = IntegerField(u'Contact id', validators=[Required()])
@@ -139,18 +152,53 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    from utils import allowed_file, xlsx_import
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
-            xlsx_import(filepath)
+            for student_record in xlsx_importer(filepath):
+                student_from_dict(student_record)
+
+
             flash('Your file has been imported')
             return redirect(url_for('show_class'))
     flash('Something went south with your upload')
     return redirect(url_for('show_class'))
+
+def student_from_dict(student_record_dict):
+    student_form = StudentForm(formdata=MultiDict(student_record_dict), csrf_enabled=False)
+    if student_form.validate():
+        student = Student()
+        student_form.populate_obj(student)
+
+        for contact_record in student_record_dict['contacts']:
+            contact_form = ContactImportForm(formdata=MultiDict(contact_record), csrf_enabled=False)
+            if contact_form.validate():
+                contact = Contact()
+                contact_form.populate_obj(contact)
+
+                for phone_record in contact_record['phones']:
+                    phone_form = PhoneForm(formdata=MultiDict(phone_record), csrf_enabled=False)
+                    if phone_form.validate():
+                        phone = Phone()
+                        phone_form.populate_obj(phone)
+                        phone.number = unicode(phone.number) # FIXME hacked up
+                        contact.phones.append(phone)
+                    else:
+                        app.logger.debug(phone_form.errors)
+
+                if len(contact.phones) > 0:
+                    student.contacts.append(contact)
+            else:
+                app.logger.debug(contact_form.errors)
+
+        if len(student.contacts) > 0:
+            student.save()
+    else:
+        app.logger.debug(student_form.errors)
+
 
 # api
 @app.route('/api/v1/student')
