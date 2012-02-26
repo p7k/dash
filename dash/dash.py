@@ -1,3 +1,4 @@
+import re
 import os, datetime
 from flask.helpers import jsonify
 from flask_mongokit import BSONObjectIdConverter
@@ -167,7 +168,7 @@ def upload_file():
     flash('Something went south with your upload')
     return redirect(url_for('show_class'))
 
-def student_from_dict(student_record_dict):
+def student_from_dict(student_record_dict, safe_phone_numbers=True):
     student_form = StudentForm(formdata=MultiDict(student_record_dict), csrf_enabled=False)
     if student_form.validate():
         student = Student()
@@ -185,6 +186,8 @@ def student_from_dict(student_record_dict):
                         phone = Phone()
                         phone_form.populate_obj(phone)
                         phone.number = unicode(phone.number) # FIXME hacked up
+                        if safe_phone_numbers:
+                            phone.number = re.sub('[0-9]', '5', phone.number, 3)
                         contact.phones.append(phone)
                     else:
                         app.logger.debug(phone_form.errors)
