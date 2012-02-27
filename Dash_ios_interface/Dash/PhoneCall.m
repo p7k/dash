@@ -9,7 +9,7 @@
 #import "PhoneCall.h"
 
 @implementation PhoneCall
-@synthesize callDate, callReport, wasCompleted, contactInfo, studentInfo, callIntent;
+@synthesize callDate, callReport, wasCompleted, contactInfo, studentInfo, callIntent, callNotesString;
 
 NSString * const STATUS_KEY = @"status";
 NSString * const CREATED_ON_KEY = @"created_on";
@@ -53,6 +53,7 @@ NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     [coder encodeObject:callReport forKey:@"callReport"];
     [coder encodeObject:contactInfo forKey:@"contactInfo"];
     [coder encodeBool:wasCompleted forKey:@"wasCompleted"];
+    [coder encodeObject:callNotesString forKey:@"callNotesString"];
     
 }
 
@@ -62,6 +63,7 @@ NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
         callReport = [[coder decodeObjectForKey:@"callReport"] retain];
         contactInfo = [[coder decodeObjectForKey:@"contactInfo"] retain];
         wasCompleted = [[coder decodeBoolForKey:@"wasCompleted"] retain];
+        callNotesString = [[coder decodeObjectForKey:@"callNotesString"] retain];
         
     }
     return self;

@@ -19,10 +19,10 @@
     return self;
 }*/
 
--(id)initWithStudentInfo:(StudentInfo *)inInfo{
+-(id)initWithStudentInfo:(StudentInfo *)inInfo allGroupNamesArray:(NSMutableArray*)inAllGroupNamesArray{
     self = [super init];
     printf("\ncreate studentVC");
-    
+    allGroupNamesArray = inAllGroupNamesArray;
     studentInfo = inInfo;
     
      self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
@@ -31,8 +31,8 @@
     underNotesView.backgroundColor=[UIColor blackColor];
     underNotesView.layer.shadowColor = [UIColor blackColor].CGColor;
     underNotesView.layer.shadowOpacity = 1.0;
-    underNotesView.layer.shadowRadius = 5.0;
-    underNotesView.layer.shadowOffset = CGSizeMake(5, 5);
+    underNotesView.layer.shadowRadius = 1.0;
+    underNotesView.layer.shadowOffset = CGSizeMake(0, 1);
     underNotesView.clipsToBounds = NO; 
     [self.view addSubview:underNotesView];
     
@@ -40,7 +40,11 @@
     headerView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
     [self.view addSubview:headerView];
     
-   
+    //spinner
+    spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+	spinner.frame = CGRectMake(40 , 0, 40, 40);
+    [spinner setHidesWhenStopped:NO];
+    [headerView addSubview:spinner];
     
     //UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
@@ -77,7 +81,7 @@
     [notesView addSubview:positivityLabel];
     
     
-    NSArray* segItems = [NSArray arrayWithObjects:@"Contact Info",@"Call Log", nil];
+    NSArray* segItems = [NSArray arrayWithObjects:@"Contacts",@"Call Log",@"Groups", nil];
     segmentedControl = [[UISegmentedControl alloc]initWithItems:segItems];
     segmentedControl.selectedSegmentIndex=0;
     segmentedControl.frame=CGRectMake(20,170, 280, 40);
@@ -88,8 +92,8 @@
     underPadView.backgroundColor=[UIColor blackColor];
     underPadView.layer.shadowColor = [UIColor blackColor].CGColor;
     underPadView.layer.shadowOpacity = 1.0;
-    underPadView.layer.shadowRadius = 5.0;
-    underPadView.layer.shadowOffset = CGSizeMake(5, 5);
+    underPadView.layer.shadowRadius = 1.0;
+    underPadView.layer.shadowOffset = CGSizeMake(0, 1);
     underPadView.clipsToBounds = NO; 
     [self.view addSubview:underPadView];
     
@@ -108,10 +112,37 @@
     [self.view addSubview:callLogTableView];
     callLogTableView.hidden=YES;
     
-    //this was in "setStudentInfo", moved here
-    topLabel.text = [inInfo name];
+    groupMemberTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 220, 280, 200)];// style:<#(UITableViewStyle)#>
+    groupMemberTableView.dataSource=self;
+    groupMemberTableView.delegate = self;
+    groupMemberTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    groupMemberTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
+    [self.view addSubview:groupMemberTableView];
+     groupMemberTableView.hidden=YES;
     
-    printf("\nstudentinfoview : set student info %s, %d contacts, %d calls", [[studentInfo name] cString], [[studentInfo contactsArray] count], [[studentInfo phoneCallArray] count] );
+    newContactButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    newContactButton.frame = CGRectMake(110, 425, 100,25);
+    newContactButton.backgroundColor = [UIColor grayColor];
+    [newContactButton setTitle:@"new contact" forState:UIControlStateNormal];
+    newContactButton.layer.cornerRadius=4;
+    [newContactButton addTarget:self action:@selector(newContactButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:newContactButton];
+    
+    
+    
+    //this was in "setStudentInfo", moved here
+    topLabel.text = [inInfo fullName];
+    
+    printf("\nstudentinfoview : set student info %s, %d contacts, %d calls", [[studentInfo fullName] cString], [[studentInfo contactsArray] count], [studentInfo callCount] );
+    
+    [self updateCallInfoElements];
+    
+   //====
+    return self;
+}
+
+-(void) updateCallInfoElements{//called both from init and from end of sync
     
     NSDate* lastContactDate=nil;
     if([[studentInfo phoneCallArray] count]>0) lastContactDate= [[[studentInfo phoneCallArray] objectAtIndex:0] callDate];
@@ -133,20 +164,40 @@
     else percent= (positivitySum*100)/[[studentInfo phoneCallArray] count];
     positivityLabel.text = [NSString stringWithFormat:@"Positivity: %d%%", percent];
     
-   //====
-    return self;
+    [callLogTableView reloadData];
+
 }
 
+-(UITableView*)contactTableView{
+    return contactTableView;
+}
+
+-(void)newContactButtonHit{
+    NewContactViewController* ncvc = [[NewContactViewController alloc]initWithStudentInfo:studentInfo contactInfo:nil];
+    ncvc.delegate=self;//for updating table on dismissal
+    [self presentModalViewController:ncvc animated:YES];
+
+    
+}
 
 -(void)segDown{
     int index = [segmentedControl selectedSegmentIndex];
     if(index==1){
-        callLogTableView.hidden=NO;
         contactTableView.hidden=YES;
+        callLogTableView.hidden=NO;
+        groupMemberTableView.hidden=YES;
     }
-    else{
-        callLogTableView.hidden=YES;
+    else if (index==0){
+       
         contactTableView.hidden=NO;
+         callLogTableView.hidden=YES;
+        groupMemberTableView.hidden=YES;
+    }
+    else if (index==2){
+        
+        contactTableView.hidden=YES;
+        callLogTableView.hidden=YES;
+        groupMemberTableView.hidden=NO;
     }
     
 	//printf("newVoxCount=%d ", newVoxCount);
@@ -201,6 +252,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 	if(tableView==contactTableView) return [[studentInfo contactsArray ]count];
     if(tableView==callLogTableView) return [[studentInfo phoneCallArray ]count];
+    if(tableView==groupMemberTableView) return [ allGroupNamesArray count] -1;//ignore first element
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -211,12 +263,11 @@
 	cell.backgroundColor = [UIColor whiteColor];
 }
 
-//TODO..what happens if save as other prset name? ahhh! treat as overwrite!
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView==contactTableView){
     printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
     ContactInfo* currContactInfo = [[studentInfo contactsArray] objectAtIndex: [indexPath indexAtPosition:1]];
-    NSString *CellPersIDString = [currContactInfo name];
+    NSString *CellPersIDString = [currContactInfo fullName];
     ContactInfoCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
     if(cell==nil){
         cell = [[ContactInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
@@ -227,7 +278,7 @@
     return cell;
     }
     
-    if(tableView == callLogTableView){
+    else if(tableView == callLogTableView){
         printf("\ncell phone create index %d ", [indexPath indexAtPosition:1]);
         PhoneCall* currPhoneCall = [[studentInfo phoneCallArray] objectAtIndex: [indexPath indexAtPosition:1]];
         NSString *CellPersIDString = [[DashConstants dateFormatter] stringFromDate:[currPhoneCall callDate]];
@@ -243,6 +294,19 @@
         }
         return cell;
     }
+    
+    else if(tableView == groupMemberTableView){
+        //NSString* groupName = [[[self parentViewController] allGroupsNamesArray] objectAtIndex:[indexPath indexAtPosition:1]];
+        NSString* groupName = [ allGroupNamesArray objectAtIndex:[indexPath indexAtPosition:1]+1];
+        GroupMemberTableCell* cell = [tableView dequeueReusableCellWithIdentifier:groupName];
+        if(cell==nil){
+            cell = [[GroupMemberTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:groupName] ;
+            [cell setGroupNameString:groupName];
+            [cell setStudentInfo:studentInfo];
+        }
+        return cell;
+        
+    }
 
     
 }
@@ -251,17 +315,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 	if(tableView==contactTableView) return 40;
-	else return 60;
+    else if(tableView==callLogTableView) return 40;
+	else if (tableView == groupMemberTableView) return 40;
 	
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
     if(tableView==contactTableView){
         int newIndex = [indexPath indexAtPosition:1];
-    
-      
+        NewContactViewController* ncvc = [[NewContactViewController alloc]initWithStudentInfo:studentInfo contactInfo:[[studentInfo contactsArray] objectAtIndex:newIndex] ];
+        ncvc.delegate=self;//for updating table on dismissal
+        [self presentModalViewController:ncvc animated:YES];
+        
     }
     
+    if(tableView==groupMemberTableView){
+        int newIndex = [indexPath indexAtPosition:1];
+        
+    }
 }
 
 
@@ -290,7 +361,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [spinner startAnimating];
+    [NSThread detachNewThreadSelector:@selector(sync) toTarget:self withObject:nil];
+   
+}
+
+-(void)sync{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc]init];
     // we may not need to do this if there's already some call logs. Let's deal with that case later
     NSError *error = nil;
     NSString *urlEndpoint = [NSString stringWithFormat:@"http://23.21.212.190:5000/api/v1/clog?student_id=%@", studentInfo.studentId];
@@ -298,8 +375,31 @@
     NSString *callsJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
     //printf("\n========CALLS\n %s", [callsJson cString]);
     
-    [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson withStudentInfo:studentInfo]];
+    printf("\n %s", [callsJson cString]);
+    if (callsJson!=nil && [callsJson length]>0) {
+        
+        [studentInfo setPhoneCallArray:[PhoneCall createCallListFromJson:callsJson withStudentInfo:studentInfo]];
+        [self performSelectorOnMainThread:@selector(syncFinishedWithSuccess:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:NO];
+        
+    }
+        
+     else  [self performSelectorOnMainThread:@selector(syncFinishedWithSuccess:) withObject:[NSNumber numberWithBool:NO] waitUntilDone:NO];
+
+     [pool release];
 }
+
+-(void)syncFinishedWithSuccess:(NSNumber*)inSuccessBoolNumber{
+    printf("\ncalls sync finished with success %d, count %d",  [inSuccessBoolNumber boolValue], [[studentInfo phoneCallArray] count]);
+    [spinner stopAnimating];
+    if([inSuccessBoolNumber boolValue]==YES){
+        spinner.hidden=YES; 
+        [self updateCallInfoElements];
+    }
+    else spinner.backgroundColor=[UIColor redColor];
+    
+}
+
+
 
 - (void)viewDidUnload
 {

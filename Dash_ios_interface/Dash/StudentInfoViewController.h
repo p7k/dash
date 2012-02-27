@@ -12,16 +12,20 @@
 #import "DashConstants.h"
 #import "ContactInfoCell.h"
 #import "CallLogTableCell.h"
+#import "GroupMemberTableCell.h"
+#import "NewContactViewController.h"
 
 @interface StudentInfoViewController : UIViewController{
     UILabel* topLabel;
     UISegmentedControl* segmentedControl;
-    UITableView* contactTableView, *callLogTableView;
+    UITableView* contactTableView, *callLogTableView, *groupMemberTableView;
    
     UIImageView* headerView, *notesView;
     
     UILabel* lastContactLabel, *numberOfCallsLabel, *positivityLabel;
-
+    UIActivityIndicatorView* spinner;
+    UIButton* newContactButton;
+    NSMutableArray* allGroupNamesArray;
 }
 
 -(id)initWithStudentInfo:(StudentInfo*) inInfo;

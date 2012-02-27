@@ -107,7 +107,7 @@
 }
 
 -(void)addInfo:(StudentInfo*)inInfo{
-    printf("\nadd info:%s happy? %d", [[inInfo name] cString], [inInfo isHappy] );
+    printf("\nadd info:%s happy? %d", [[inInfo fullName] cString], [inInfo isHappy] );
     [callQueue addObject:inInfo];
     [tableView reloadData];
 }
@@ -132,7 +132,7 @@
 }*/
 
 -(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
-    printf("\nremove %s", [[inInfo name] cString])  ;
+    printf("\nremove %s", [[inInfo fullName] cString])  ;
     StudentInfo* foundStudentInfo=nil;
     for(StudentInfo* currStudentInfo in callQueue){
         if(currStudentInfo==inInfo){
@@ -158,7 +158,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	printf("\ncalled !LISTwillDisplay cell name %s", [[[cell  studentInfo] name] cString]);
+	printf("\ncalled !LISTwillDisplay cell name %s", [[[cell  studentInfo] fullName] cString]);
 	if([[cell studentInfo] isHappy])
         //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientHappyImage]];
          cell.backgroundColor = [DashConstants theHappyColor];
@@ -171,7 +171,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     //printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
     StudentInfo* currStudentInfo = [callQueue  objectAtIndex: [indexPath indexAtPosition:1]];
-    NSString *CellPersIDString = [currStudentInfo  name];
+    NSString *CellPersIDString = [currStudentInfo  fullName];
     CallTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
     if(cell==nil){
         cell = [[CallTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] ;
@@ -202,7 +202,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
     int newIndex = [indexPath indexAtPosition:1];
     
-    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[callQueue objectAtIndex:newIndex]];//WithNibName:@"NextView" bundle:nil];
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[callQueue objectAtIndex:newIndex] allGroupNamesArray:[otherController allGroupNamesArray]];//WithNibName:@"NextView" bundle:nil];
     [self presentModalViewController:nextController animated:YES];
     //[nextController setStudentInfo:[callQueue objectAtIndex:newIndex] ];
     

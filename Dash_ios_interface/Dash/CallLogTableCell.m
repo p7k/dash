@@ -76,7 +76,7 @@
     
     ContactInfo* contactInfo = [phoneCall contactInfo] ;
     
-    nameLabel.text=[contactInfo name];
+    nameLabel.text=[contactInfo fullName];
     phoneNumberLabel.text = [contactInfo phoneNumber];
     relationLabel.text = [contactInfo relation];
     contactTypeLabel.text = [contactInfo contactType];

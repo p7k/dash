@@ -70,9 +70,9 @@
 
 
 -(void)setStudentInfo:(StudentInfo*)inInfo{
-    printf("\nsetStudentInfo %s", [[inInfo name] cString ] );
+    printf("\nsetStudentInfo %s", [[inInfo fullName] cString ] );
     studentInfo = inInfo;
-    topLabel.text = [inInfo name];   
+    topLabel.text = [inInfo fullName];   
 }
 
 -(void)back{
