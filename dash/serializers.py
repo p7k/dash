@@ -7,7 +7,6 @@ from flask.helpers import json, _assert_have_json
 from flask.globals import current_app, request
 import types
 
-DT_FORMAT = r'%Y-%m-%d %H:%M:%S'
 
 class MongoEngineEncoder(json.JSONEncoder):
     def default(self, obj, **kwargs):

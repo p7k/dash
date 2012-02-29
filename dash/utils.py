@@ -1,8 +1,9 @@
-import re
 from openpyxl.reader.excel import load_workbook
+from wtforms import fields
 from wtforms.validators import Email, ValidationError, StopValidation
 
 ALLOWED_EXTENSIONS = {'xlsx'}
+DT_FORMAT = r'%Y-%m-%d %H:%M:%S'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -43,3 +44,8 @@ class EmailOrBlank(Email):
         except ValidationError:
             field.data = None
             raise StopValidation()
+
+class DateTimeField(fields.DateTimeField):
+    def __init__(self, *args, **kwargs):
+        kwargs.update(format=DT_FORMAT)
+        super(DateTimeField, self).__init__(*args, **kwargs)

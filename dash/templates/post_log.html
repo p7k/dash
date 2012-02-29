@@ -4,18 +4,18 @@
 <form action="{{ url_for('call_log_entry_resource') }}" method=post class=add-entry>
     {{ form.hidden_tag() }}
     <dl>
-        <dt>{{ form.contact_id.label }}:
-        <dd>{{ form.contact_id }}
-        <dt>{{ form.intent.label }}:
-        <dd>{{ form.intent }}
+        <dt>{{ form.phone.label }}:
+        <dd>{{ form.phone }}
+        <dt>{{ form.charge.label }}:
+        <dd>{{ form.charge }}
+        <dt>{{ form.status.label }}:
+        <dd>{{ form.status }}
         <dt>{{ form.created_on.label }}:
         <dd>{{ form.created_on }}
         <dt>{{ form.attempted_on.label }}:
         <dd>{{ form.attempted_on }}
         <dt>{{ form.completed_on.label }}:
         <dd>{{ form.completed_on }}
-        <dt>{{ form.status.label }}:
-        <dd>{{ form.status }}
         <dd>{{ form.submit }}
     </dl>
 </form>
