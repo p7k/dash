@@ -10,8 +10,12 @@
 
 @interface ContactInfo : NSObject
 
-@property (retain) NSString* name;
-@property (retain) NSString* phoneNumber;
+@property (retain) NSString* firstName;
+@property (retain) NSString* lastName;
+
+@property (retain) NSString* homeNumber;
+@property (retain) NSString* mobileNumber;
+@property (retain) NSString* workNumber;
 @property (retain) NSString* relation;
 @property (retain) NSString* contactType;//work/cell/etc
 @property (retain) NSNumber *contactId;

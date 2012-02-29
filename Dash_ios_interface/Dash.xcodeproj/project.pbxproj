@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC050C1014FB0E3500EEFFB4 /* dantodolist.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DC050C0F14FB0E3500EEFFB4 /* dantodolist.rtf */; };
 		DC07E67E14DEDB81007942ED /* Light_Logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E67D14DEDB81007942ED /* Light_Logo_small.png */; };
 		DC07E69214DEDD15007942ED /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E69014DEDD15007942ED /* Icon.png */; };
 		DC07E69414DEDD35007942ED /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC07E69314DEDD35007942ED /* Icon.png */; };
@@ -27,6 +28,9 @@
 		DC16527B14DDE2CE0063934A /* Search_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC16526E14DDE2CE0063934A /* Search_Icon.png */; };
 		DC32A4FD14DE093E003C2AB3 /* Roster_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */; };
 		DC32A4FE14DE093E003C2AB3 /* Playlist_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */; };
+		DC6B3E7E14FAA02900766CD3 /* NewContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6B3E7D14FAA02900766CD3 /* NewContactViewController.m */; };
+		DC6B3E8214FACABA00766CD3 /* NewContactInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6B3E8114FACABA00766CD3 /* NewContactInfoCell.m */; };
+		DC8AA11B14FA900300EE92DA /* NewStudentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC8AA11A14FA900300EE92DA /* NewStudentViewController.m */; };
 		DCABBE8614DD784A0007409B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8514DD784A0007409B /* UIKit.framework */; };
 		DCABBE8814DD784A0007409B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8714DD784A0007409B /* Foundation.framework */; };
 		DCABBE8A14DD784A0007409B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCABBE8914DD784A0007409B /* CoreGraphics.framework */; };
@@ -51,12 +55,15 @@
 		DCABBEFA14DDC6310007409B /* ContactInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEF914DDC6300007409B /* ContactInfoCell.m */; };
 		DCABBEFD14DDCD7B0007409B /* PhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBEFC14DDCD7A0007409B /* PhoneCall.m */; };
 		DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCABBF0F14DDD4180007409B /* PostCallViewController.m */; };
+		DCB96F4414F98C4200B1A2B9 /* search_bar_gradient_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB96F4314F98C4200B1A2B9 /* search_bar_gradient_dark.png */; };
+		DCB96F4B14F9C46500B1A2B9 /* GroupMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB96F4A14F9C46500B1A2B9 /* GroupMemberTableCell.m */; };
 		DCCE5F3D14E45E3F00309361 /* CallLogTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCE5F3C14E45E3F00309361 /* CallLogTableCell.m */; };
 		DCDFC92514E5BD900067C07F /* cardboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DCDFC92414E5BD900067C07F /* cardboard.jpg */; };
 		FCB0097114DDE49500442A78 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB0097014DDE49500442A78 /* JSONKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC050C0F14FB0E3500EEFFB4 /* dantodolist.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = dantodolist.rtf; sourceTree = "<group>"; };
 		DC07E67D14DEDB81007942ED /* Light_Logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Light_Logo_small.png; path = graphics/Light_Logo_small.png; sourceTree = "<group>"; };
 		DC07E69014DEDD15007942ED /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = graphics/Icon.png; sourceTree = "<group>"; };
 		DC07E69314DEDD35007942ED /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -77,6 +84,12 @@
 		DC16526E14DDE2CE0063934A /* Search_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Search_Icon.png; path = graphics/Search_Icon.png; sourceTree = "<group>"; };
 		DC32A4FB14DE093E003C2AB3 /* Roster_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Roster_icon.png; path = graphics/Roster_icon.png; sourceTree = "<group>"; };
 		DC32A4FC14DE093E003C2AB3 /* Playlist_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Playlist_Icon.png; path = graphics/Playlist_Icon.png; sourceTree = "<group>"; };
+		DC6B3E7C14FAA02900766CD3 /* NewContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewContactViewController.h; sourceTree = "<group>"; };
+		DC6B3E7D14FAA02900766CD3 /* NewContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewContactViewController.m; sourceTree = "<group>"; };
+		DC6B3E8014FACABA00766CD3 /* NewContactInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewContactInfoCell.h; sourceTree = "<group>"; };
+		DC6B3E8114FACABA00766CD3 /* NewContactInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewContactInfoCell.m; sourceTree = "<group>"; };
+		DC8AA11914FA900300EE92DA /* NewStudentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStudentViewController.h; sourceTree = "<group>"; };
+		DC8AA11A14FA900300EE92DA /* NewStudentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewStudentViewController.m; sourceTree = "<group>"; };
 		DCABBE8114DD784A0007409B /* Dash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCABBE8514DD784A0007409B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCABBE8714DD784A0007409B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -116,6 +129,9 @@
 		DCABBEFC14DDCD7A0007409B /* PhoneCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneCall.m; sourceTree = "<group>"; };
 		DCABBF0E14DDD4170007409B /* PostCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCallViewController.h; sourceTree = "<group>"; };
 		DCABBF0F14DDD4180007409B /* PostCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCallViewController.m; sourceTree = "<group>"; };
+		DCB96F4314F98C4200B1A2B9 /* search_bar_gradient_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bar_gradient_dark.png; sourceTree = "<group>"; };
+		DCB96F4914F9C46500B1A2B9 /* GroupMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMemberTableCell.h; sourceTree = "<group>"; };
+		DCB96F4A14F9C46500B1A2B9 /* GroupMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMemberTableCell.m; sourceTree = "<group>"; };
 		DCCE5F3C14E45E3F00309361 /* CallLogTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallLogTableCell.m; sourceTree = "<group>"; };
 		DCCE5F3E14E45E8D00309361 /* CallLogTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallLogTableCell.h; sourceTree = "<group>"; };
 		DCDFC92414E5BD900067C07F /* cardboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = cardboard.jpg; path = graphics/cardboard.jpg; sourceTree = "<group>"; };
@@ -141,6 +157,7 @@
 		DC16526014DDE2AA0063934A /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				DCB96F4314F98C4200B1A2B9 /* search_bar_gradient_dark.png */,
 				DCDFC92414E5BD900067C07F /* cardboard.jpg */,
 				DCABBE9A14DD784A0007409B /* first.png */,
 				DCABBE9C14DD784A0007409B /* first@2x.png */,
@@ -172,6 +189,7 @@
 		DCABBE7614DD78490007409B = {
 			isa = PBXGroup;
 			children = (
+				DC050C0F14FB0E3500EEFFB4 /* dantodolist.rtf */,
 				DC07E69314DEDD35007942ED /* Icon.png */,
 				DC16526014DDE2AA0063934A /* graphics */,
 				DCABBEF314DDBA600007409B /* QuartzCore.framework */,
@@ -253,6 +271,10 @@
 				DCABBEF914DDC6300007409B /* ContactInfoCell.m */,
 				DCCE5F3E14E45E8D00309361 /* CallLogTableCell.h */,
 				DCCE5F3C14E45E3F00309361 /* CallLogTableCell.m */,
+				DCB96F4914F9C46500B1A2B9 /* GroupMemberTableCell.h */,
+				DCB96F4A14F9C46500B1A2B9 /* GroupMemberTableCell.m */,
+				DC6B3E8014FACABA00766CD3 /* NewContactInfoCell.h */,
+				DC6B3E8114FACABA00766CD3 /* NewContactInfoCell.m */,
 			);
 			name = TableCells;
 			sourceTree = "<group>";
@@ -268,6 +290,10 @@
 				DCABBEF114DDB4B90007409B /* StudentInfoViewController.m */,
 				DCABBF0E14DDD4170007409B /* PostCallViewController.h */,
 				DCABBF0F14DDD4180007409B /* PostCallViewController.m */,
+				DC8AA11914FA900300EE92DA /* NewStudentViewController.h */,
+				DC8AA11A14FA900300EE92DA /* NewStudentViewController.m */,
+				DC6B3E7C14FAA02900766CD3 /* NewContactViewController.h */,
+				DC6B3E7D14FAA02900766CD3 /* NewContactViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -350,6 +376,8 @@
 				DC07E6A714DEDFC8007942ED /* CellBGHappy.png in Resources */,
 				DC07E6A814DEDFC8007942ED /* CellBGSad.png in Resources */,
 				DCDFC92514E5BD900067C07F /* cardboard.jpg in Resources */,
+				DCB96F4414F98C4200B1A2B9 /* search_bar_gradient_dark.png in Resources */,
+				DC050C1014FB0E3500EEFFB4 /* dantodolist.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +403,10 @@
 				DCABBF1014DDD4190007409B /* PostCallViewController.m in Sources */,
 				FCB0097114DDE49500442A78 /* JSONKit.m in Sources */,
 				DCCE5F3D14E45E3F00309361 /* CallLogTableCell.m in Sources */,
+				DCB96F4B14F9C46500B1A2B9 /* GroupMemberTableCell.m in Sources */,
+				DC8AA11B14FA900300EE92DA /* NewStudentViewController.m in Sources */,
+				DC6B3E7E14FAA02900766CD3 /* NewContactViewController.m in Sources */,
+				DC6B3E8214FACABA00766CD3 /* NewContactInfoCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

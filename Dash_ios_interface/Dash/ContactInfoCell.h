@@ -15,7 +15,8 @@
 @class StudentInfoViewController;
 
 @interface ContactInfoCell : UITableViewCell{
-    UILabel* nameLabel, *phoneNumberLabel, *relationLabel, *contactTypeLabel;
+    UILabel* nameLabel, *relationLabel, *contactTypeLabel;
+    UIButton* callButtons[3];
     
 }
 @property (assign) StudentInfoViewController* parentVC;

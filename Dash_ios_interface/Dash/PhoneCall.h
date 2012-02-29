@@ -21,6 +21,7 @@
 @property (retain) ContactInfo* contactInfo;
 @property (retain) StudentInfo* studentInfo;
 @property (retain) NSNumber* callIntent;
+@property (retain) NSString* callNotesString;
 
 -(NSData *)toJson;
 -(NSDictionary*)toDict;

@@ -9,34 +9,65 @@
 #import "ContactInfo.h"
 
 @implementation ContactInfo
-@synthesize name;
+@synthesize firstName;
+@synthesize lastName;
 @synthesize contactId;
-@synthesize phoneNumber, relation, contactType;
+@synthesize homeNumber, mobileNumber, workNumber, relation;
 
 NSString * const CONTACT_ID_KEY = @"id";
 NSString * const CONTACT_FIRST_NAME_KEY = @"first_name";
 NSString * const CONTACT_LAST_NAME_KEY = @"last_name";
-NSString * const PHONE_NUMBER_KEY = @"phone";
+NSString * const PHONE_NUMBER_KEY = @"phones";
+NSString * const HOME_NUMBER_KEY = @"home";
+NSString * const MOBILE_NUMBER_KEY = @"cell";
+NSString * const WORK_NUMBER_KEY = @"day";
+
+
+
 NSString * const CONTACT_RELATIONSHIP_KEY = @"relationship";
+
 
 + (ContactInfo *)createFromDict:(NSDictionary*) input{
     
     ContactInfo *retVal = [[ContactInfo alloc] init];
     // combine names for simplicity, we can separate them later
-    NSString* first_name = (NSString *)[input objectForKey:CONTACT_FIRST_NAME_KEY];
-    NSString* last_name = (NSString *)[input objectForKey:CONTACT_LAST_NAME_KEY];
-    [retVal setName:[NSString stringWithFormat:@"%@ %@", first_name, last_name]];
+    //NSString* first_name = (NSString *)[input objectForKey:CONTACT_FIRST_NAME_KEY];
+    //NSString* last_name = (NSString *)[input objectForKey:CONTACT_LAST_NAME_KEY];
+    //[retVal setName:[NSString stringWithFormat:@"%@ %@", first_name, last_name]];
+    
+    [retVal setFirstName:(NSString *)[input objectForKey:CONTACT_FIRST_NAME_KEY]];
+     [retVal setLastName:(NSString *)[input objectForKey:CONTACT_LAST_NAME_KEY]];
+      
     
     [retVal setContactId:(NSNumber *)[input objectForKey:CONTACT_ID_KEY]];
-    [retVal setPhoneNumber:(NSString *)[input objectForKey:PHONE_NUMBER_KEY]]; 
+    //[retVal setPhoneNumber:(NSString *)[input objectForKey:PHONE_NUMBER_KEY]]; 
+    
+    NSArray* phonesArray = [input objectForKey:PHONE_NUMBER_KEY];//array of phon number dicts
+    
+    for(NSDictionary* phoneDict in phonesArray){
+        NSString* type = [phoneDict objectForKey:@"type"];
+        if([type isEqualToString:HOME_NUMBER_KEY]) [retVal setHomeNumber:(NSString *)[phoneDict objectForKey:@"number"]]; 
+        if([type isEqualToString:MOBILE_NUMBER_KEY]) [retVal setMobileNumber:(NSString *)[phoneDict objectForKey:@"number"]]; 
+        if([type isEqualToString: WORK_NUMBER_KEY]) [retVal setWorkNumber:(NSString *)[phoneDict objectForKey:@"number"]]; 
+    }
+    
     [retVal setRelation:(NSString*)[input objectForKey:CONTACT_RELATIONSHIP_KEY]];
     
-    //SERVER TODO HERE add keys/code for contactType 
-    
-    //temporary
-    [retVal setContactType:@"mobile"];
+   
     
     return retVal;
+}
+
+-(NSString*)bestPhoneNumber{
+    if(homeNumber)return homeNumber;
+    else if (mobileNumber) return mobileNumber;
+    else if (workNumber) return homeNumber;
+}
+
+-(int)bestPhoneNumberType{//0-2 for home, mobile, work
+    if(homeNumber)return 0;
+    else if (mobileNumber) return 1;
+    else if (workNumber) return 2;
 }
 
 + (NSArray *) createContactListFromArray:(NSArray *) input{
@@ -49,24 +80,36 @@ NSString * const CONTACT_RELATIONSHIP_KEY = @"relationship";
 
 //for local storage
 - (void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:name forKey:@"name"];
+	[coder encodeObject:firstName forKey:@"firstName"];
+    [coder encodeObject:lastName forKey:@"lastName"];
     [coder encodeObject:contactId forKey:@"contactId"];
-    [coder encodeObject:phoneNumber forKey:@"phoneNumber"];
-       [coder encodeObject:relation forKey:@"relation"];
-    [coder encodeObject:contactType forKey:@"contactType"];
+    //[coder encodeObject:phoneNumber forKey:@"phoneNumber"];
+    [coder encodeObject:homeNumber forKey:@"homeNumber"];
+    [coder encodeObject:mobileNumber forKey:@"mobileNumber"];
+    [coder encodeObject:workNumber forKey:@"workNumber"];
+    
+    [coder encodeObject:relation forKey:@"relation"];
+    //[coder encodeObject:contactType forKey:@"contactType"];
 
     
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
     if(self=[super init]){
-		name = [[coder decodeObjectForKey:@"name"] retain];
+		firstName = [[coder decodeObjectForKey:@"firstName"] retain];
+        lastName = [[coder decodeObjectForKey:@"lastName"] retain];
+        
         contactId = [[coder decodeObjectForKey:@"contactId"] retain];
-        phoneNumber = [[coder decodeObjectForKey:@"phoneNumber"] retain];
+        homeNumber = [[coder decodeObjectForKey:@"homeNumber"] retain];
+         mobileNumber = [[coder decodeObjectForKey:@"mobileNumber"] retain];
+         workNumber = [[coder decodeObjectForKey:@"workNumber"] retain];
         relation = [[coder decodeObjectForKey:@"relation"] retain];  
-        contactType = [[coder decodeObjectForKey:@"contactType"] retain];  
+        //contactType = [[coder decodeObjectForKey:@"contactType"] retain];  
     }
     return self;
+}
+-(NSString*)fullName{
+    return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 }
 
 @end

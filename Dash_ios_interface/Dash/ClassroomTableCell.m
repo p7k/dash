@@ -11,7 +11,7 @@
 @implementation ClassroomTableCell
 
 @synthesize studentNameLabel;
-@synthesize firstContactNameLabel;
+@synthesize firstContactNameLabel, firstContactRelationLabel;
 @synthesize happyButton;
 @synthesize sadButton;
 @synthesize callButton;
@@ -20,7 +20,7 @@
 @synthesize successView;
 
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high, 280 wide
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high, 300 wide
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -30,27 +30,52 @@
         imageView.alpha=.5;
         self.backgroundView = imageView;
         
+        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10,40)];
+        [self addSubview:successView]; 
+        
+        callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        callButton.frame = CGRectMake(10, 0, 40, 40);
+        [callButton setTitle:@"call now" forState:UIControlStateNormal];
+        callButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+        callButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        callButton.contentMode = UIViewContentModeScaleToFill;
+        //callButton.backgroundColor=[DashConstants theCallNowColor];//[DashConstants theHappyColor]];// forState:UIControlStateNormal];
+        //[callButton setBackgroundColor:[DashConstants theCallNowColor];// forState:UIControlStateSelected];
+        [callButton setImage:[DashConstants phoneImage] forState:UIControlStateNormal];
+        [callButton addTarget:self action:@selector(callNowDown) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:callButton];
+
+        
         studentNameLabel = [[UILabel alloc]init ];
-        studentNameLabel.frame = CGRectMake(20, 3, 130, 20);
-        studentNameLabel.font=[UIFont systemFontOfSize:14];
+        studentNameLabel.frame = CGRectMake(55, 3, 165, 20);
+        studentNameLabel.font=[UIFont boldSystemFontOfSize:14];
         studentNameLabel.textAlignment = UITextAlignmentLeft;
        
         studentNameLabel.backgroundColor = [UIColor clearColor];//[ UIColor    lightGrayColor];
         [self addSubview:studentNameLabel];
         
-         firstContactNameLabel = [[UILabel alloc]init ];
-        firstContactNameLabel.frame =  CGRectMake(20, 20, 140, 20);
-        firstContactNameLabel.textAlignment = UITextAlignmentRight;
-         firstContactNameLabel.textColor = [UIColor grayColor];
+               
+        firstContactRelationLabel = [[UILabel alloc]init ];
+        firstContactRelationLabel.frame =  CGRectMake(55, 20, 165, 20);
+        //firstContactRelationLabel.textAlignment = UITextAlignmentLeft;
+        firstContactRelationLabel.textColor = [UIColor grayColor];
+        firstContactRelationLabel.font=[UIFont boldSystemFontOfSize:13];
+        firstContactRelationLabel.backgroundColor = [UIColor clearColor];
+        [self addSubview:firstContactRelationLabel];
+        
+        firstContactNameLabel = [[UILabel alloc]init ];
+        //firstContactNameLabel.frame =  CGRectMake(55, 20, 165, 20);//defined by text
+        //firstContactNameLabel.textAlignment = UITextAlignmentRight;
+        firstContactNameLabel.textColor = [UIColor grayColor];
         firstContactNameLabel.font=[UIFont systemFontOfSize:13];
         firstContactNameLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:firstContactNameLabel];
-        
-        successView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10,40)];
-        [self addSubview:successView]; 
+
+
+       
         
         sadButton= [UIButton buttonWithType:UIButtonTypeCustom];
-        sadButton.frame = CGRectMake(160, 0, 40, 40);
+        sadButton.frame = CGRectMake(220, 0, 40, 40);
         sadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         sadButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
         sadButton.contentMode = UIViewContentModeScaleToFill;
@@ -64,7 +89,7 @@
 
         
         happyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        happyButton.frame = CGRectMake(160+40, 0, 40, 40);
+        happyButton.frame = CGRectMake(220+40, 0, 40, 40);
         // happyButton.layer.borderColor = [[UIColor blackColor] CGColor];
         happyButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         happyButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
@@ -77,18 +102,7 @@
         [happyButton addTarget:self action:@selector(happyButtonDown) forControlEvents:UIControlEventTouchDown];
         [self addSubview:happyButton];
         
-        callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        callButton.frame = CGRectMake(160+80, 0, 40, 40);
-        [callButton setTitle:@"call now" forState:UIControlStateNormal];
-        callButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
-        callButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        callButton.contentMode = UIViewContentModeScaleToFill;
-        //callButton.backgroundColor=[DashConstants theCallNowColor];//[DashConstants theHappyColor]];// forState:UIControlStateNormal];
-        //[callButton setBackgroundColor:[DashConstants theCallNowColor];// forState:UIControlStateSelected];
-        [callButton setImage:[DashConstants phoneImage] forState:UIControlStateNormal];
-        [callButton addTarget:self action:@selector(callNowDown) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:callButton];
-
+       
         
         
         
@@ -125,22 +139,25 @@
 
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     myStudentInfo = inInfo;
-    [studentNameLabel setText:[myStudentInfo name]];
-    [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] name]];
+    [studentNameLabel setText:[myStudentInfo fullName]];
+    NSString* cookedRelation = [NSString stringWithFormat:@"%@, ", [[myStudentInfo firstContactInfo] relation] ];//add comma
+    [firstContactRelationLabel setText: cookedRelation];
+    CGSize stringSize = [cookedRelation sizeWithFont:[firstContactRelationLabel font] ];
+    firstContactNameLabel.frame =  CGRectMake(55+stringSize.width, 20, 165, 20);//defined by text
+   
+     [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] fullName]];
+    
     
     //float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
    // printf("\nsuccessratio %.2f", successRatio);
-    printf("\nclassroomtable cell: set student info %s, %d calls", [[myStudentInfo name] cString], [[myStudentInfo phoneCallArray] count] );
-    float successRatio = 0;
-    if([[myStudentInfo phoneCallArray] count]==0) successRatio = .5;
+    printf("\nclassroomtable cell: set student info %s, %d calls", [[myStudentInfo fullName] cString], [myStudentInfo callCount] );
+    float positivePercent = 0;
+    if([myStudentInfo callCount ]==0) positivePercent = .5;
     else {
-        for(PhoneCall* currCall in [myStudentInfo phoneCallArray]){
-            if([currCall wasCompleted]) successRatio++;
-        }
-        [[myStudentInfo phoneCallArray] count];
+        positivePercent = (float)[myStudentInfo positiveCallCount] / ([myStudentInfo positiveCallCount]+[myStudentInfo negativeCallCount]);
     }
-               printf("\nsuccess %.2f", successRatio);
-    successView.backgroundColor = [UIColor colorWithRed:1-successRatio green:successRatio blue:.3 alpha:.8];
+    printf("\nsuccess %.2f", positivePercent);
+    successView.backgroundColor = [UIColor colorWithRed:1-positivePercent green:positivePercent blue:.3 alpha:.8];
     
 }
 

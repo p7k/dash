@@ -19,7 +19,7 @@
 
 @property(retain) UILabel* studentNameLabel;
 @property(retain) UILabel* firstContactNameLabel;
-
+@property(retain) UILabel* firstContactRelationLabel;
 
 @property(retain) UIButton* happyButton;
 @property(retain) UIButton* sadButton;

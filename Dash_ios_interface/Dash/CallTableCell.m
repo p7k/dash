@@ -78,7 +78,7 @@
     ContactInfo * inContactInfo = [studentInfo firstContactInfo];
     
     
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [inContactInfo phoneNumber]];
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", [inContactInfo bestPhoneNumber]];
     
     UIWebView *callWebview = [[UIWebView alloc] init];
     NSURL *telURL = [NSURL URLWithString:phoneLinkString];
@@ -127,8 +127,8 @@
 
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     studentInfo = inInfo;
-    [studentNameLabel setText:[studentInfo name]];
-    [firstContactNameLabel setText:[[studentInfo firstContactInfo] name]];
+    [studentNameLabel setText:[studentInfo fullName]];
+    [firstContactNameLabel setText:[[studentInfo firstContactInfo] fullName]];
     
     if( [studentInfo isHappy]){
         //self.backgroundColor = [DashConstants theHappyColor];
