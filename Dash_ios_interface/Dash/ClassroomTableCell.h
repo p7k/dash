@@ -11,6 +11,7 @@
 #import "StudentInfo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PostCallViewController.h"
+#import "ControlHub.h"
 
 @class ClassroomViewController;
 @interface ClassroomTableCell : UITableViewCell
@@ -26,5 +27,6 @@
 @property(retain) UIButton* callButton;
 @property (assign) StudentInfo* myStudentInfo;
 @property (assign) ClassroomViewController* parentVC;
+@property (assign) ControlHub* controlHub;
 @property (retain) UIView* successView;
 @end

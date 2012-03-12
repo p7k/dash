@@ -15,7 +15,7 @@
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
 //@synthesize viewController1, viewController2;
-
+@synthesize controlHub;
 
 - (void)dealloc
 {
@@ -27,24 +27,35 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    viewController1 = [[ClassroomViewController alloc] init];//WithNibName:@"FirstViewController" bundle:nil] autorelease];
-    viewController2 = [[CallListViewController alloc] init];//initWithNibName:@"SecondViewController" bundle:nil] autorelease];
+   
+    controlHub = [[ControlHub alloc] init ];//model contains student lists, group lists, etc
+    
+    viewController1 = [[ClassroomViewController alloc] initWithHub:controlHub];
+    [[controlHub allTopLevelViewControllersArray] addObject:viewController1];
+    
+    viewController2 = [[CallListViewController alloc] initWithHub:controlHub];
+    [[controlHub allTopLevelViewControllersArray] addObject:viewController2];
+    
+    controlHub.callListViewController=viewController2;
+    
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, nil];
     self.window.rootViewController = self.tabBarController;
     self.tabBarController.delegate=self;
     [self.window makeKeyAndVisible];
     
+    //[NSThread detachNewThreadSelector:@selector(sync) toTarget:controlHub withObject:nil];
+    
     //edit
-    viewController1.otherController = viewController2;
-    viewController2.otherController = viewController1;
+    //viewController1.otherController = viewController2;
+    //viewController2.otherController = viewController1;
     
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    [controlHub saveLocalInfoDict];
     /*
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

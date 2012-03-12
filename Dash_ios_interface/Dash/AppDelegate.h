@@ -10,6 +10,8 @@
 #import "ClassroomViewController.h"
 
 #import "CallListViewController.h"
+#import "ControlHub.h"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>{
     ClassroomViewController *viewController1;
@@ -17,7 +19,7 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (retain) ControlHub* controlHub;
 @property (strong, nonatomic) UITabBarController *tabBarController;
 
 //@property (retain) ClassroomViewController *viewController1;

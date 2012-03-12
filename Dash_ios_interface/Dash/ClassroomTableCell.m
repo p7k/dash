@@ -18,6 +18,7 @@
 @synthesize myStudentInfo;
 @synthesize parentVC;
 @synthesize successView;
+@synthesize controlHub;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //assume 40 high, 300 wide
@@ -115,11 +116,10 @@
 -(void)callNowDown{//:(ContactInfo*)inContactInfo{
     
     // Hacky, we should set this as an instance var
-    ContactInfo * inContactInfo = [myStudentInfo firstContactInfo];
-    
+    ContactInfo * inContactInfo = [[myStudentInfo contactsArray] objectAtIndex:0];
     
 
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel://%@", [inContactInfo phoneNumber]];
+    NSString *phoneLinkString = [NSString stringWithFormat:@"tel://%@", [inContactInfo bestPhoneNumber]];
     
     UIWebView *callWebview = [[UIWebView alloc] init];
     NSURL *telURL = [NSURL URLWithString:phoneLinkString];
@@ -129,6 +129,7 @@
     [pcvc setStudentInfo:myStudentInfo];
     [pcvc setContactInfo:inContactInfo];
     [pcvc setParentVC:nil];
+    //[pcvc setCallIntent:????
     [parentVC presentModalViewController:pcvc animated:YES];
        
         
@@ -140,12 +141,16 @@
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     myStudentInfo = inInfo;
     [studentNameLabel setText:[myStudentInfo fullName]];
-    NSString* cookedRelation = [NSString stringWithFormat:@"%@, ", [[myStudentInfo firstContactInfo] relation] ];//add comma
-    [firstContactRelationLabel setText: cookedRelation];
-    CGSize stringSize = [cookedRelation sizeWithFont:[firstContactRelationLabel font] ];
-    firstContactNameLabel.frame =  CGRectMake(55+stringSize.width, 20, 165, 20);//defined by text
+    NSString* cookedRelation;
+    NSString* rawRelation = [[[myStudentInfo contactsArray] objectAtIndex:0] relation];
+    if(rawRelation!=nil)   cookedRelation = [NSString stringWithFormat:@"%@, ", [[[myStudentInfo contactsArray] objectAtIndex:0] relation] ];//add comma
+    else cookedRelation=@"";
+       [firstContactRelationLabel setText: cookedRelation];
+    
+       CGSize stringSize = [cookedRelation sizeWithFont:[firstContactRelationLabel font] ];
+    firstContactNameLabel.frame =  CGRectMake(55+stringSize.width, 20, 165-stringSize.width, 20);//defined by text, width to make it truncate rather than overlap buttons
    
-     [firstContactNameLabel setText:[[myStudentInfo firstContactInfo] fullName]];
+     [firstContactNameLabel setText:[[[myStudentInfo contactsArray] objectAtIndex:0] fullName]];
     
     
     //float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
@@ -159,71 +164,73 @@
     printf("\nsuccess %.2f", positivePercent);
     successView.backgroundColor = [UIColor colorWithRed:1-positivePercent green:positivePercent blue:.3 alpha:.8];
     
+    //turn off phone if no valid contact
+    if([[inInfo contactsArray] count]==0 || [[[inInfo contactsArray] objectAtIndex:0] bestPhoneNumber]==nil)
+        callButton.hidden=YES;
+    else callButton.hidden=NO;
+    
 }
 
+-(void)updateMoodButtons{//via selected status, not mood
+    if(happyButton.selected)
+        [happyButton setImage:[DashConstants happyHighlightImage] forState:UIControlStateNormal];
+    else [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
+   
+    if(sadButton.selected)
+        [sadButton setImage:[DashConstants sadHighlightImage] forState:UIControlStateNormal];
+    else [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
+    
+
+}
 
 -(void)happyButtonDown{
     printf("\nhappybutton down");
     happyButton.selected = !happyButton.selected;
+    //printf("..selected? %d ", happyButton.selected);
+    myStudentInfo.mood = (int)happyButton.selected; //happy = mood 1, neutral = 0
+    //printf("..info mood? %d ", myStudentInfo.mood);
+    
+    
+    
     if(happyButton.selected==YES){//to list
-        if(sadButton.selected){
-            [[parentVC otherController] removeInfo:myStudentInfo];
-            [sadButton setSelected:NO];
-            [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
-        }
+        if(sadButton.selected==YES)sadButton.selected=NO;
+        if(![[controlHub callQueue] containsObject:myStudentInfo])//if it _isn't on callQueue, add it (other wise just refresh the mood)
+            [[controlHub callQueue] addObject:myStudentInfo];
+        [[[controlHub callListViewController] mainTableView] reloadData];
         
-        myStudentInfo.isHappy=YES;
-        myStudentInfo.callIntent = [NSNumber numberWithInt:1]; // set call intent to happy
-        [[parentVC otherController] addInfo:myStudentInfo];
-        //happyButton.layer.borderWidth = 3;
-       [happyButton setImage:[DashConstants happyHighlightImage] forState:UIControlStateNormal];
-        
-       
     }
     else{//off list
-        //happyButton.layer.borderWidth = 0;
-        myStudentInfo.isHappy=NO;
-        myStudentInfo.callIntent = [NSNumber numberWithInt:2];  // back to neutral 
-        [[parentVC otherController] removeInfo:myStudentInfo];
-        [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
+        [[controlHub callQueue] removeObject:myStudentInfo];
+        [[[controlHub callListViewController] mainTableView] reloadData];
         
     }
+    
+    [self updateMoodButtons];
+    
 }
 
 -(void)sadButtonDown{
     printf("\nsadbutton down");
-    [sadButton setSelected: !sadButton.selected];
+    sadButton.selected = !sadButton.selected;
+    myStudentInfo.mood = (int)-sadButton.selected; //happy = mood 1, neutral = 0
    
-    printf("\nsadbutton state is selected:%d", [sadButton state]==UIControlStateSelected );
+    
     if(sadButton.selected==YES){//to list
-        if(happyButton.selected){
-             [[parentVC otherController] removeInfo:myStudentInfo];
-            [happyButton setSelected:NO];
-            [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
-
-        }
-        
-        myStudentInfo.isHappy=NO;
-        myStudentInfo.callIntent = [NSNumber numberWithInt:0];
-        [[parentVC otherController] addInfo:myStudentInfo];
-        //sadButton.layer.borderWidth = 3;
-        [sadButton setImage:[DashConstants sadHighlightImage] forState:UIControlStateNormal];
+        if(happyButton.selected==YES)happyButton.selected=NO;
+        if(![[controlHub callQueue] containsObject:myStudentInfo])
+            [[controlHub callQueue] addObject:myStudentInfo];
+        [[[controlHub callListViewController] mainTableView] reloadData];
         
     }
     else{//off list
-        //sadButton.layer.borderWidth = 0;
-         myStudentInfo.callIntent = [NSNumber numberWithInt:2]; //back to neutral
-         [[parentVC otherController] removeInfo:myStudentInfo];
-        [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
+        [[controlHub callQueue] removeObject:myStudentInfo];
+        [[[controlHub callListViewController] mainTableView] reloadData];
+        
     }
+     [self updateMoodButtons];
+    
 }
 
--(void)resetMood{
-    [sadButton setSelected:NO];
-     [sadButton setImage:[DashConstants sadImage] forState:UIControlStateNormal];
-    [happyButton setSelected:NO];
-    [happyButton setImage:[DashConstants happyImage] forState:UIControlStateNormal];
-}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

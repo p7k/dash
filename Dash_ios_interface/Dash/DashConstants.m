@@ -34,6 +34,14 @@
 	return theSadColor;
 }
 
++(UIColor*)theNeutralColor{
+	if(!theNeutralColor){
+		theNeutralColor=[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
+		[theNeutralColor retain];
+	}
+	return theNeutralColor;
+}
+
 /*+(UIColor*)theSadHighlightColor{
 	if(!theSadHighlightColor){
 		theSadHighlightColor=[UIColor colorWithRed:.5 green:.4 blue:0 alpha:1];//puple+.3 was too gray

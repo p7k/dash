@@ -12,7 +12,7 @@
 #import "DashConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
-@class SecondViewController;
+@class CallListViewController;
 @interface CallTableCell : UITableViewCell
 
 @property(retain) UILabel* studentNameLabel;
@@ -20,8 +20,8 @@
 @property(retain) UIButton* callButton;
 //@property(retain) UIButton* deleteButton;
 
-@property BOOL isHappy;
+//@property BOOL isHappy;
 @property (retain) UIImageView* iconView;
 @property (assign) StudentInfo* studentInfo;
-@property (assign) SecondViewController* parentVC;
+@property (assign) CallListViewController* parentVC;
 @end

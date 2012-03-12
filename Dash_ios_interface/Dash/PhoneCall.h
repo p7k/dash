@@ -16,11 +16,11 @@
 
 
 @property (retain) NSDate* callDate;
-@property (retain) NSString* callReport;
+@property (retain) NSString* callReport;//What were the codes?
 @property BOOL wasCompleted;
 @property (retain) ContactInfo* contactInfo;
 @property (retain) StudentInfo* studentInfo;
-@property (retain) NSNumber* callIntent;
+@property (retain) NSNumber* callIntent;//What were the codes?
 @property (retain) NSString* callNotesString;
 
 -(NSData *)toJson;

@@ -10,7 +10,7 @@
 #import "PostCallViewController.h"
 
 @implementation CallTableCell
-@synthesize isHappy;
+//@synthesize isHappy;
 @synthesize studentNameLabel;
 @synthesize firstContactNameLabel, iconView, callButton;
 @synthesize studentInfo;
@@ -88,6 +88,7 @@
     [pcvc setStudentInfo:studentInfo];
     [pcvc setContactInfo:inContactInfo];
     [pcvc setParentVC:parentVC];
+    //[pcvc setIntent:
     [parentVC presentModalViewController:pcvc animated:YES];
     
     
@@ -128,13 +129,13 @@
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     studentInfo = inInfo;
     [studentNameLabel setText:[studentInfo fullName]];
-    [firstContactNameLabel setText:[[studentInfo firstContactInfo] fullName]];
+    [firstContactNameLabel setText:[[[studentInfo contactsArray] objectAtIndex:0] fullName]];
     
-    if( [studentInfo isHappy]){
+    if( [studentInfo mood]==1){
         //self.backgroundColor = [DashConstants theHappyColor];
         iconView.image = [DashConstants happyImage];
     }
-    else{
+    else if([studentInfo mood]==-1){
         iconView.image = [DashConstants sadImage];
         //self.backgroundColor = [DashConstants theSadColor];
     }

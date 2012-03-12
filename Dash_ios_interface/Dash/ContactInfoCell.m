@@ -53,7 +53,7 @@
             callButtons[i].contentMode = UIViewContentModeScaleToFill;
             [callButtons[i] setImage:[DashConstants phoneImage] forState:UIControlStateNormal];
             [callButtons[i] addTarget:self action:@selector(callNowDown:) forControlEvents:UIControlEventTouchDown];
-            callButtons[i].hidden=YES;
+            callButtons[i].enabled=NO;
             [self addSubview:callButtons[i]];
         }
 
@@ -61,6 +61,21 @@
     }
     return self;
 }
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animate
+{
+    [super setEditing:editing animated:animate];
+    printf("\ntransition to editing %d", editing);
+    if(editing) {
+       nameLabel.frame = CGRectMake(60, 0, 200, 20);
+        for(int i=0;i<3;i++) callButtons[i].hidden=YES;
+    }
+    else{
+        nameLabel.frame = CGRectMake(10, 0, 200, 20);//matches init
+         for(int i=0;i<3;i++) callButtons[i].hidden=NO;
+    }
+}
+
 
 -(void)callNowDown:(UIButton*)sender{//:(ContactInfo*)inContactInfo{
     
@@ -82,9 +97,14 @@
     [pcvc setStudentInfo:studentInfo];
     [pcvc setContactInfo:contactInfo];
     [pcvc setParentVC:parentVC];
+    //[pcvc setIntent:???
     [parentVC presentModalViewController:pcvc animated:YES];
     
     
+}
+
+-(void)setText:(NSString *)text{
+    nameLabel.text = text;
 }
 
 -(void)setStudentInfo:(StudentInfo *)inInfo{
@@ -97,9 +117,9 @@
     //phoneNumberLabel.text = [inInfo phoneNumber];
     relationLabel.text = [inInfo relation];
     //contactTypeLabel.text = [inInfo contactType];
-    if([contactInfo homeNumber]!=nil)callButtons[0].hidden=NO;
-    if([contactInfo mobileNumber]!=nil)callButtons[1].hidden=NO;
-    if([contactInfo workNumber]!=nil)callButtons[2].hidden=NO;
+    if([contactInfo homeNumber]!=nil)callButtons[0].enabled=YES;
+    if([contactInfo mobileNumber]!=nil)callButtons[1].enabled=YES;
+    if([contactInfo workNumber]!=nil)callButtons[2].enabled=YES;
        
 }
 

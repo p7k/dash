@@ -61,13 +61,15 @@ NSString * const CONTACT_RELATIONSHIP_KEY = @"relationship";
 -(NSString*)bestPhoneNumber{
     if(homeNumber)return homeNumber;
     else if (mobileNumber) return mobileNumber;
-    else if (workNumber) return homeNumber;
+    else if (workNumber) return workNumber;
+    return nil;
 }
 
 -(int)bestPhoneNumberType{//0-2 for home, mobile, work
     if(homeNumber)return 0;
     else if (mobileNumber) return 1;
     else if (workNumber) return 2;
+    return -1;
 }
 
 + (NSArray *) createContactListFromArray:(NSArray *) input{

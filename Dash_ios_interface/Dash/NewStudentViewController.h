@@ -15,6 +15,7 @@
 #import "CallLogTableCell.h"
 #import "GroupMemberTableCell.h"
 #import "NewContactViewController.h"
+#import "ControlHub.h"
 
 @class ClassroomViewController;
 
@@ -31,6 +32,7 @@
     
    
 }
-@property (assign) NewStudentViewController* delegate;
-@property (assign) StudentInfo* studentInfo;//retain?
+@property (assign) ClassroomViewController* delegate;
+@property (assign) StudentInfo* studentInfo;
+@property (assign) ControlHub* controlHub;
 @end

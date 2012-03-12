@@ -54,20 +54,47 @@
         NSString* buttonStrings[4]={@"Completed Contact", @"Left Message", @"Kept Ringing", @"Disconnected"};
         for(int i=0;i<4;i++){
             viewButtons[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect ];
-            viewButtons[i].frame=CGRectMake(20, 80+i*80, 280, 60);
+            viewButtons[i].frame=CGRectMake(20, 80+i*70, 280, 55);
             [viewButtons[i] setTitle:buttonStrings[i] forState:UIControlStateNormal];
-            [viewButtons[i] addTarget:self action:@selector(postCallButtonDown:) forControlEvents:UIControlEventTouchDown];
+            [viewButtons[i] addTarget:self action:@selector(postCallButtonDown:) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:viewButtons[i]];
         }
             
         
+        NSString* callIntentStrings[3]={@"hap",@"neut",@"bad"};
+        for(int i=0;i<3;i++){
+            intentButtons[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            intentButtons[i].frame = CGRectMake(20+i*95, 360, 85, 55);
+            [intentButtons[i] setTitle:callIntentStrings[i] forState:UIControlStateNormal];
+            [intentButtons[i] setTitleColor:[UIColor greenColor] forState:UIControlStateSelected];
+            [intentButtons[i] addTarget:self action:@selector(intentButtonDown:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:intentButtons[i]];
+        }
 
     }
     return self;
 }
 
 
+-(void)intentButtonDown:(UIButton*)inButton{
+    for(int i=0;i<3;i++){
+        if(inButton==intentButtons[i]){
+            [self setIntent:i];//sets my variable and updates buttons
+        }
+    }
+}
 
+-(void)setIntent:(int)inIntent{
+    intent=inIntent;
+    [self setIntentButtonState:inIntent];
+}
+
+-(void)setIntentButtonState:(int)inStatus{//this doesn't affect the call status, assign that separately
+    for(int i=0;i<3;i++){
+        intentButtons[i].selected=NO;
+    }
+    intentButtons[inStatus].selected=YES;
+}
 
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     printf("\nsetStudentInfo %s", [[inInfo fullName] cString ] );
@@ -99,7 +126,8 @@
     [newCall setCallReport:clickedButton.currentTitle];
     [newCall setStudentInfo:studentInfo];
     [newCall setContactInfo:contactInfo];
-
+   // [newCall setCallIntent:????
+    //[newCall setCallStatus:????
     
     // send the just created call to the server
     

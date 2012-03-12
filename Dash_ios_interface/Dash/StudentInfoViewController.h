@@ -14,6 +14,7 @@
 #import "CallLogTableCell.h"
 #import "GroupMemberTableCell.h"
 #import "NewContactViewController.h"
+#import "ControlHub.h"
 
 @interface StudentInfoViewController : UIViewController{
     UILabel* topLabel;
@@ -24,10 +25,12 @@
     
     UILabel* lastContactLabel, *numberOfCallsLabel, *positivityLabel;
     UIActivityIndicatorView* spinner;
-    UIButton* newContactButton;
-    NSMutableArray* allGroupNamesArray;
+    UIButton* editContactsButton;
+    ControlHub* controlHub;
+    BOOL reloadParentTable;
 }
 
 -(id)initWithStudentInfo:(StudentInfo*) inInfo;
 @property (assign) StudentInfo* studentInfo;
+@property (assign) UIViewController* delegate;
 @end

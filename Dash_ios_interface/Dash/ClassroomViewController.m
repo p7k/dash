@@ -9,22 +9,11 @@
 #import "ClassroomViewController.h"
 
 @implementation ClassroomViewController
-@synthesize searchBar, classroomTableView, classInfoArray, groupsTableView, spinner;
-@synthesize otherController, allGroupNamesArray;
+@synthesize searchBar, mainTableView,  groupsTableView, spinner;
+@synthesize controlHub ;
 
 int myCornerRadius=10;
 
-NSString* _archiveLocation; 
-+ (NSString*)archiveLocation{
-	if (_archiveLocation == nil)
-	{
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [paths objectAtIndex:0];
-		_archiveLocation = [[documentsDirectory stringByAppendingPathComponent:@"PresetsDict.ar"] retain];       
-		//printf("\ntemp= %s ", [_archiveLocation cString]);
-	}
-	return _archiveLocation;
-}
 
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,10 +26,11 @@ NSString* _archiveLocation;
     return self;
 }*/
 
-- (id)init{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithHub:(ControlHub*)inControlHub{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 
     self = [super init];//initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        controlHub = inControlHub;
         self.title = NSLocalizedString(@"Roster", @"Roster");
         self.tabBarItem.image = [UIImage imageNamed:@"Roster_icon.png"];
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
@@ -64,8 +54,7 @@ NSString* _archiveLocation;
 	// Do any additional setup after loading the view, typically from a nib.
     printf("\nview did load");
     
-    allGroupNamesArray = [[NSMutableArray alloc]init ];
-     [allGroupNamesArray addObject:@"Full Roster"];
+    
    
     
     //@"name", @"recency most recent first", @"recency least recent first", 
@@ -74,6 +63,9 @@ NSString* _archiveLocation;
     
     classInfoSearchSubArray = [[NSMutableArray alloc]init ];
     classInfoInGroupArray = [[NSMutableArray alloc]init ];
+    for(StudentInfo* studentInfo in [controlHub classInfoArray]){
+        [classInfoInGroupArray addObject:studentInfo];
+    }
     
     //interface====
     //top header
@@ -85,14 +77,14 @@ NSString* _archiveLocation;
     titleImageView.frame =CGRectMake(104+20, 5, 72, 30);
     [headerView addSubview:titleImageView];
     
-    groupsTableButton = [DashConstants gradientButton];
+    sideMenuButton = [DashConstants gradientButton];
     
-    groupsTableButton.frame = CGRectMake(20, 5, 60,25);
-    groupsTableButton.backgroundColor = [UIColor grayColor];
-    [groupsTableButton setTitle:@"groups" forState:UIControlStateNormal];
-    groupsTableButton.layer.cornerRadius=4;
-    [groupsTableButton addTarget:self action:@selector(groupsTableButtonHit) forControlEvents:UIControlEventTouchUpInside];
-    [headerView addSubview:groupsTableButton];
+    sideMenuButton.frame = CGRectMake(20, 5, 60,25);
+    sideMenuButton.backgroundColor = [UIColor grayColor];
+    [sideMenuButton setTitle:@"-" forState:UIControlStateNormal];
+    sideMenuButton.layer.cornerRadius=4;
+    [sideMenuButton addTarget:self action:@selector(sideMenuButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [headerView addSubview:sideMenuButton];
 
     addStudentButton = [DashConstants gradientButton];
     
@@ -124,11 +116,21 @@ NSString* _archiveLocation;
     groupNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,0,300,40)];//(20, 50, 280, 40)];
     groupNameLabel.textAlignment = UITextAlignmentCenter;
     groupNameLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pad_Header.png"]];
-    groupNameLabel.text = [allGroupNamesArray objectAtIndex:0];
+    groupNameLabel.text = [[controlHub allGroupNamesArray] objectAtIndex:0];
     groupNameLabel.font=[UIFont systemFontOfSize:24];
     groupNameLabel.textColor = [UIColor whiteColor];
     [roundedContentView addSubview:groupNameLabel];
 
+    
+    groupsTableButton = [DashConstants gradientButton];
+    
+    groupsTableButton.frame = CGRectMake(20, 5, 30,25);
+    groupsTableButton.backgroundColor = [UIColor grayColor];
+    [groupsTableButton setTitle:@"g" forState:UIControlStateNormal];
+    groupsTableButton.layer.cornerRadius=4;
+    [groupsTableButton addTarget:self action:@selector(groupsTableButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [roundedContentView addSubview:groupsTableButton];
+    
     searchHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 40,300,40)];//(20, 90, 280, 80)];
     searchHeaderView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"search_bar_gradient_dark.png"]];
     [roundedContentView addSubview:searchHeaderView];
@@ -169,22 +171,37 @@ NSString* _archiveLocation;
    
     
        
-    classroomTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 80, 300, 260)];
-    classroomTableView.dataSource = self;
-    classroomTableView.delegate = self;
-    classroomTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    classroomTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
-    //classroomTableView.layer.cornerRadius = myCornerRadius;
-    //classroomTableView.clipsToBounds = YES;
-    [roundedContentView addSubview:classroomTableView];
+    mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 80, 300, 260)];
+    mainTableView.dataSource = self;
+    mainTableView.delegate = self;
+    mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    mainTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];
+    //mainTableView.layer.cornerRadius = myCornerRadius;
+    //mainTableView.clipsToBounds = YES;
+    [roundedContentView addSubview:mainTableView];
    
-    groupsTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 40, 140, 200)];
+    //Groups View
+    
+    groupsView = [[UIView alloc]initWithFrame:CGRectMake(20, 50, 280, 340)];
+    groupsView.layer.cornerRadius=4;
+    groupsView.hidden = YES;
+    groupsView.backgroundColor=[UIColor blueColor];
+    [self.view addSubview:groupsView];
+    
+    groupsTableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 10, 260, 280)];
     groupsTableView.dataSource = self;
     groupsTableView.delegate = self;
-    groupsTableView.hidden=YES;
-    [self.view addSubview:groupsTableView];
+    [groupsView addSubview:groupsTableView];
     
-    //
+    UIButton* addGroupButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    addGroupButton.backgroundColor = [UIColor lightGrayColor];
+    addGroupButton.frame = CGRectMake(80, 300, 120, 30);
+    addGroupButton.layer.cornerRadius=4;
+    [addGroupButton setTitle:@"add group" forState:UIControlStateNormal];
+    [addGroupButton addTarget:self action:@selector(addGroupButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [groupsView addSubview:addGroupButton];
+    
+    //sort options
     
     sortOptionsView = [[UIView alloc]initWithFrame:CGRectMake(200, 80+50, 120, 400)];
     sortOptionsView.hidden = YES;
@@ -199,58 +216,113 @@ NSString* _archiveLocation;
         [sortOptionsView addSubview:sortOptionButton[i]];
     }
     
+    //add group alert
+    /*addGroupAlert = [[UIAlertView alloc]initWithTitle:@"Create Group" message:@"\n" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil ]; 
     
-    //first, read classInfoArray from local copy before internet sync
-    
-    classInfoArray = [self loadClassArrayLocal];
-    /*for(StudentInfo* studentInfo in classInfoArray){
-        [classInfoInGroupArray addObject:studentInfo];
-    }*/
-     [self updateGroupsListing]; 
-    [spinner startAnimating];
-    [NSThread detachNewThreadSelector:@selector(sync) toTarget:self withObject:nil];
-    
-    // request data from the api
-    /*NSError * error = nil;
-     NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
-     NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
-     // printf("\n========CLASSROOM\n%s", [studentJson cString]);
-     */
-    /*if (studentJson!=nil && [studentJson length]>0) {//check for sucess
-        classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
-        printf("\ninternet success, class info array with %d records", [classInfoArray count]);
-        
-        //on successful pull, save to local
-        [self saveClassArrayLocal];
-    }*/
-
-    
-}
-//pull from server
--(void)sync{
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc]init];
-    
-    // request data from the api
-    NSError * error = nil;
-    NSURL * url = [NSURL URLWithString:@"http://23.21.212.190:5000/api/v1/student"];
-    NSString *studentJson = [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];    
-     printf("\n========CLASSROOM\n%s", [studentJson cString]);
-    
-    if (studentJson!=nil && [studentJson length]>0) {//check for sucess
-        classInfoArray = [StudentInfo createStudentListWithJsonString:studentJson];
-        printf("\ninternet success, class info array with %d records", [classInfoArray count]);
-        
-        //on successful pull, save to local
-        [self saveClassArrayLocal];
-         [self performSelectorOnMainThread:@selector(syncFinishedWithSuccess:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:NO];
-        
        
-        
-    }
-    else  [self performSelectorOnMainThread:@selector(syncFinishedWithSuccess:) withObject:[NSNumber numberWithBool:NO] waitUntilDone:NO];
-   
-    [pool release];
+     addGroupAlertTextField = [[UITextField alloc] initWithFrame:CGRectMake(16,40,252,25)];
+    addGroupAlertTextField.font = [UIFont systemFontOfSize:18];
+    addGroupAlertTextField.backgroundColor = [UIColor whiteColor];
+    addGroupAlertTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    addGroupAlertTextField.delegate = self;
+    [addGroupAlertTextField becomeFirstResponder];//here or on show?
+    addGroupAlertTextField.layer.cornerRadius=4; 
+    [addGroupAlertTextField setPlaceholder:@"New Group Name"];
+    [addGroupAlert addSubview:addGroupAlertTextField];
+    
+    [addGroupAlert setTransform:CGAffineTransformMakeTranslation(0,30)];*/
+  
+    
+    //====add group view
+    
+    addGroupView = [[UIView alloc]initWithFrame:CGRectMake(80, 100, 160, 200)];
+    addGroupView.backgroundColor = [UIColor greenColor];
+    addGroupView.layer.cornerRadius=4;
+    addGroupView.hidden=YES;
+    [self.view addSubview:addGroupView];
+    
+    UILabel* addGroupLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 140, 30 )];
+    addGroupLabel.textAlignment = UITextAlignmentCenter;
+    addGroupLabel.text = @"Add Group";
+    addGroupLabel.backgroundColor=[UIColor clearColor];
+    [addGroupView addSubview:addGroupLabel];
+    
+    addGroupTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 60, 140, 20)];
+    addGroupTextField.placeholder = @"group name";
+    addGroupTextField.textAlignment=UITextAlignmentCenter;
+    addGroupTextField.backgroundColor = [UIColor whiteColor];
+    addGroupTextField.autocorrectionType=UITextAutocorrectionTypeNo;
+    addGroupTextField.delegate=self;
+    [addGroupView addSubview:addGroupTextField];
+    
+    addGroupCancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    addGroupCancelButton.frame = CGRectMake(10, 100, 60, 30);
+    [addGroupCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [addGroupCancelButton addTarget:self action:@selector(addGroupCancelButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [addGroupView addSubview:addGroupCancelButton];
+    
+    addGroupOkButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    addGroupOkButton.frame = CGRectMake(90, 100, 60, 30);
+    [addGroupOkButton setTitle:@"OK" forState:UIControlStateNormal];
+     [addGroupOkButton addTarget:self action:@selector(addGroupOkButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [addGroupView addSubview:addGroupOkButton];
+    
+    //====add student view
+    
+    addStudentView = [[UIView alloc]initWithFrame:CGRectMake(80, 100, 160, 200)];
+    addStudentView.backgroundColor = [UIColor greenColor];
+    addStudentView.layer.cornerRadius=4;
+    addStudentView.hidden=YES;
+    [self.view addSubview:addStudentView];
+    
+    UILabel* addStudentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 140, 30 )];
+    addStudentLabel.textAlignment = UITextAlignmentCenter;
+    addStudentLabel.text = @"Add Student";
+    addStudentLabel.backgroundColor=[UIColor clearColor];
+    [addStudentView addSubview:addStudentLabel];
+    
+    addStudentFirstNameTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 40, 140, 20)];
+    addStudentFirstNameTextField.placeholder = @"first name";
+    addStudentFirstNameTextField.textAlignment=UITextAlignmentCenter;
+    addStudentFirstNameTextField.backgroundColor = [UIColor whiteColor];
+    addStudentFirstNameTextField.autocorrectionType=UITextAutocorrectionTypeNo;
+    addStudentFirstNameTextField.delegate=self;
+    [addStudentView addSubview:addStudentFirstNameTextField];
+    
+    addStudentLastNameTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 70, 140, 20)];
+    addStudentLastNameTextField.placeholder = @"last name";
+    addStudentLastNameTextField.textAlignment=UITextAlignmentCenter;
+    addStudentLastNameTextField.backgroundColor = [UIColor whiteColor];
+    addStudentLastNameTextField.autocorrectionType=UITextAutocorrectionTypeNo;
+    addStudentLastNameTextField.delegate=self;
+    [addStudentView addSubview:addStudentLastNameTextField];
+    
+    addStudentCancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    addStudentCancelButton.frame = CGRectMake(10, 100, 60, 30);
+    [addStudentCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [addStudentCancelButton addTarget:self action:@selector(addStudentCancelButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [addStudentView addSubview:addStudentCancelButton];
+    
+    addStudentOkButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    addStudentOkButton.frame = CGRectMake(90, 100, 60, 30);
+    [addStudentOkButton setTitle:@"OK" forState:UIControlStateNormal];
+    [addStudentOkButton addTarget:self action:@selector(addStudentOkButtonHit) forControlEvents:UIControlEventTouchUpInside];
+    [addStudentView addSubview:addStudentOkButton];
+    
+    
 }
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    if(textField==addGroupTextField)[self addGroupOkButtonHit];
+    if(textField==addStudentFirstNameTextField)[addStudentLastNameTextField becomeFirstResponder];
+    if(textField==addStudentLastNameTextField)[self addStudentOkButtonHit];
+    
+    
+}
+
 
 -(void)syncFinishedWithSuccess:(NSNumber*)inSuccessBoolNumber{
     printf("\nsync finished with success %d",  [inSuccessBoolNumber boolValue]);
@@ -259,8 +331,11 @@ NSString* _archiveLocation;
         spinner.hidden=YES; 
         
         //copy into group - but what happens if user has already selected a group!?!?!? ARGH TODO
-        
-        [self updateGroupsListing];       
+        [classInfoInGroupArray removeAllObjects];
+        for(StudentInfo* studentInfo in [controlHub classInfoArray]){
+            [classInfoInGroupArray addObject:studentInfo];
+        }
+             
       
             
     }
@@ -268,7 +343,7 @@ NSString* _archiveLocation;
 
 }
 
--(void)updateGroupsListing{
+/*-(void)updateGroupsListing{
     printf("\n====update groups");
     
     [classInfoInGroupArray removeAllObjects];
@@ -299,18 +374,123 @@ NSString* _archiveLocation;
     [groupsTableView reloadData];
 
     
-}
+}*/
 
--(void)addStudentInfo:(StudentInfo*)inInfo{
+/*-(void)addStudentInfo:(StudentInfo*)inInfo{
     printf("\nadd %s", [[inInfo fullName] cString]);
-    [classInfoArray addObject:inInfo];
-    [self updateGroupsListing];
-    [classroomTableView reloadData];
-}
+    [[controlHub classInfoArray] addObject:inInfo];
+    //[self updateGroupsListing];
+    [mainTableView reloadData];
+}*/
+
+//add student view
 
 -(void)addStudentButtonHit{
-    NewStudentViewController *nextController = [[NewStudentViewController alloc] initWithDelegate:self];
+    //NewStudentViewController *nextController = [[NewStudentViewController alloc] initWithDelegate:self controlHub:controlHub];
+    //[self presentModalViewController:nextController animated:YES];
+    addStudentView.hidden=NO;
+    [addStudentFirstNameTextField becomeFirstResponder];
+}
+
+-(void)addStudentCancelButtonHit{
+    [addStudentFirstNameTextField resignFirstResponder];
+    [addStudentLastNameTextField resignFirstResponder];
+    
+    addStudentFirstNameTextField.text=nil;
+    addStudentLastNameTextField.text = nil;
+    
+    addStudentView.hidden=YES;
+}
+
+-(void)addStudentOkButtonHit{
+    StudentInfo* newStudentInfo = [[StudentInfo alloc]init];
+    [newStudentInfo setFirstName:[addStudentFirstNameTextField.text copy]];
+    [newStudentInfo setLastName:[addStudentLastNameTextField.text copy]];
+    //printf("\nadded %s, %s %s", [[newStudentInfo fullName] cString], [[newStudentInfo firstName] cString], [[newStudentInfo lastName] cString]);
+    
+    [[controlHub classInfoArray] addObject:newStudentInfo ];
+    [mainTableView reloadData];
+    
+    [addStudentFirstNameTextField resignFirstResponder];
+    [addStudentLastNameTextField resignFirstResponder];
+    addStudentView.hidden=YES;
+    
+    //launch controller
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:newStudentInfo controlHub:controlHub];//WithNibName:@"NextView" bundle:nil];
+    nextController.delegate=self;//for reloading table
     [self presentModalViewController:nextController animated:YES];
+    
+    
+}
+
+//add group view
+
+-(void)addGroupButtonHit{
+    
+    //addGroupAlertTextField.text=nil;
+    //[addGroupAlert show];
+    addGroupView.hidden=NO;
+    [addGroupTextField becomeFirstResponder];
+}
+
+-(void)addGroupCancelButtonHit{
+    [addGroupTextField resignFirstResponder];
+    addGroupTextField.text = nil;
+    addGroupView.hidden=YES;
+}
+
+-(void)addGroupOkButtonHit{
+    NSString* name = [[addGroupTextField text] copy];
+    [[controlHub allGroupNamesArray] addObject:name ];
+    [groupsTableView reloadData];
+
+    [addGroupTextField resignFirstResponder];
+    addGroupView.hidden=YES;
+    
+    //launch controller
+    GroupViewController *nextController = [[GroupViewController alloc] initWithGroupName:name delegate:self controlHub:controlHub];
+    nextController.delegate=self;//to relod table on delete
+    [self presentModalViewController:nextController animated:YES];
+    
+}
+
+
+     
+
+
+/*-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex==1){
+        [[controlHub allGroupNamesArray] addObject:[addGroupAlertTextField text]];
+        [groupsTableView reloadData];
+    }
+}*/
+
+-(void)editGroupButton:(UIButton*)sender{
+    NSString* name = [[sender superview] reuseIdentifier];
+    GroupViewController *nextController = [[GroupViewController alloc] initWithGroupName:name delegate:self controlHub:controlHub];
+    nextController.delegate=self;//to relod table on delete
+    [self presentModalViewController:nextController animated:YES];
+}
+
+-(void)sideMenuButtonHit{
+    
+    CGRect destination = self.parentViewController.view.frame;
+    //printf("*%d", destination.origin.x);
+    if (destination.origin.x > 0) {
+        destination.origin.x = 0;
+    } else {
+        destination.origin.x += 254.5;
+    }
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        self.parentViewController.view.frame = destination;        
+        
+    } completion:^(BOOL finished) {
+        
+        //self.view.userInteractionEnabled = !(destination.origin.x > 0);
+        
+    }];
 }
 
 -(void)sortOptionButtonHit:(UIButton*) sender{
@@ -324,7 +504,7 @@ NSString* _archiveLocation;
                     NSString *second = [b lastName];
                     return [first compare:second];
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             //most recent
@@ -334,7 +514,7 @@ NSString* _archiveLocation;
                     NSDate *second = [b lastContactDate];
                     return [second compare:first];
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             //least recent
@@ -344,7 +524,7 @@ NSString* _archiveLocation;
                     NSDate *second = [b lastContactDate];
                     return [first compare:second];
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             //positive
@@ -357,7 +537,7 @@ NSString* _archiveLocation;
                     else if (first>second) return NSOrderedDescending;
                     else return NSOrderedSame;
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             //negative
@@ -370,7 +550,7 @@ NSString* _archiveLocation;
                     else if (first>second) return NSOrderedAscending;
                     else return NSOrderedSame;
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
 
             //most calls
@@ -383,7 +563,7 @@ NSString* _archiveLocation;
                     else if (first>second) return NSOrderedDescending;
                     else return NSOrderedSame;
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             //fewest calls
@@ -396,7 +576,7 @@ NSString* _archiveLocation;
                     else if (first>second) return NSOrderedAscending;
                     else return NSOrderedSame;
                 }];
-                [classroomTableView reloadData];
+                [mainTableView reloadData];
             }
             
             
@@ -406,14 +586,15 @@ NSString* _archiveLocation;
     
 }
 
+//redo
 //doesn't actually remove, just resets mood, called from othercontroller. really hack-y!
--(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
+/*-(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
    // printf("\nremove %s", [[inInfo name] cString])  ;
     //StudentInfo* foundStudentInfo=nil;
    // for(StudentInfo* currStudentInfo in classInfoArray){
     int foundStudentIndex=-1;
-    for(int i=0;i<[classInfoArray count];i++){  
-        StudentInfo* currStudentInfo = [classInfoArray objectAtIndex:i];
+    for(int i=0;i<[[controlHub classInfoArray] count];i++){  
+        StudentInfo* currStudentInfo = [[controlHub classInfoArray] objectAtIndex:i];
         if(currStudentInfo==inInfo){
             foundStudentIndex = i;
         }
@@ -423,13 +604,13 @@ NSString* _archiveLocation;
         int pathArray[2]={0,foundStudentIndex};
         NSIndexPath* path = [NSIndexPath indexPathWithIndexes:pathArray length:2];
         //NSString *CellPersIDString = [foundStudentInfo name];
-        //ClassroomTableCell* cell = [classroomTableView dequeueReusableCellWithIdentifier:CellPersIDString];
-        UITableViewCell* cell = [classroomTableView cellForRowAtIndexPath:path];
+        //ClassroomTableCell* cell = [mainTableView dequeueReusableCellWithIdentifier:CellPersIDString];
+        UITableViewCell* cell = [mainTableView cellForRowAtIndexPath:path];
        // printf(" cell? %d", cell);
         [cell resetMood];
     }
     
-} 
+} */
 
 //sorting
 -(void)sortTableButtonHit{
@@ -438,7 +619,8 @@ NSString* _archiveLocation;
 }
 
 -(void)groupsTableButtonHit{
-    [groupsTableView setHidden:!groupsTableView.hidden];
+    
+    [groupsView setHidden:NO];
 }
 
 //search bar delegate
@@ -446,7 +628,7 @@ NSString* _archiveLocation;
     [searchBar resignFirstResponder];
     searching=NO;
     searchBar.text=@"";
-     [classroomTableView reloadData];
+     [mainTableView reloadData];
 }
 
 - (void)searchBar:(UISearchBar *)inBar textDidChange:(NSString *)searchText{
@@ -456,7 +638,7 @@ NSString* _archiveLocation;
     
     if([searchText length] > 0) {
         searching = YES;
-        for(StudentInfo* currInfo in classInfoInGroupArray){
+        for(StudentInfo* currInfo in [controlHub classInfoArray]){
         
             NSRange textRange =[[[currInfo fullName] lowercaseString] rangeOfString:[searchText lowercaseString]];
         
@@ -469,7 +651,7 @@ NSString* _archiveLocation;
     
     else searching=NO;
     
-    [classroomTableView reloadData];
+    [mainTableView reloadData];
     
 }
 
@@ -481,7 +663,7 @@ NSString* _archiveLocation;
      printf("\nbegin editing");
     searchBar.showsCancelButton = YES;
     //searching=YES;
-     [classroomTableView reloadData];
+     [mainTableView reloadData];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
@@ -531,8 +713,9 @@ NSString* _archiveLocation;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+   // printf("\nhere: %d %d ", );
 	if(tableView==groupsTableView){
-        return [allGroupNamesArray count];
+        return [[controlHub allGroupNamesArray] count];
     }
     else{   //classroom
         if(!searching)return [classInfoInGroupArray count];
@@ -549,7 +732,7 @@ NSString* _archiveLocation;
 
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-	if(tableView==classroomTableView){
+	if(tableView==mainTableView){
     StudentInfo* currStudentInfo;	
     if(!searching) currStudentInfo = [classInfoInGroupArray  objectAtIndex: [indexPath indexAtPosition:1]];
         else currStudentInfo = [classInfoSearchSubArray  objectAtIndex: [indexPath indexAtPosition:1]];
@@ -559,20 +742,34 @@ NSString* _archiveLocation;
 			cell = [[[ClassroomTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellPersIDString] autorelease] ;
 			
             
-            [cell setStudentInfo:currStudentInfo];
+            
+            [cell setControlHub:controlHub];//for access to calllistviewcontroller
             cell.parentVC=self;
 			
 		}
+        //do this all the time...ok? - this will update the contact info, success color, name, etc
+        [cell setStudentInfo:currStudentInfo];
+        
 		return cell;
     }
     
-    else if (tableView==groupsTableView){
+    else if (tableView==groupsTableView){//260 wide
         
-        NSString* groupName = [allGroupNamesArray objectAtIndex:[indexPath indexAtPosition:1]];
+        NSString* groupName = [[controlHub allGroupNamesArray] objectAtIndex:[indexPath indexAtPosition:1]];
         UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:groupName];
         if(cell==nil){
 			cell = [[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:groupName] autorelease] ;
             cell.textLabel.text=groupName;
+            cell.textLabel.frame=CGRectMake(0, 0, 220, 40);
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            if([indexPath indexAtPosition:1]>0){//don't edit full roster
+                UIButton* editGroupButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                editGroupButton.backgroundColor = [UIColor greenColor];
+                editGroupButton.frame = CGRectMake(220, 5, 30, 30);
+                [editGroupButton addTarget:self action:@selector(editGroupButton:) forControlEvents:UIControlEventTouchUpInside];
+                [cell addSubview:editGroupButton];
+            }
         }
         
         return cell;
@@ -583,14 +780,16 @@ NSString* _archiveLocation;
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	if(tableView == classroomTableView) return 40;
+	if(tableView == mainTableView) return 40;
 	else if (tableView== groupsTableView) return 40;
 	
 }
-
+-(void)test{
+    printf("\nHI!");
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
 		
-    if(tableView == classroomTableView){
+    if(tableView == mainTableView){
         
     int newIndex = [indexPath indexAtPosition:1];
         
@@ -598,9 +797,10 @@ NSString* _archiveLocation;
     StudentInfo* selectedStudentInfo;
     if(searching)selectedStudentInfo = [classInfoSearchSubArray objectAtIndex:newIndex];
     else selectedStudentInfo = [classInfoInGroupArray objectAtIndex:newIndex];
-        StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:selectedStudentInfo allGroupNamesArray:allGroupNamesArray];//WithNibName:@"NextView" bundle:nil];
+        
+        StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:selectedStudentInfo controlHub:controlHub];//WithNibName:@"NextView" bundle:nil];
     //[nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
-
+        nextController.delegate=self;//for reload table
     [self presentModalViewController:nextController animated:YES];
     
     }
@@ -609,15 +809,15 @@ NSString* _archiveLocation;
         [classInfoInGroupArray removeAllObjects];
         
         if([indexPath indexAtPosition:1]==0){//"all"
-            for(StudentInfo* studentInfo in classInfoArray){
+            for(StudentInfo* studentInfo in [controlHub classInfoArray]){
                  [classInfoInGroupArray addObject:studentInfo];
             }
            
         }
         else{
             
-            currentGroupString = [allGroupNamesArray objectAtIndex: [indexPath indexAtPosition:1]];
-            for(StudentInfo* studentInfo in classInfoArray){
+            currentGroupString = [[controlHub allGroupNamesArray] objectAtIndex: [indexPath indexAtPosition:1]];
+            for(StudentInfo* studentInfo in [controlHub classInfoArray]){
                 for (NSString* groupString in [studentInfo groupStringArray]){
                     if([groupString compare:currentGroupString]==NSOrderedSame){
                         [classInfoInGroupArray addObject:studentInfo];
@@ -626,9 +826,9 @@ NSString* _archiveLocation;
                 }
             }
         }
-        [classroomTableView reloadData];
-        groupNameLabel.text = [allGroupNamesArray objectAtIndex:[indexPath indexAtPosition:1]];
-        [groupsTableView setHidden:YES];
+        [mainTableView reloadData];
+        groupNameLabel.text = [[controlHub allGroupNamesArray] objectAtIndex:[indexPath indexAtPosition:1]];
+        [groupsView setHidden:YES];
         
     }
       
@@ -636,30 +836,6 @@ NSString* _archiveLocation;
 }
 
 
--(NSMutableArray*) loadClassArrayLocal{
-    NSMutableArray* tempArray;
-	if ([[NSFileManager defaultManager] fileExistsAtPath:[ClassroomViewController archiveLocation]]) {
-		tempArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[ClassroomViewController archiveLocation]];
-		printf("\nlocal array file exists, has %d records ", [tempArray count]);
-		//printf("\ninit dictionary:%s", [[trackInfoDict description]cString]);
-	}
-    else{ 
-        tempArray=[[NSMutableArray alloc]init ];
-    }
-    [tempArray retain];
-    return tempArray;
-}
-
--(void) saveClassArrayLocal{
-	printf("\ncalled save");
-	printf("contents:");
-	/*for(int i=0;i<[classInfoArray count];i++){
-		printf("\n-%s -- %d", [[[stateInfoArray objectAtIndex:i] presetName] cString], [[stateInfoArray objectAtIndex:i] osc1Cent] );
-	}*/
-	BOOL result = [NSKeyedArchiver archiveRootObject:classInfoArray toFile:[ClassroomViewController archiveLocation]];	
-	if(result)printf(" --save successful");
-	else printf("\nsave UNsuccessful!");
-}
 
 
 @end

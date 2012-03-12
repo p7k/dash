@@ -13,6 +13,8 @@
 //#import "CallIntent.h"
 #import "StudentInfoViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ControlHub.h"
+
 @class ClassroomViewController;
 
 @interface CallListViewController : UIViewController{
@@ -22,8 +24,9 @@
 
 -(void)removeInfo:(StudentInfo*)inInfo;
 
-@property (retain) NSMutableArray* callQueue;
-@property (retain) UITableView* tableView;
-@property (assign) ClassroomViewController* otherController;
+//@property (retain) NSMutableArray* callQueue;
+@property (retain) UITableView* mainTableView;
+//@property (assign) ClassroomViewController* otherController;
 @property  BOOL editing;
+@property (assign) ControlHub* controlHub;
 @end

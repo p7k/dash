@@ -15,7 +15,8 @@
 @interface PostCallViewController : UIViewController{
     UILabel* topLabel;
     UIView* headerView;
-    UIButton* viewButtons[4];
+    UIButton* viewButtons[4], *intentButtons[3];
+    int intent;
 }
 @property(retain) StudentInfo* studentInfo;
 @property(retain) ContactInfo* contactInfo;

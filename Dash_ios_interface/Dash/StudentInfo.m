@@ -14,9 +14,9 @@
 @synthesize lastName, firstName;
 @synthesize studentId;
 @synthesize contactsArray, phoneCallArray, groupStringArray;
-@synthesize firstContactInfo;
-@synthesize isHappy;
-@synthesize callIntent;
+//@synthesize firstContactInfo;
+//@synthesize isHappy;
+@synthesize /*callIntent*/ mood;
 @synthesize callCount, positiveCallCount, negativeCallCount, lastContactDate;
 
 NSString * const STUDENT_ID_KEY = @"id";
@@ -40,7 +40,8 @@ NSString * const LAST_DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     contactsArray = [[NSMutableArray alloc]init];
     phoneCallArray = [[NSMutableArray alloc]init];
     groupStringArray = [[NSMutableArray alloc]init];
-    callIntent = [NSNumber numberWithInt:2]; // initialize to be neutral. 0 = negative 1 = positive
+    //callIntent = [NSNumber numberWithInt:2]; // initialize to be neutral. 0 = negative 1 = positive
+    mood = 0; //-1 neg, 0 neut, 1 pos
     //init strings?
     
     return self;
@@ -65,7 +66,7 @@ NSString * const LAST_DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
         phoneCallArray = [[coder decodeObjectForKey:@"phoneCallArray"] retain];
         groupStringArray = [[coder decodeObjectForKey:@"groupStringArray"] retain];
         lastContactDate = [[coder   decodeObjectForKey:@"lastContactDate"] retain];
-        if([contactsArray count ]>0)firstContactInfo= [contactsArray objectAtIndex:0];
+       // if([contactsArray count ]>0)firstContactInfo= [contactsArray objectAtIndex:0];
     }
     return self;
 }
@@ -101,9 +102,9 @@ NSString * const LAST_DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     //
     [retVal setContactsArray:[ContactInfo createContactListFromArray:[input objectForKey:CONTACTS_KEY]]];
     
-    if([[retVal contactsArray] count] > 0){
+    /*if([[retVal contactsArray] count] > 0){
         [retVal setFirstContactInfo:[retVal.contactsArray objectAtIndex:0]];
-    }
+    }*/
     //printf("\n created %s %s ", [[retVal firstName] cString], [[retVal lastName] cString]);
     return retVal;
 }
@@ -124,6 +125,9 @@ NSString * const LAST_DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     }
     return nil;
 }
+
+
+
 -(NSString*)fullName{
     return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 }

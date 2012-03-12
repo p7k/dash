@@ -20,8 +20,8 @@
 @property (retain) NSMutableArray* groupStringArray;
 @property (retain) NSMutableArray* contactsArray;
 @property (retain) NSMutableArray* phoneCallArray;
-@property (assign) ContactInfo* firstContactInfo;
-@property (assign) NSNumber* callIntent;//necc?
+//@property (assign) ContactInfo* firstContactInfo;//contacts array kept sorted, now this is function to return first
+//@property (assign) NSNumber* callIntent;//necc?
 
 
 @property (assign) NSDate* lastContactDate;
@@ -30,7 +30,8 @@
 @property int positiveCallCount;
 @property int negativeCallCount;
 
-@property BOOL isHappy;//don't store any info with this, just for temporary call queue
+//@property BOOL isHappy;
+@property int mood;//don't store any info with this, just for temporary call queue
 
 + (NSArray *) createStudentListWithJsonString:(NSString *) input;
 - (ContactInfo *) findContactById:(NSNumber *) contactId;

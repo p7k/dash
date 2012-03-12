@@ -37,7 +37,7 @@ NSString * const DATE_FORMAT =@"yyyy-MM-dd HH:mm:ss";
     NSDictionary *outputDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                 contactInfo.contactId, PHONE_CALL_CONTACT_ID_KEY,
                                 [NSNumber numberWithInt:200], STATUS_KEY,
-                                [studentInfo callIntent], INTENT_KEY,
+                                callIntent, INTENT_KEY,
                                 dateString, ATTEMPTED_ON_KEY,
                                 dateString, COMPLETED_ON_KEY,
                                 dateString, CREATED_ON_KEY, nil];

@@ -9,7 +9,7 @@
 #import "CallListViewController.h"
 
 @implementation CallListViewController
-@synthesize tableView, callQueue, otherController, editing;
+@synthesize mainTableView, /*callQueue, otherController,*/ editing, controlHub;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -21,18 +21,18 @@
     return self;
 }*/
 
-- (id)init{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithHub:(ControlHub*)inHub{//WithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 
     self = [super init ];
     if (self) {
+        controlHub = inHub;
         self.title = NSLocalizedString(@"Playlist", @"Playlist");
         self.tabBarItem.image = [UIImage imageNamed:@"Playlist_Icon.png"];
          self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
         printf("\nview did load");
         
         //data
-        callQueue = [[NSMutableArray alloc]init ];
-        
+                
         
         
         //dummy
@@ -93,31 +93,35 @@
       
         
         
-        tableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
-        tableView.dataSource = self;
-        tableView.delegate = self;
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        tableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];//[UIColor clearColor];
+        mainTableView = [[UITableView alloc]initWithFrame:CGRectMake(20, 60, 280, 310)];
+        mainTableView.dataSource = self;
+        mainTableView.delegate = self;
+        mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        mainTableView.backgroundColor= [UIColor colorWithPatternImage:[UIImage imageNamed:@"cardboard.jpg"]];//[UIColor clearColor];
         
-        [self.view addSubview:tableView];
+        [self.view addSubview:mainTableView];
         
         
     }
     return self;
 }
 
--(void)addInfo:(StudentInfo*)inInfo{
+-(void)syncFinishedWithSuccess:(NSNumber*)inSuccessBoolNumber{
+    printf("\ncalllist sync finished with success %d",  [inSuccessBoolNumber boolValue]);
+}
+
+/*-(void)addInfo:(StudentInfo*)inInfo{
     printf("\nadd info:%s happy? %d", [[inInfo fullName] cString], [inInfo isHappy] );
     [callQueue addObject:inInfo];
-    [tableView reloadData];
-}
+    [mainTableView reloadData];
+}*/
 /*-(void)addHappy:(StudentInfo*)inInfo{
     printf("\nadd happy:%s", [[inInfo name] cString]);
    // CallIntent* newIntent = [[CallIntent alloc]init ];
    // newIntent.studentInfo = inInfo;
    // newIntent.isHappy = YES;
     [callQueue addObject:inInfo];
-    [tableView reloadData];
+    [mainTableView reloadData];
 
 }
 
@@ -127,11 +131,11 @@
     //newIntent.studentInfo = inInfo;
     //newIntent.isHappy = NO;
     [callQueue addObject:inInfo];
-    [tableView reloadData];
+    [mainTableView reloadData];
     
 }*/
 
--(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
+/*-(void)removeInfo:(StudentInfo*)inInfo{//from first view controller or modal postcall view. 
     printf("\nremove %s", [[inInfo fullName] cString])  ;
     StudentInfo* foundStudentInfo=nil;
     for(StudentInfo* currStudentInfo in callQueue){
@@ -141,11 +145,12 @@
     }
     if(foundStudentInfo!=nil){
         [callQueue removeObject:foundStudentInfo];
-        [tableView reloadData];
+        [mainTableView reloadData];
     }
     
-    [otherController removeInfo:inInfo];
-}
+        
+    //[otherController removeInfo:inInfo];
+}*/
 
 //==============table stuff
 
@@ -154,23 +159,24 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-	return [callQueue count];
+    return [[controlHub callQueue] count];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	printf("\ncalled !LISTwillDisplay cell name %s", [[[cell  studentInfo] fullName] cString]);
-	if([[cell studentInfo] isHappy])
+	if([[cell studentInfo] mood]==1)
         //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientHappyImage]];
          cell.backgroundColor = [DashConstants theHappyColor];
-	else  //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientSadImage]];
-	
+	else if([[cell studentInfo] mood]==-1)  //cell.backgroundColor = [UIColor colorWithPatternImage:[DashConstants cellGradientSadImage]];
         cell.backgroundColor = [DashConstants theSadColor];
+    else  cell.backgroundColor = [DashConstants theNeutralColor];
+
 }
 
 //TODO..what happens if save as other prset name? ahhh! treat as overwrite!
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     //printf("\ncell create index %d ", [indexPath indexAtPosition:1]);
-    StudentInfo* currStudentInfo = [callQueue  objectAtIndex: [indexPath indexAtPosition:1]];
+    StudentInfo* currStudentInfo = [[controlHub callQueue]  objectAtIndex: [indexPath indexAtPosition:1]];
     NSString *CellPersIDString = [currStudentInfo  fullName];
     CallTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
     if(cell==nil){
@@ -202,12 +208,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath{
     int newIndex = [indexPath indexAtPosition:1];
     
-    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[callQueue objectAtIndex:newIndex] allGroupNamesArray:[otherController allGroupNamesArray]];//WithNibName:@"NextView" bundle:nil];
+    StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:[[controlHub callQueue] objectAtIndex:newIndex] controlHub:controlHub];//WithNibName:@"NextView" bundle:nil];
+    nextController.delegate=self;//for reloading table
     [self presentModalViewController:nextController animated:YES];
     //[nextController setStudentInfo:[callQueue objectAtIndex:newIndex] ];
     
     
 }
+
 
 //table editing
 
@@ -221,19 +229,21 @@
     editing=inEditing;
 	if(!editing)
 	{
-        [editButton setSelected:NO];
+        //[editButton setSelected:NO];
+         [editButton setTitle:@"edit" forState:UIControlStateNormal];
 		//[super setEditing:NO animated:NO]; 
-		[tableView setEditing:NO animated:NO];
-		[tableView reloadData];
+		[mainTableView setEditing:NO animated:NO];
+		[mainTableView reloadData];//necc?
 		//[self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
 		//[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
 	}
 	else
 	{
-         [editButton setSelected:YES];
+        // [editButton setSelected:YES];
+        [editButton setTitle:@"done" forState:UIControlStateNormal];
 		//[super setEditing:YES animated:YES]; 
-		[tableView setEditing:YES animated:YES];
-		[tableView reloadData];
+		[mainTableView setEditing:YES animated:YES];
+		[mainTableView reloadData];//necc?
 		//[self.navigationItem.leftBarButtonItem setTitle:@"Done"];
 		//[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
 	}
@@ -254,12 +264,13 @@
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
 forRowAtIndexPath:(NSIndexPath *)indexPath {
     //turn off icons in classroom view
-    StudentInfo* infoToRemove = [callQueue objectAtIndex:indexPath.row];
-    [otherController removeInfo:infoToRemove];
+    StudentInfo* infoToRemove = [[controlHub callQueue] objectAtIndex:indexPath.row];
+    [infoToRemove setMood:0];
+                                 //[otherController removeInfo:infoToRemove];
        
-    [callQueue removeObjectAtIndex:indexPath.row];
-		[tableView reloadData];
-    
+    [[controlHub callQueue] removeObjectAtIndex:indexPath.row];
+    //[mainTableView reloadData];
+    [controlHub reloadAllMainTableViews];//reset to netural in classroom table, remove it from call list table
     
     
 }
@@ -274,9 +285,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	  toIndexPath:(NSIndexPath *)toIndexPath {
 	
    // NSString *item = [[arryData objectAtIndex:fromIndexPath.row] retain];
-	StudentInfo* item = [[callQueue objectAtIndex:fromIndexPath.row] retain];
-    [callQueue removeObject:item];
-	[callQueue insertObject:item atIndex:toIndexPath.row];
+	StudentInfo* item = [[[controlHub callQueue] objectAtIndex:fromIndexPath.row] retain];
+    [[controlHub callQueue] removeObject:item];
+	[[controlHub callQueue] insertObject:item atIndex:toIndexPath.row];
 	[item release];
 }
 

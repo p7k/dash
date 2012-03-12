@@ -9,7 +9,7 @@
 #import "NewStudentViewController.h"
 
 @implementation NewStudentViewController
-@synthesize studentInfo, delegate;
+@synthesize studentInfo, delegate, controlHub;
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
  {
  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -19,11 +19,12 @@
  return self;
  }*/
 
--(id)initWithDelegate:(ClassroomViewController*)parentVC{
+-(id)initWithDelegate:(ClassroomViewController*)parentVC controlHub:(ControlHub*)inControlHub{
     self = [super init];
     printf("\ncreate new student");
     
     delegate = parentVC;
+    controlHub = inControlHub;
     studentInfo = [[StudentInfo alloc]init ];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background.png"]];
     
@@ -207,7 +208,8 @@
 -(void)doneButtonHit{
     [studentInfo setFirstName:[firstNameTextField text]];
      [studentInfo setLastName:[lastNameTextField text]];
-    [delegate addStudentInfo:studentInfo];
+    [[controlHub classInfoArray] addObject:studentInfo];
+    [[delegate mainTableView] reloadData];
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -234,7 +236,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 	if(tableView==contactTableView) return [[studentInfo contactsArray ]count];
-    if(tableView==groupMemberTableView) return [[delegate allGroupNamesArray ]count]-1;
+    if(tableView==groupMemberTableView) return [[controlHub allGroupNamesArray ]count]-1;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,7 +267,7 @@
        
     else if(tableView == groupMemberTableView){
         //NSString* groupName = [[[self parentViewController] allGroupsNamesArray] objectAtIndex:[indexPath indexAtPosition:1]];
-        NSString* groupName = [ [delegate allGroupNamesArray] objectAtIndex:[indexPath indexAtPosition:1]+1];
+        NSString* groupName = [ [controlHub allGroupNamesArray] objectAtIndex:[indexPath indexAtPosition:1]+1];
         GroupMemberTableCell* cell = [tableView dequeueReusableCellWithIdentifier:groupName];
         if(cell==nil){
             cell = [[GroupMemberTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:groupName] ;
