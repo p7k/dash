@@ -18,5 +18,7 @@
 @property (retain) NSMutableArray* classInfoArray;
 @property (retain) NSMutableArray* allTopLevelViewControllersArray;
 @property (retain) NSMutableArray* callQueue;
+@property (retain) NSMutableArray* classInfoInGroupArray;//only students in selected group - this is always what is shown in table (including group "all"
+@property (retain) NSString* currentGroupString;
 @property (assign) CallListViewController* callListViewController;
 @end

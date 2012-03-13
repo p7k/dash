@@ -138,19 +138,19 @@
     
 }
 
--(void)setStudentInfo:(StudentInfo*)inInfo{
+-(void)setStudentInfo:(StudentInfo*)inInfo{//todo restructure this...big check for contact, then do all strings
     myStudentInfo = inInfo;
     [studentNameLabel setText:[myStudentInfo fullName]];
     NSString* cookedRelation;
-    NSString* rawRelation = [[[myStudentInfo contactsArray] objectAtIndex:0] relation];
-    if(rawRelation!=nil)   cookedRelation = [NSString stringWithFormat:@"%@, ", [[[myStudentInfo contactsArray] objectAtIndex:0] relation] ];//add comma
+    //NSString* rawRelation = [[[myStudentInfo contactsArray] objectAtIndex:0] relation];
+    if([/*rawRelation!=nil*/[myStudentInfo contactsArray] count]>0)   cookedRelation = [NSString stringWithFormat:@"%@, ", [[[myStudentInfo contactsArray] objectAtIndex:0] relation] ];//add comma
     else cookedRelation=@"";
        [firstContactRelationLabel setText: cookedRelation];
     
        CGSize stringSize = [cookedRelation sizeWithFont:[firstContactRelationLabel font] ];
     firstContactNameLabel.frame =  CGRectMake(55+stringSize.width, 20, 165-stringSize.width, 20);//defined by text, width to make it truncate rather than overlap buttons
    
-     [firstContactNameLabel setText:[[[myStudentInfo contactsArray] objectAtIndex:0] fullName]];
+    if([[myStudentInfo contactsArray] count]>0) [firstContactNameLabel setText:[[[myStudentInfo contactsArray] objectAtIndex:0] fullName]];
     
     
     //float successRatio = (float)(rand()%10)/10;/// [myStudentInfo contactSuccessRatio];
@@ -164,10 +164,10 @@
     printf("\nsuccess %.2f", positivePercent);
     successView.backgroundColor = [UIColor colorWithRed:1-positivePercent green:positivePercent blue:.3 alpha:.8];
     
-    //turn off phone if no valid contact
+    //turn off phone enabled  if no valid contact
     if([[inInfo contactsArray] count]==0 || [[[inInfo contactsArray] objectAtIndex:0] bestPhoneNumber]==nil)
-        callButton.hidden=YES;
-    else callButton.hidden=NO;
+        callButton.enabled=NO;
+    else callButton.enabled=YES;
     
 }
 
@@ -184,7 +184,7 @@
 }
 
 -(void)happyButtonDown{
-    printf("\nhappybutton down");
+   // printf("\nhappybutton down");
     happyButton.selected = !happyButton.selected;
     //printf("..selected? %d ", happyButton.selected);
     myStudentInfo.mood = (int)happyButton.selected; //happy = mood 1, neutral = 0
@@ -210,7 +210,7 @@
 }
 
 -(void)sadButtonDown{
-    printf("\nsadbutton down");
+    //printf("\nsadbutton down");
     sadButton.selected = !sadButton.selected;
     myStudentInfo.mood = (int)-sadButton.selected; //happy = mood 1, neutral = 0
    

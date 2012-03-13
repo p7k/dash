@@ -320,6 +320,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    printf("\ncalllistviewwillappear!");
+    [mainTableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -9,7 +9,7 @@
 #import "GroupMemberTableCell.h"
 
 @implementation GroupMemberTableCell
-@synthesize studentInfo, groupNameString;
+@synthesize studentInfo, groupNameString, controlHub;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier //40high
 {
@@ -40,12 +40,13 @@
     [self setToggle:!toggle];
 }
 
--(void)setToggle:(BOOL)inToggle{//TODO REFRESH GROUP subarray on top level view
+-(void)setToggle:(BOOL)inToggle{
     toggle = inToggle;
     if(toggle){
         toggleButton.backgroundColor = [UIColor redColor];
         //add
         [[studentInfo groupStringArray] addObject:groupNameString];
+        
     }
     else{
         toggleButton.backgroundColor = [UIColor whiteColor];  

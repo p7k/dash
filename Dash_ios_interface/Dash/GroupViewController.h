@@ -20,6 +20,8 @@
     UIButton *doneButton, *deleteButton;
     UIView *headerView;
     UITableView* groupStudentsTableView;
+    
+    BOOL groupInfoChanged;
 }
 
 @property(assign) ClassroomViewController* delegate;

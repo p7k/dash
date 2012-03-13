@@ -62,10 +62,7 @@ int myCornerRadius=10;
     
     
     classInfoSearchSubArray = [[NSMutableArray alloc]init ];
-    classInfoInGroupArray = [[NSMutableArray alloc]init ];
-    for(StudentInfo* studentInfo in [controlHub classInfoArray]){
-        [classInfoInGroupArray addObject:studentInfo];
-    }
+    
     
     //interface====
     //top header
@@ -331,15 +328,15 @@ int myCornerRadius=10;
         spinner.hidden=YES; 
         
         //copy into group - but what happens if user has already selected a group!?!?!? ARGH TODO
-        [classInfoInGroupArray removeAllObjects];
+        [[controlHub classInfoInGroupArray] removeAllObjects];
         for(StudentInfo* studentInfo in [controlHub classInfoArray]){
-            [classInfoInGroupArray addObject:studentInfo];
+            [[controlHub classInfoInGroupArray] addObject:studentInfo];
         }
              
       
             
     }
-    else spinner.backgroundColor=[UIColor redColor];
+//    else spinner.backgroundColor=[UIColor redColor];
 
 }
 
@@ -499,7 +496,7 @@ int myCornerRadius=10;
             
             //name
             if(i==0){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     NSString *first = [a lastName];
                     NSString *second = [b lastName];
                     return [first compare:second];
@@ -509,7 +506,7 @@ int myCornerRadius=10;
             
             //most recent
             if(i==1){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     NSDate *first = [a lastContactDate];
                     NSDate *second = [b lastContactDate];
                     return [second compare:first];
@@ -519,7 +516,7 @@ int myCornerRadius=10;
             
             //least recent
             if(i==2){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     NSDate *first = [a lastContactDate];
                     NSDate *second = [b lastContactDate];
                     return [first compare:second];
@@ -529,7 +526,7 @@ int myCornerRadius=10;
             
             //positive
             if(i==3){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     int first = [a positiveCallCount];
                     int second = [b positiveCallCount];
                     //return [second compare:first];
@@ -542,7 +539,7 @@ int myCornerRadius=10;
             
             //negative
             if(i==4){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [ [controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     int first = [a positiveCallCount];
                     int second = [b positiveCallCount];
                     //return [second compare:first];
@@ -555,7 +552,7 @@ int myCornerRadius=10;
 
             //most calls
             if(i==5){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     int first = [a callCount];
                     int second = [b callCount];
                     //return [second compare:first];
@@ -568,7 +565,7 @@ int myCornerRadius=10;
             
             //fewest calls
             if(i==6){
-                [classInfoInGroupArray sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
+                [[controlHub classInfoInGroupArray] sortUsingComparator:^(StudentInfo* a, StudentInfo* b) {
                     int first = [a callCount];
                     int second = [b callCount];
                     //return [second compare:first];
@@ -683,6 +680,8 @@ int myCornerRadius=10;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    printf("\nclassroomviewwillappear!");
+    [mainTableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -718,7 +717,7 @@ int myCornerRadius=10;
         return [[controlHub allGroupNamesArray] count];
     }
     else{   //classroom
-        if(!searching)return [classInfoInGroupArray count];
+        if(!searching)return [[controlHub classInfoInGroupArray] count];
         else return [classInfoSearchSubArray count];
     }
 }
@@ -734,7 +733,7 @@ int myCornerRadius=10;
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 	if(tableView==mainTableView){
     StudentInfo* currStudentInfo;	
-    if(!searching) currStudentInfo = [classInfoInGroupArray  objectAtIndex: [indexPath indexAtPosition:1]];
+    if(!searching) currStudentInfo = [[controlHub classInfoInGroupArray]  objectAtIndex: [indexPath indexAtPosition:1]];
         else currStudentInfo = [classInfoSearchSubArray  objectAtIndex: [indexPath indexAtPosition:1]];
     NSString *CellPersIDString = [currStudentInfo fullName] ;
         ClassroomTableCell* cell = [tableView dequeueReusableCellWithIdentifier:CellPersIDString];
@@ -796,7 +795,7 @@ int myCornerRadius=10;
     //StudentInfoViewController *nextController = [[StudentInfoViewController alloc] init];//
     StudentInfo* selectedStudentInfo;
     if(searching)selectedStudentInfo = [classInfoSearchSubArray objectAtIndex:newIndex];
-    else selectedStudentInfo = [classInfoInGroupArray objectAtIndex:newIndex];
+    else selectedStudentInfo = [[controlHub classInfoInGroupArray] objectAtIndex:newIndex];
         
         StudentInfoViewController *nextController = [[StudentInfoViewController alloc] initWithStudentInfo:selectedStudentInfo controlHub:controlHub];//WithNibName:@"NextView" bundle:nil];
     //[nextController setStudentInfo:[classInfoArray objectAtIndex:newIndex]];
@@ -806,25 +805,20 @@ int myCornerRadius=10;
     }
     
     else if (tableView==groupsTableView) {
-        [classInfoInGroupArray removeAllObjects];
         
-        if([indexPath indexAtPosition:1]==0){//"all"
+        
+        if([indexPath indexAtPosition:1]==0){//"all"--todo move to controlhub
+            [[controlHub classInfoInGroupArray] removeAllObjects];
             for(StudentInfo* studentInfo in [controlHub classInfoArray]){
-                 [classInfoInGroupArray addObject:studentInfo];
+                 [[controlHub classInfoInGroupArray] addObject:studentInfo];
             }
            
         }
         else{
             
-            currentGroupString = [[controlHub allGroupNamesArray] objectAtIndex: [indexPath indexAtPosition:1]];
-            for(StudentInfo* studentInfo in [controlHub classInfoArray]){
-                for (NSString* groupString in [studentInfo groupStringArray]){
-                    if([groupString compare:currentGroupString]==NSOrderedSame){
-                        [classInfoInGroupArray addObject:studentInfo];
-                        break;//stop looking at this student, move to next
-                    }
-                }
-            }
+            //currentGroupString = [[controlHub allGroupNamesArray] objectAtIndex: [indexPath indexAtPosition:1]];
+            [controlHub setCurrentGroupString:[[controlHub allGroupNamesArray] objectAtIndex: [indexPath indexAtPosition:1]] ];
+            [controlHub reloadClassInfoInGroups];
         }
         [mainTableView reloadData];
         groupNameLabel.text = [[controlHub allGroupNamesArray] objectAtIndex:[indexPath indexAtPosition:1]];

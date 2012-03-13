@@ -94,7 +94,7 @@
 -(void)doneButtonHit{
     
     
-    
+    [controlHub reloadClassInfoInGroups];
     [self dismissModalViewControllerAnimated:YES];
 
 }

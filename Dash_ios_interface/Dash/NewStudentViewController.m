@@ -209,7 +209,7 @@
     [studentInfo setFirstName:[firstNameTextField text]];
      [studentInfo setLastName:[lastNameTextField text]];
     [[controlHub classInfoArray] addObject:studentInfo];
-    [[delegate mainTableView] reloadData];
+//    [[delegate mainTableView] reloadData];
     [self dismissModalViewControllerAnimated:YES];
 }
 

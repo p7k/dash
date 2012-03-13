@@ -115,7 +115,7 @@
     
     editContactsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    editContactsButton.frame = CGRectMake(110, 425, 100,25);
+    editContactsButton.frame = CGRectMake(90, 425, 140,25);
     editContactsButton.backgroundColor = [UIColor grayColor];
     [editContactsButton setTitle:@"edit contacts" forState:UIControlStateNormal];
     editContactsButton.layer.cornerRadius=4;
@@ -182,7 +182,7 @@
         [editContactsButton setTitle:@"edit contacts" forState:UIControlStateNormal];
     }
     
-    reloadParentTable=YES;
+    //reloadParentTable=YES;
 }
 
 -(void)segDown{
@@ -247,11 +247,12 @@
 
 
 -(void)back{
-    if(reloadParentTable==YES){
+  /*  if(reloadParentTable==YES){
         [[delegate mainTableView] reloadData];
         [delegate test];
         printf("RELOAD %d ", delegate);
-    }
+    }*/
+    /*if(groupInfoChanged)*/[controlHub reloadClassInfoInGroups];
     [self dismissModalViewControllerAnimated:YES];
 }
 

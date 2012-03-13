@@ -9,7 +9,7 @@
 #import "ControlHub.h"
 
 @implementation ControlHub
-@synthesize allGroupNamesArray, classInfoArray, allTopLevelViewControllersArray, callQueue, callListViewController;
+@synthesize allGroupNamesArray, classInfoArray, allTopLevelViewControllersArray, callQueue, callListViewController, classInfoInGroupArray, currentGroupString;
 
 NSString* _archiveLocation; //archive is now a DICT containing a classInfoArray and group array
 + (NSString*)archiveLocation{
@@ -39,10 +39,30 @@ NSString* _archiveLocation; //archive is now a DICT containing a classInfoArray 
     //[allGroupNamesArray insertObject:@"Full Roster" atIndex:0];
     [allGroupNamesArray retain];
     
+    classInfoInGroupArray = [[NSMutableArray alloc]init ];
+    for(StudentInfo* studentInfo in  classInfoArray){
+        [classInfoInGroupArray addObject:studentInfo];
+    }
+    
+    
     //test
     //for(StudentInfo* si in classInfoArray) printf("\n%s", [[si fullName]cString]);
           
     return self;
+}
+
+-(void) reloadClassInfoInGroups{
+    [classInfoInGroupArray removeAllObjects];
+   // printf("\nreload class info in groups:");
+    for(StudentInfo* studentInfo in classInfoArray){
+        for (NSString* groupString in [studentInfo groupStringArray]){
+            if([groupString compare:currentGroupString]==NSOrderedSame){
+                [ classInfoInGroupArray addObject:studentInfo];
+                //printf("%s", [[studentInfo fullName] cString]);
+                break;//stop looking at this student, move to next
+            }
+        }
+    }
 }
 
 //pull from server

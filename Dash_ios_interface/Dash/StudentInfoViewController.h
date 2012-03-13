@@ -27,7 +27,7 @@
     UIActivityIndicatorView* spinner;
     UIButton* editContactsButton;
     ControlHub* controlHub;
-    BOOL reloadParentTable;
+    BOOL groupInfoChanged;
 }
 
 -(id)initWithStudentInfo:(StudentInfo*) inInfo;

@@ -129,7 +129,7 @@
 -(void)setStudentInfo:(StudentInfo*)inInfo{
     studentInfo = inInfo;
     [studentNameLabel setText:[studentInfo fullName]];
-    [firstContactNameLabel setText:[[[studentInfo contactsArray] objectAtIndex:0] fullName]];
+    if([[studentInfo contactsArray] count]>0)[firstContactNameLabel setText:[[[studentInfo contactsArray] objectAtIndex:0] fullName]];
     
     if( [studentInfo mood]==1){
         //self.backgroundColor = [DashConstants theHappyColor];
@@ -139,6 +139,11 @@
         iconView.image = [DashConstants sadImage];
         //self.backgroundColor = [DashConstants theSadColor];
     }
+    
+    //un-enable call button if no contact info
+    if([[inInfo contactsArray] count]==0 || [[[inInfo contactsArray] objectAtIndex:0] bestPhoneNumber]==nil)
+        callButton.enabled=NO;
+    else callButton.enabled=YES;
 
 }
 

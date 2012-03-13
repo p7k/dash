@@ -20,9 +20,9 @@
 @interface ClassroomViewController : UIViewController{
     UIButton* sortTableButton, *groupsTableButton, *addStudentButton, *sideMenuButton;
     NSMutableArray* classInfoSearchSubArray;
-    NSMutableArray* classInfoInGroupArray;//only students in selected group - this is always what is shown in table (including group "all"
+    //NSMutableArray* classInfoInGroupArray;//only students in selected group - this is always what is shown in table (including group "all"
     //NSMutableArray* groupStringArray;//array of possible groups
-    NSString* currentGroupString;
+    //NSString* currentGroupString;
     UIView* headerView, *searchHeaderView, *roundedContentView, *sortOptionsView;
     UIButton* sortOptionButton[7];
     BOOL searching;

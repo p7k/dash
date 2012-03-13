@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "StudentInfo.h"
 #import "DashConstants.h"
+#import "ControlHub.h"
 
 @interface GroupMemberTableCell : UITableViewCell{
     UIButton* toggleButton;
@@ -19,4 +20,5 @@
 }
 @property (retain) NSString* groupNameString;
 @property (assign) StudentInfo* studentInfo;
+@property (assign) ControlHub* controlHub;
 @end

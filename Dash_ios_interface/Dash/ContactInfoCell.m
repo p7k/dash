@@ -68,10 +68,12 @@
     printf("\ntransition to editing %d", editing);
     if(editing) {
        nameLabel.frame = CGRectMake(60, 0, 200, 20);
+        relationLabel.frame = CGRectMake(60, 20, 200, 20);
         for(int i=0;i<3;i++) callButtons[i].hidden=YES;
     }
     else{
         nameLabel.frame = CGRectMake(10, 0, 200, 20);//matches init
+         relationLabel.frame = CGRectMake(10, 20, 200, 20);
          for(int i=0;i<3;i++) callButtons[i].hidden=NO;
     }
 }
